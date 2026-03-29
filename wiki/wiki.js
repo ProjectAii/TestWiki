@@ -381,6 +381,71 @@ function initTreeSidebar(data, container) {
 }
 
 // ---------------------------------------------------------------------------
+// API Key Modal
+// ---------------------------------------------------------------------------
+
+function showAPIKeyModal(callback) {
+  // Create overlay and modal
+  const overlay = document.createElement("div");
+  overlay.className = "api-key-modal-overlay";
+
+  const modal = document.createElement("div");
+  modal.className = "api-key-modal";
+
+  const html = `
+    <div class="api-key-modal-content">
+      <h2>Claude API Key Required</h2>
+      <p>Enter your Anthropic API key to use the AI sidebar. Your key is stored locally in your browser and never sent to our servers.</p>
+      <div class="api-key-input-group">
+        <input type="password" class="api-key-input" placeholder="sk-..." autocomplete="off" aria-label="API key">
+      </div>
+      <label class="api-key-remember">
+        <input type="checkbox" class="api-key-remember-checkbox" checked>
+        <span>Remember on this device</span>
+      </label>
+      <div class="api-key-buttons">
+        <button class="api-key-submit">Enable AI Sidebar</button>
+      </div>
+    </div>
+  `;
+
+  safeSetInnerHTML(modal, html);
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+
+  const input = modal.querySelector(".api-key-input");
+  const checkbox = modal.querySelector(".api-key-remember-checkbox");
+  const submitBtn = modal.querySelector(".api-key-submit");
+
+  function submit() {
+    const key = input.value.trim();
+    if (!key) {
+      input.focus();
+      return;
+    }
+    const remember = checkbox.checked;
+    overlay.remove();
+    callback(key, remember);
+  }
+
+  input.focus();
+  submitBtn.addEventListener("click", submit);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      submit();
+    }
+  });
+
+  // Prevent closing by clicking overlay
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) {
+      e.preventDefault();
+    }
+  });
+}
+
+// ---------------------------------------------------------------------------
 // AI Sidebar
 // ---------------------------------------------------------------------------
 
@@ -400,14 +465,52 @@ function initAISidebar(currentDocContent, searchIndex) {
     if (arrow) arrow.textContent = body.classList.contains("collapsed") ? "+" : "\u2212";
   });
 
-  if (!WIKI_CONFIG.apiKey) {
-    const msg = document.createElement("p");
-    msg.className = "ai-message ai-message-assistant";
-    msg.textContent = "AI assistant is not configured. Set the ANTHROPIC_API_KEY secret to enable it.";
-    messagesEl.appendChild(msg);
-    if (input) input.disabled = true;
-    if (sendBtn) sendBtn.disabled = true;
+  // Determine API key: config > localStorage > modal
+  let apiKey = WIKI_CONFIG.apiKey;
+  let keySource = "config"; // "config" | "stored" | "user"
+
+  if (!apiKey) {
+    const stored = localStorage.getItem("lorengine-api-key");
+    if (stored) {
+      apiKey = stored;
+      keySource = "stored";
+    }
+  }
+
+  if (!apiKey) {
+    // Show blocking modal
+    showAPIKeyModal((key, remember) => {
+      apiKey = key;
+      keySource = "user";
+      if (remember) {
+        localStorage.setItem("lorengine-api-key", key);
+      }
+      // Update global config and continue
+      WIKI_CONFIG.apiKey = key;
+      initAISidebar(currentDocContent, searchIndex);
+    });
     return;
+  }
+
+  // Update global config if we got the key from localStorage
+  if (!WIKI_CONFIG.apiKey) {
+    WIKI_CONFIG.apiKey = apiKey;
+  }
+
+  // Add delete button if key was stored or provided by user
+  if (keySource !== "config" && header) {
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "ai-key-delete-btn";
+    deleteBtn.setAttribute("aria-label", "Delete saved API key");
+    deleteBtn.textContent = "⌫";
+    deleteBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (confirm("Delete saved API key?")) {
+        localStorage.removeItem("lorengine-api-key");
+        location.reload();
+      }
+    });
+    header.appendChild(deleteBtn);
   }
 
   const conversation = [];

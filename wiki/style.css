@@ -567,6 +567,116 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   }
 }
 
+/* ── API Key Modal ─────────────────────────── */
+
+.api-key-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.api-key-modal {
+  background: var(--bg);
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 28rem;
+  padding: var(--space-2xl);
+}
+
+.api-key-modal-content h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: var(--space-md);
+  color: var(--text);
+}
+
+.api-key-modal-content p {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-lg);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.api-key-input-group {
+  margin-bottom: var(--space-lg);
+}
+
+.api-key-input {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  font-size: 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+.api-key-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.api-key-remember {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  font-size: 0.875rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.api-key-remember-checkbox {
+  cursor: pointer;
+  width: 1rem;
+  height: 1rem;
+}
+
+.api-key-buttons {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.api-key-submit {
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.api-key-submit:hover {
+  background: var(--accent-hover);
+}
+
+.ai-key-delete-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0 var(--space-sm);
+  font-size: 1rem;
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+}
+
+.ai-key-delete-btn:hover {
+  opacity: 1;
+  color: #ef4444;
+}
+
 /* ── AI Sidebar ────────────────────────────── */
 
 .ai-sidebar {
