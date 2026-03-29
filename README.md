@@ -64,6 +64,51 @@ See `CLAUDE.md` for the full configuration reference.
 
 Forks receive upstream engine updates via the `sync-upstream.yml` workflow, which opens a PR every Monday. Edit `sync-upstream.yml` to point to the correct upstream repo.
 
+## Versioning and Releases
+
+This project uses [release-please](https://github.com/googleapis/release-please) to automate versioning from conventional commits.
+
+### Conventional Commits
+
+Use this format in your commit messages:
+
+```
+<type>: <description>
+
+[optional body]
+
+[optional footer]
+```
+
+**Types:**
+- `feat:` — New feature (triggers minor version bump)
+- `fix:` — Bug fix (triggers patch version bump)
+- `feat!:` — Breaking change (triggers major version bump)
+- `docs:` — Documentation only
+- `chore:` — Maintenance tasks
+- `refactor:` — Code refactoring
+- `test:` — Adding or updating tests
+
+**Examples:**
+```
+feat: add user authentication
+fix: correct typo in search results
+feat!: change API response format
+docs: update installation instructions
+```
+
+When a commit with `feat:` or `fix:` is merged to main, release-please automatically:
+1. Updates CHANGELOG.md
+2. Creates a semantic version tag (v1.1.0, v1.2.0, etc.)
+3. Publishes a GitHub Release
+
+### Pinning to a Version
+
+Downstream forks can pin to a specific version:
+```bash
+git checkout v1.0.0  # Pin to a specific release
+```
+
 ## License
 
 MIT

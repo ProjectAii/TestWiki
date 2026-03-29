@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run release-please
+        uses: googleapis/release-please-action@v4
+        with:
+          release-type: python
+          package-name: lorengine
+          version-file: VERSION
+          target-branch: main
+          default-branch: main
+
+  build-on-release:
+    runs-on: ubuntu-latest
+    needs: release-please
+    if: needs.release-please.outputs.releases_created == 'true'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build wiki
+        run: python build_wiki.py
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: _site/**/*
+          generate_release_notes: true
