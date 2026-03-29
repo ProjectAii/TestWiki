@@ -1,0 +1,21 @@
+[
+  {
+    "id": "docs/example-doc.md",
+    "title": "Example Document",
+    "tags": [
+      "example",
+      "getting-started"
+    ],
+    "status": "draft",
+    "last_updated": "2026-03-29",
+    "headings": [
+      "Overview",
+      "Frontmatter Fields",
+      "Writing Guidelines",
+      "Markdown Features",
+      "Tips"
+    ],
+    "excerpt": "Overview\nThis is an example document demonstrating the required frontmatter format for\nLorengine. Every markdown file in needs a field in its YAML\nfrontmatter — all other fields are optional but recommended.\nDelete this file after setting up your fork and replace it with your own content.\nFrontmatte",
+    "body": "Overview\nThis is an example document demonstrating the required frontmatter format for\nLorengine. Every markdown file in needs a field in its YAML\nfrontmatter — all other fields are optional but recommended.\nDelete this file after setting up your fork and replace it with your own content.\nFrontmatter Fields\n- title (required): The display name of the document\n- tags: A list of tags for categorisation and search filtering\n- status: One of , , or \n- last-updated: The date this document was last modified (YYYY-MM-DD)\nWriting Guidelines\nUse and headings to structure your documents. These headings are\nextracted by the build script for the table of contents and search index.\nMarkdown Features\nStandard markdown is supported:\n- Bold and italic text\n- and fenced code blocks\n- Links, images, and lists\n- Tables and blockquotes\nTips\n- Keep documents focused on a single topic\n- Use descriptive titles and relevant tags\n- Update the field when making changes\n- Set to when the document is ready for reference"
+  }
+]

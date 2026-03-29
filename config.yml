@@ -1,0 +1,18 @@
+# config.yml — edit this in your fork, not in upstream
+wiki:
+  title: "My Wiki"
+  description: "A Lorengine-powered wiki"
+  accent_color: "#7F77DD"
+
+ai:
+  model: "claude-sonnet-4-6"
+  system_prompt_file: "CLAUDE.local.md"
+  max_tokens: 1024
+  enable_prompt_caching: true
+
+search:
+  max_results: 20
+  excerpt_length: 160
+
+github_pages:
+  base_url: ""

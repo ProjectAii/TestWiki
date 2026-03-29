@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{WIKI_TITLE}}</title>
+  <meta name="description" content="{{WIKI_DESCRIPTION}}">
+  <link rel="stylesheet" href="style.css">
+  <style>:root { --accent: {{ACCENT_COLOR}}; }</style>
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <h1><a href="index.html">{{WIKI_TITLE}}</a></h1>
+      <p class="description">{{WIKI_DESCRIPTION}}</p>
+    </div>
+    <nav class="header-nav">
+      <a href="search.html">Search</a>
+      <button class="theme-toggle" aria-label="Toggle theme">Theme</button>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div id="doc-list" class="doc-list">
+      <p class="loading">Loading documents...</p>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+  <script src="wiki.js"></script>
+  <script>
+    (async function () {
+      try {
+        const data = await loadSearchIndex();
+        renderDocList(data, document.getElementById("doc-list"));
+      } catch (err) {
+        document.getElementById("doc-list").textContent = "Failed to load documents: " + err.message;
+      }
+      initThemePanel();
+    })();
+  </script>
+</body>
+</html>
