@@ -8,6 +8,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/github.min.css" media="(prefers-color-scheme: light)">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
   <style>:root { --accent: {{ACCENT_COLOR}}; }</style>
+  <script>
+    // Apply stored theme/accent synchronously before first paint to prevent flash.
+    (function () {
+      var a = localStorage.getItem("lorengine-accent");
+      if (a) document.documentElement.style.setProperty("--accent", a);
+      var m = localStorage.getItem("lorengine-theme");
+      if (m) document.documentElement.setAttribute("data-theme", m);
+    })();
+  </script>
 </head>
 <body>
   <header class="site-header">
@@ -18,6 +27,8 @@
     <nav class="header-nav">
       <a href="index.html">Home</a>
       <a href="search.html">Search</a>
+      <a href="admin/" id="new-page-btn" class="btn-admin" hidden><svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" style="vertical-align:-1px;margin-right:3px"><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>New Page</a>
+      <a href="#" id="edit-page-btn" class="btn-admin" hidden><svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" style="vertical-align:-1px;margin-right:3px"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/></svg>Edit Page</a>
       <button class="theme-toggle" aria-label="Toggle theme">Theme</button>
     </nav>
   </header>
@@ -54,7 +65,17 @@
   </div>
 
   <!-- Floating AI button -->
-  <button id="ai-float-btn" class="ai-float-btn" aria-label="Open AI Assistant">AI</button>
+  <button id="ai-float-btn" class="ai-float-btn" aria-label="Open AI Assistant">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <!-- Quill body angled at ~45° -->
+      <path d="M20 4 C16 2 8 10 5 19" fill="none"/>
+      <path d="M20 4 C18 8 12 12 5 19" fill="none"/>
+      <!-- Nib tip -->
+      <path d="M5 19 l1.5-4 2.5 1.5 z" fill="currentColor" stroke="none"/>
+      <!-- Sparkle at top of quill -->
+      <path d="M19 2 l0.5 1.5 1.5 0.5 -1.5 0.5 -0.5 1.5 -0.5-1.5 -1.5-0.5 1.5-0.5 z" fill="currentColor" stroke="none"/>
+    </svg>
+  </button>
 
   <!-- AI Modal -->
   <div id="ai-modal-overlay" class="ai-modal-overlay"></div>
@@ -111,6 +132,15 @@
           document.title = `${meta.title} — ${WIKI_CONFIG.title}`;
         }
 
+        // Show admin buttons
+        const newBtn = document.getElementById('new-page-btn');
+        if (newBtn) { newBtn.removeAttribute('hidden'); newBtn.href = adminNewUrl(); }
+        const editBtn = document.getElementById('edit-page-btn');
+        if (editBtn && meta && meta.slug) {
+          editBtn.href = adminEditUrl(meta.slug);
+          editBtn.removeAttribute('hidden');
+        }
+
         // Render page title at top
         const titleWrapperEl = document.getElementById("page-title-wrapper");
         if (meta) {
@@ -146,7 +176,7 @@
 
         // Render markdown
         const bodyEl = document.getElementById("page-body");
-        safeSetInnerHTML(bodyEl, renderMarkdown(body));
+        safeSetInnerHTML(bodyEl, renderMarkdown(body, docId));
 
         // Render backlinks if they exist
         if (meta && meta.backlinks && meta.backlinks.length > 0) {
@@ -159,6 +189,10 @@
         initTOCSidebar();
         initAIModal(body, searchIndex);
 
+        // Sidebars: toggle, MQ, resize, persistence
+        initSidebar(document.querySelector(".tree-sidebar-wrap"), "right", "lorengine-tree-width");
+        initSidebar(document.querySelector(".toc-sidebar-wrap"), "left", "lorengine-toc-width");
+
         // Scroll to heading anchor now that content is rendered
         if (window.location.hash) {
           const target = document.getElementById(window.location.hash.slice(1));
@@ -170,61 +204,7 @@
       }
 
       initThemePanel();
-
-      // ── Responsive sidebar helpers ───────────────────────
-      function setSidebarOpen(wrap, sidebar, open) {
-        if (open) {
-          sidebar.classList.add("visible");
-          wrap.classList.remove("collapsed");
-        } else {
-          sidebar.classList.remove("visible");
-          wrap.classList.add("collapsed");
-        }
-      }
-
-      // Tree sidebar — auto-collapses below 900px
-      const treeWrap   = document.querySelector(".tree-sidebar-wrap");
-      const treeSidebar = document.querySelector(".tree-sidebar");
-      const treeToggleBtn = document.querySelector(".tree-toggle-btn");
-      const treeMQ = window.matchMedia("(min-width: 900px)");
-
-      function applyTreeMQ(e) {
-        if (!treeWrap.classList.contains("user-toggled")) {
-          setSidebarOpen(treeWrap, treeSidebar, e.matches);
-        }
-      }
-      treeMQ.addEventListener("change", applyTreeMQ);
-      applyTreeMQ(treeMQ); // apply on load
-
-      if (treeToggleBtn) {
-        treeToggleBtn.addEventListener("click", () => {
-          treeWrap.classList.add("user-toggled");
-          const isOpen = treeSidebar.classList.contains("visible");
-          setSidebarOpen(treeWrap, treeSidebar, !isOpen);
-        });
-      }
-
-      // TOC sidebar — auto-collapses below 1200px
-      const tocWrap   = document.querySelector(".toc-sidebar-wrap");
-      const tocSidebar = document.querySelector(".toc-sidebar");
-      const tocToggleBtn = document.querySelector(".toc-toggle-btn");
-      const tocMQ = window.matchMedia("(min-width: 1200px)");
-
-      function applyTocMQ(e) {
-        if (!tocWrap.classList.contains("user-toggled")) {
-          setSidebarOpen(tocWrap, tocSidebar, e.matches);
-        }
-      }
-      tocMQ.addEventListener("change", applyTocMQ);
-      applyTocMQ(tocMQ); // apply on load
-
-      if (tocToggleBtn) {
-        tocToggleBtn.addEventListener("click", () => {
-          tocWrap.classList.add("user-toggled");
-          const isOpen = tocSidebar.classList.contains("visible");
-          setSidebarOpen(tocWrap, tocSidebar, !isOpen);
-        });
-      }
+      initStickyHeader();
     })();
   </script>
 </body>

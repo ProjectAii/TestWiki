@@ -237,7 +237,22 @@ function slugify(text) {
     .replace(/\s+/g, "-");
 }
 
-function renderMarkdown(md) {
+// Resolve a relative .md path against the current doc's location.
+// e.g. fromDocId="pages/getting-started.md", rel="design/gameplay-systems.md"
+//   → "pages/design/gameplay-systems.md"
+// e.g. fromDocId="pages/getting-started/quickstart.md", rel="../world-story.md"
+//   → "pages/world-story.md"
+function resolveDocPath(fromDocId, relativePath) {
+  const parts = fromDocId.split("/");
+  parts.pop(); // discard filename, keep directory segments
+  for (const seg of relativePath.split("/")) {
+    if (seg === "..") { parts.pop(); }
+    else if (seg !== ".") { parts.push(seg); }
+  }
+  return parts.join("/");
+}
+
+function renderMarkdown(md, docId) {
   marked.setOptions({
     gfm: true,
     breaks: false,
@@ -264,7 +279,8 @@ function renderMarkdown(md) {
       // route through the wiki renderer instead of serving the raw file.
       /href="((?!https?:\/\/|\/\/|#)[^"]*\.md)(#[^"]*)?"/g,
       (_, mdPath, hash) => {
-        const url = `${base}page.html?doc=${encodeURIComponent(mdPath)}`;
+        const resolved = docId ? resolveDocPath(docId, mdPath) : mdPath;
+        const url = `${base}page.html?doc=${encodeURIComponent(resolved)}`;
         return `href="${hash ? url + hash : url}"`;
       }
     );
@@ -274,13 +290,39 @@ function renderMarkdown(md) {
 function buildToc(md) {
   const headings = [];
   const lines = md.split(/\r?\n/);
+  let inFence = false;
+  let fenceMarker = "";
   for (const line of lines) {
-    const m = line.match(/^(#{2,3})\s+(.+)$/);
-    if (m) {
-      const level = m[1].length;
-      const text = m[2].trim();
-      headings.push({ level, text, id: slugify(text) });
+    // Track fenced code blocks — opener sets the marker (``` or ~~~~),
+    // closer must start with the same marker to handle nested fences correctly.
+    if (!inFence) {
+      const fenceMatch = line.match(/^(`{3,}|~{3,})/);
+      if (fenceMatch) { inFence = true; fenceMarker = fenceMatch[1]; continue; }
+    } else {
+      if (line.startsWith(fenceMarker)) { inFence = false; fenceMarker = ""; }
+      continue;
     }
+    // Skip blockquote lines
+    if (line.startsWith(">")) continue;
+
+    const m = line.match(/^(#{2,3})\s+(.+)$/);
+    if (!m) continue;
+
+    const level = m[1].length;
+    // Strip markdown formatting so TOC text is plain and the slugified id
+    // matches the id generated in renderMarkdown (which strips HTML tags).
+    const text = m[2].trim()
+      .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")   // images
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")     // links
+      .replace(/`([^`]*)`/g, "$1")                 // inline code
+      .replace(/\*\*([^*]+)\*\*/g, "$1")           // bold **
+      .replace(/__([^_]+)__/g, "$1")               // bold __
+      .replace(/\*([^*]+)\*/g, "$1")               // italic *
+      .replace(/_([^_]+)_/g, "$1")                 // italic _
+      .replace(/~~([^~]+)~~/g, "$1")               // strikethrough
+      .trim();
+
+    headings.push({ level, text, id: slugify(text) });
   }
   return headings;
 }
