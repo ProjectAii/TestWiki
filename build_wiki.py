@@ -4,6 +4,8 @@
 Stdlib only (Python 3.11+). No pip dependencies.
 """
 
+import datetime
+import hashlib
 import json
 import os
 import re
@@ -196,6 +198,9 @@ def load_config(root):
             "logo": "",
         },
         "pages_dir": "pages",
+        "github": {
+            "repo": "",
+        },
     }
 
     if not config_path.exists():
@@ -230,40 +235,28 @@ def validate_config(parsed, defaults):
 # ---------------------------------------------------------------------------
 
 def compute_hierarchy(entries):
-    """Build parent/child relationships from folder structure.
+    """Build parent/child relationships from frontmatter 'parent' slug field.
 
-    For a doc at docs/a/b/c.md, parent is docs/a/b.md if it exists.
-    Adds 'parent' (None for top-level) and 'children' (list of doc IDs) to each entry.
+    Each page may set parent: <slug> in frontmatter. The slug is the filename
+    stem (e.g. 'getting-started' for pages/getting-started.md).
+    Resolves slug references to full IDs stored in the search index.
     """
-    # Create a lookup map: path -> entry
-    id_map = {entry["id"]: entry for entry in entries}
+    slug_map = {entry["slug"]: entry["id"] for entry in entries}
 
     for entry in entries:
-        # Compute parent: for docs/a/b/c.md, parent is docs/a/b.md
-        # (parent folder + folder name as filename)
-        doc_parts = entry["id"].split("/")  # Use forward slashes for consistency
-
-        if len(doc_parts) > 2:  # More than just 'docs/file.md'
-            # Parent path: docs/a/b -> docs/a/b.md
-            parent_folder = "/".join(doc_parts[:-1])  # docs/a/b
-            parent_id = f"{parent_folder}/{doc_parts[-2]}.md"  # docs/a/b/b.md
-            # Don't set self-reference (when filename matches folder name)
-            if parent_id != entry["id"]:
-                entry["parent"] = parent_id if parent_id in id_map else None
-            else:
-                entry["parent"] = None
+        parent_slug = entry.pop("parent_slug", "")
+        if parent_slug and parent_slug in slug_map:
+            entry["parent"] = slug_map[parent_slug]
         else:
+            if parent_slug:
+                print(f"Warning: '{entry['id']}' references unknown parent slug '{parent_slug}'")
             entry["parent"] = None
-
-        # Initialize children list
         entry["children"] = []
 
-    # Populate children
+    id_map = {entry["id"]: entry for entry in entries}
     for entry in entries:
-        if entry["parent"]:
-            parent_entry = id_map.get(entry["parent"])
-            if parent_entry:
-                parent_entry["children"].append(entry["id"])
+        if entry["parent"] and entry["parent"] in id_map:
+            id_map[entry["parent"]]["children"].append(entry["id"])
 
     return entries
 
@@ -308,21 +301,41 @@ def compute_backlinks(entries, pages_dir="pages"):
 # ---------------------------------------------------------------------------
 
 def build_search_index(root, pages_dir="pages"):
-    """Walk the pages directory and build the search index entries."""
+    """Walk the pages directory and build the search index entries.
+
+    Validates slug uniqueness (hard exit on duplicate) and title uniqueness (soft warn).
+    Extracts slug (filename stem), sort_order, and parent_slug from frontmatter.
+    """
     docs_dir = root / pages_dir
     if not docs_dir.exists():
         print(f"Warning: {pages_dir}/ directory not found")
         return []
 
     entries = []
+    slug_seen = {}    # slug -> rel_path, hard-fail on duplicate
+    title_seen = {}   # title_lower -> rel_path, soft-warn on duplicate
+
     for md_path in sorted(docs_dir.rglob("*.md")):
         rel_path = md_path.relative_to(root).as_posix()
-        text = md_path.read_text(encoding="utf-8")
+        slug = md_path.stem  # filename stem = slug (e.g. "getting-started")
 
+        # Hard fail: duplicate slug
+        if slug in slug_seen:
+            print(f"ERROR: Duplicate slug '{slug}' in {rel_path} (already defined by {slug_seen[slug]})")
+            sys.exit(1)
+        slug_seen[slug] = rel_path
+
+        text = md_path.read_text(encoding="utf-8")
         metadata, body = parse_frontmatter(text)
         if metadata is None or "title" not in metadata:
             print(f"Warning: skipping {rel_path} — missing title in frontmatter")
             continue
+
+        # Soft warn: duplicate title
+        title_key = metadata["title"].lower()
+        if title_key in title_seen:
+            print(f"Warning: duplicate title '{metadata['title']}' in {rel_path} (also in {title_seen[title_key]})")
+        title_seen[title_key] = rel_path
 
         headings = extract_headings(body)
         plain_body = strip_markdown(body)
@@ -330,10 +343,14 @@ def build_search_index(root, pages_dir="pages"):
 
         entry = {
             "id": rel_path,
+            "slug": slug,
             "title": metadata.get("title", ""),
+            "sort_order": int(metadata.get("sort_order", 100)),
+            "parent_slug": str(metadata.get("parent", "")).strip(),
             "tags": metadata.get("tags", []),
             "status": metadata.get("status", "draft"),
             "last_updated": str(metadata.get("last-updated", "")),
+            "file_mtime": md_path.stat().st_mtime,
             "headings": headings,
             "excerpt": excerpt,
             "body": plain_body,
@@ -362,9 +379,7 @@ def assemble_site(root, config, search_index):
 
     # Copy wiki files into _site/
     if wiki_dir.exists():
-        for f in wiki_dir.iterdir():
-            if f.is_file():
-                shutil.copy2(f, site_dir / f.name)
+        shutil.copytree(wiki_dir, site_dir, dirs_exist_ok=True)
 
     # Copy pages dir into _site/{pages_dir}/
     if docs_dir.exists():
@@ -398,17 +413,98 @@ def assemble_site(root, config, search_index):
         "{{ANTHROPIC_API_KEY}}": api_key,
         "{{BRANDING_FAVICON}}": str(config["branding"].get("favicon", "")),
         "{{BRANDING_LOGO}}": str(config["branding"].get("logo", "")),
+        "{{GITHUB_REPO}}": str(config.get("github", {}).get("repo", "")),
     }
 
-    # Inject into HTML and JS files
-    for f in site_dir.iterdir():
-        if f.is_file() and f.suffix in (".html", ".js", ".css"):
-            content = f.read_text(encoding="utf-8")
-            for placeholder, value in replacements.items():
-                content = content.replace(placeholder, value)
-            f.write_text(content, encoding="utf-8")
+    # Inject into HTML and JS files (recursive)
+    for f in site_dir.rglob("*.html"):
+        content = f.read_text(encoding="utf-8")
+        for placeholder, value in replacements.items():
+            content = content.replace(placeholder, value)
+        f.write_text(content, encoding="utf-8")
+    for f in site_dir.rglob("*.js"):
+        content = f.read_text(encoding="utf-8")
+        for placeholder, value in replacements.items():
+            content = content.replace(placeholder, value)
+        f.write_text(content, encoding="utf-8")
+    for f in site_dir.rglob("*.css"):
+        content = f.read_text(encoding="utf-8")
+        for placeholder, value in replacements.items():
+            content = content.replace(placeholder, value)
+        f.write_text(content, encoding="utf-8")
+
+    # Copy Decap CMS config into _site/admin/
+    admin_dir = site_dir / "admin"
+    admin_dir.mkdir(exist_ok=True)
+    decap_config = root / "decap.yml"
+    if decap_config.exists():
+        decap_content = decap_config.read_text(encoding="utf-8")
+        github_repo = str(config.get("github", {}).get("repo", ""))
+        decap_content = decap_content.replace("{{GITHUB_REPO}}", github_repo)
+        (admin_dir / "config.yml").write_text(decap_content, encoding="utf-8")
 
     return site_dir
+
+
+# ---------------------------------------------------------------------------
+# Auto-timestamp helpers
+# ---------------------------------------------------------------------------
+
+def load_content_hashes(root):
+    """Load content_hashes.json if it exists."""
+    path = root / "content_hashes.json"
+    if path.exists():
+        return json.loads(path.read_text(encoding="utf-8"))
+    return {}
+
+
+def update_frontmatter_field(text, field, value):
+    """Surgically update one field in YAML frontmatter without re-serializing."""
+    if not text.startswith("---"):
+        return text
+    end = text.find("---", 3)
+    if end == -1:
+        return text
+    fm_text = text[3:end]
+    body = text[end:]
+    updated, count = re.subn(
+        rf'^({re.escape(field)}\s*:).*$',
+        rf'\1 {value}',
+        fm_text,
+        flags=re.MULTILINE
+    )
+    if count == 0:
+        updated = fm_text.rstrip() + f'\n{field}: {value}\n'
+    return f"---{updated}{body}"
+
+
+def auto_update_timestamps(root, entries, pages_dir="pages"):
+    """Compare body content hashes; rewrite last-updated frontmatter if changed."""
+    stored = load_content_hashes(root)
+    new_hashes = {}
+    updated_count = 0
+
+    for entry in entries:
+        page_id = entry["id"]
+        body_hash = hashlib.sha256(entry["body"].encode()).hexdigest()[:16]
+        new_hashes[page_id] = body_hash
+
+        if stored.get(page_id) != body_hash:
+            today = datetime.date.today().isoformat()
+            md_path = root / page_id
+            original = md_path.read_text(encoding="utf-8")
+            patched = update_frontmatter_field(original, "last-updated", today)
+            if patched != original:
+                md_path.write_text(patched, encoding="utf-8")
+                entry["last_updated"] = today
+                updated_count += 1
+
+    (root / "content_hashes.json").write_text(
+        json.dumps(new_hashes, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+    if updated_count:
+        print(f"  Auto-updated last-updated on {updated_count} page(s)")
+    return entries
 
 
 # ---------------------------------------------------------------------------
@@ -430,7 +526,8 @@ def main():
     search_index = build_search_index(root, pages_dir)
     print(f"  Indexed {len(search_index)} document(s)")
 
-    # 3. Compute hierarchy and backlinks
+    # 3. Auto-update timestamps and compute hierarchy/backlinks
+    search_index = auto_update_timestamps(root, search_index, pages_dir)
     search_index = compute_hierarchy(search_index)
     search_index = compute_backlinks(search_index, pages_dir)
     print(f"  Computed hierarchy and backlinks")

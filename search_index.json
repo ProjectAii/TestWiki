@@ -1,13 +1,16 @@
 [
   {
     "id": "pages/example-doc.md",
+    "slug": "example-doc",
     "title": "Example Document",
+    "sort_order": 100,
     "tags": [
       "example",
       "getting-started"
     ],
     "status": "draft",
-    "last_updated": "2026-03-29",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774873503.036509,
     "headings": [
       "Overview",
       "Frontmatter Fields",
@@ -23,31 +26,37 @@
   },
   {
     "id": "pages/examples/another-page.md",
+    "slug": "another-page",
     "title": "Another Page",
+    "sort_order": 100,
     "tags": [
       "examples"
     ],
     "status": "final",
-    "last_updated": "2026-03-29",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774873503.036509,
     "headings": [
       "Overview",
       "Siblings"
     ],
     "excerpt": "Overview\nA second flat leaf page under Examples. Both this and Simple Page are children of\n because they share the same folder.\nSiblings\nSibling pages appear at the same indentation level in the tree. Their order in the sidebar\nfollows the sort setting (default: A–Z by title).",
     "body": "Overview\nA second flat leaf page under Examples. Both this and Simple Page are children of\n because they share the same folder.\nSiblings\nSibling pages appear at the same indentation level in the tree. Their order in the sidebar\nfollows the sort setting (default: A–Z by title).",
-    "parent": "pages/examples/examples.md",
+    "parent": null,
     "children": [],
     "backlinks": []
   },
   {
     "id": "pages/examples/examples.md",
+    "slug": "examples",
     "title": "Examples",
+    "sort_order": 100,
     "tags": [
       "examples",
       "navigation"
     ],
     "status": "final",
-    "last_updated": "2026-03-29",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774873503.036509,
     "headings": [
       "Overview",
       "Key rule",
@@ -56,73 +65,82 @@
     "excerpt": "Overview\nThis section contains example pages that demonstrate how the tree sidebar organises docs.\nPages placed directly inside a folder become children of the file named after that folder.\nFor example, and are siblings here because both live in\n and this file is named — matching the folder name.\nKe",
     "body": "Overview\nThis section contains example pages that demonstrate how the tree sidebar organises docs.\nPages placed directly inside a folder become children of the file named after that folder.\nFor example, and are siblings here because both live in\n and this file is named — matching the folder name.\nKey rule\nA file named the same as its containing folder becomes the section root for that folder.\nEvery other file in that folder is a direct child of the root.\nSubsections\nSubfolder roots (e.g. ) appear as independent top-level nodes in the\ntree — they are not children of this page. The tree only tracks one level of folder nesting\nper section root.",
     "parent": null,
-    "children": [
-      "pages/examples/another-page.md",
-      "pages/examples/simple-page.md"
-    ],
+    "children": [],
     "backlinks": []
   },
   {
     "id": "pages/examples/simple-page.md",
+    "slug": "simple-page",
     "title": "Simple Page",
+    "sort_order": 100,
     "tags": [
       "examples"
     ],
     "status": "final",
-    "last_updated": "2026-03-29",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774873503.0375059,
     "headings": [
       "Overview",
       "When to use flat pages"
     ],
     "excerpt": "Overview\nThis is a flat leaf page — it has no children and lives directly under the Examples section.\nIn the tree sidebar it appears as a plain link under Examples, with no expand toggle.\nWhen to use flat pages\nUse flat pages for standalone topics that don't need sub-pages — reference entries,\none-o",
     "body": "Overview\nThis is a flat leaf page — it has no children and lives directly under the Examples section.\nIn the tree sidebar it appears as a plain link under Examples, with no expand toggle.\nWhen to use flat pages\nUse flat pages for standalone topics that don't need sub-pages — reference entries,\none-off guides, or short factual docs that won't grow into a section.",
-    "parent": "pages/examples/examples.md",
+    "parent": null,
     "children": [],
     "backlinks": []
   },
   {
     "id": "pages/examples/subsection/child-one.md",
+    "slug": "child-one",
     "title": "Child One",
+    "sort_order": 100,
     "tags": [
       "examples"
     ],
     "status": "final",
-    "last_updated": "2026-03-29",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774873503.0375059,
     "headings": [
       "Overview"
     ],
     "excerpt": "Overview\nFirst child of the Subsection root. Lives at .\nThe tree sidebar shows this nested under Subsection with one level of indentation.",
     "body": "Overview\nFirst child of the Subsection root. Lives at .\nThe tree sidebar shows this nested under Subsection with one level of indentation.",
-    "parent": "pages/examples/subsection/subsection.md",
+    "parent": null,
     "children": [],
     "backlinks": []
   },
   {
     "id": "pages/examples/subsection/child-two.md",
+    "slug": "child-two",
     "title": "Child Two",
+    "sort_order": 100,
     "tags": [
       "examples"
     ],
     "status": "final",
-    "last_updated": "2026-03-29",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774873503.0375059,
     "headings": [
       "Overview"
     ],
     "excerpt": "Overview\nSecond child of the Subsection root. Lives at .\nTogether with Child One, this demonstrates two siblings sharing a section root.",
     "body": "Overview\nSecond child of the Subsection root. Lives at .\nTogether with Child One, this demonstrates two siblings sharing a section root.",
-    "parent": "pages/examples/subsection/subsection.md",
+    "parent": null,
     "children": [],
     "backlinks": []
   },
   {
     "id": "pages/examples/subsection/subsection.md",
+    "slug": "subsection",
     "title": "Subsection",
+    "sort_order": 100,
     "tags": [
       "examples",
       "navigation"
     ],
     "status": "final",
-    "last_updated": "2026-03-29",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774873503.0375059,
     "headings": [
       "Overview",
       "When to use nested sections"
@@ -130,21 +148,21 @@
     "excerpt": "Overview\nThis page is the root of the folder. It appears as an independent top-level\nnode in the tree sidebar — not as a child of Examples — because section roots are always\npromoted to the top level.\nIts children (, ) appear nested beneath it when expanded.\nWhen to use nested sections\nUse a subfold",
     "body": "Overview\nThis page is the root of the folder. It appears as an independent top-level\nnode in the tree sidebar — not as a child of Examples — because section roots are always\npromoted to the top level.\nIts children (, ) appear nested beneath it when expanded.\nWhen to use nested sections\nUse a subfolder with a matching root file when a topic has enough sub-pages to warrant\ngrouping — typically three or more related pages that share a parent concept.",
     "parent": null,
-    "children": [
-      "pages/examples/subsection/child-one.md",
-      "pages/examples/subsection/child-two.md"
-    ],
+    "children": [],
     "backlinks": []
   },
   {
     "id": "pages/getting-started.md",
+    "slug": "getting-started",
     "title": "Getting Started",
+    "sort_order": 100,
     "tags": [
       "getting-started",
       "help"
     ],
     "status": "final",
-    "last_updated": "2026-03-29",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774873503.0375059,
     "headings": [
       "Welcome",
       "Adding Pages",
@@ -154,6 +172,133 @@
     ],
     "excerpt": "Welcome\nWelcome to the wiki! This is a static site built with Lorengine, a self-hosted markdown-based knowledge base.\nAdding Pages\nCreate markdown files in the folder with frontmatter:\nFeatures\n- Full-text search powered by Lunr.js\n- AI sidebar powered by the Claude API\n- Multiple themes — Light, Da",
     "body": "Welcome\nWelcome to the wiki! This is a static site built with Lorengine, a self-hosted markdown-based knowledge base.\nAdding Pages\nCreate markdown files in the folder with frontmatter:\nFeatures\n- Full-text search powered by Lunr.js\n- AI sidebar powered by the Claude API\n- Multiple themes — Light, Dark, Sepia, High Contrast\n- Tree navigation with folder hierarchy\n- Backlinks — see which pages reference the current one\nSearch\nUse the search page to find content across all pages instantly.\nAI Assistant\nEach page includes an AI assistant sidebar. Enter your Anthropic API key when prompted — it is never stored in the repository.",
+    "parent": null,
+    "children": [
+      "pages/markdown-test.md"
+    ],
+    "backlinks": []
+  },
+  {
+    "id": "pages/markdown-test.md",
+    "slug": "markdown-test",
+    "title": "Markdown Elements Test",
+    "sort_order": 10,
+    "tags": [
+      "test",
+      "markdown",
+      "reference"
+    ],
+    "status": "draft",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774884220.718123,
+    "headings": [
+      "About This Page",
+      "Text Formatting",
+      "Headings",
+      "H3 — Section Level",
+      "Another H3",
+      "Links",
+      "Internal Links",
+      "External Links",
+      "Anchor Links",
+      "Lists",
+      "Unordered List",
+      "Ordered List",
+      "Mixed Nesting",
+      "Task List",
+      "Code Blocks",
+      "Plain Block",
+      "Python",
+      "JavaScript",
+      "YAML Frontmatter Example",
+      "Shell",
+      "Blockquotes",
+      "Tables",
+      "Simple Table",
+      "Aligned Table",
+      "Wider Table",
+      "Images",
+      "Image with Alt Text",
+      "Image with Caption (via link wrapping)",
+      "Horizontal Rules",
+      "Inline HTML",
+      "Parent and Child Relationships",
+      "Edge Cases",
+      "Long Unbroken String",
+      "Empty Table Cells",
+      "Escaped Characters",
+      "Unicode"
+    ],
+    "excerpt": "About This Page\nThis page tests every markdown element the wiki engine renders. It is a child of Getting Started and links to several sibling pages. Use it to verify that headings, inline styles, code blocks, tables, lists, blockquotes, and links all render correctly.\n---\nText Formatting\nNormal para",
+    "body": "About This Page\nThis page tests every markdown element the wiki engine renders. It is a child of Getting Started and links to several sibling pages. Use it to verify that headings, inline styles, code blocks, tables, lists, blockquotes, and links all render correctly.\n---\nText Formatting\nNormal paragraph text. Bold text stands out. Italic text provides emphasis. Bold and italic together for strong emphasis. ~~Strikethrough~~ marks deprecated content. renders in monospace.\nYou can combine styles: a bold sentence with an italic word inside. Or reference code inline: pass to enable debug output.\nLine breaks within a paragraph are soft-wrapped. A blank line starts a new paragraph.\n---\nHeadings\nH3 — Section Level\nContent under an H3 heading. The TOC on the right should list this as a sub-entry under the parent H2.\nAnother H3\nMultiple H3s under the same H2 should all appear in the TOC.\nH4 — Subsection\nH4 headings provide a third level. Not all themes distinguish H4 visually from H3 — worth checking here.\n---\nLinks\nInternal Links\n- Getting Started — parent page\n- Examples — sibling section root\n- Simple Page — child of Examples\n- Another Page — sibling of Simple Page\n- Scroll Test — long page for sidebar testing\nExternal Links\n- CommonMark Spec — markdown reference\n- Lunr.js — search library used by this wiki\n- marked.js — markdown renderer used by this wiki\nAnchor Links\nJump to a heading on this page: Code Blocks, Tables, Images.\n---\nLists\nUnordered List\n- First item\n- Second item\n - Nested item A\n - Nested item B\n - Deeply nested\n- Third item\n- Fourth item with a longer description that wraps to the next line to test how the layout handles multi-line list items in narrower viewports.\nOrdered List\n1. First step\n2. Second step\n 1. Sub-step A\n 2. Sub-step B\n3. Third step\n4. Fourth step\nMixed Nesting\n1. Ordered parent\n - Unordered child\n - Another unordered child\n2. Second ordered item\n - Nested bullet\n 1. Numbered leaf\nTask List\n- [x] Completed task\n- [x] Another completed task\n- [ ] Pending task\n- [ ] Another pending task\n---\nCode Blocks\nPlain Block\nPython\nJavaScript\nYAML Frontmatter Example\nShell\n---\nBlockquotes\n> A single-line blockquote.\n> A longer blockquote that spans multiple lines. The quick brown fox jumps over the lazy dog. The rain in Spain falls mainly on the plain. Pack my box with five dozen liquor jugs.\n> Blockquote with formatting. Italic text inside a blockquote. And too.\n> Nested blockquotes:\n>\n> > This is a nested blockquote. It is indented one level further. Some markdown renderers support this; verify it renders correctly here.\n---\nTables\nSimple Table\n| Column A | Column B | Column C |\n|---|---|---|\n| Row 1A | Row 1B | Row 1C |\n| Row 2A | Row 2B | Row 2C |\n| Row 3A | Row 3B | Row 3C |\nAligned Table\n| Name | Type | Default | Description |\n|:---|:---|:---:|---:|\n| | string | — | Page title (required) |\n| | list | | Tag list for filtering |\n| | string | | One of draft, review, final |\n| | int | | Lower = earlier in tree |\n| | string | — | Parent page slug |\nWider Table\n| Endpoint | Method | Auth | Request Body | Response | Notes |\n|---|---|---|---|---|---|\n| | GET | Optional | — | Page list | Filtered by tag |\n| | GET | Optional | — | Page detail | Includes backlinks |\n| | POST | Required | Page object | Created page | Slug auto-generated |\n| | PUT | Required | Partial page | Updated page | Partial update OK |\n| | DELETE | Required | — | 204 No Content | Irreversible |\n---\nImages\nImage with Alt Text\n!Placeholder image — 400×200\nImage with Caption (via link wrapping)\nA placeholder image used for testing\nFigure: A test image. Click to open full size.\n---\nHorizontal Rules\nThree ways to write a horizontal rule — they should all render identically:\n---\n___\n---\nInline HTML\nThe wiki renders markdown via marked.js. Some inline HTML elements may pass through:\nCtrl + S — keyboard key styling.\nHighlighted text using the HTML mark element.\nCollapsible section (click to expand)\nThis content is hidden until the summary is clicked. This uses native HTML and elements, which are not standard markdown but may render in the wiki depending on DOMPurify's allow-list.\n---\nParent and Child Relationships\nThis page sets in its frontmatter, which makes it a child of Getting Started in the tree sidebar. The backlinks section at the bottom of Getting Started should list this page once the build runs.\nTo see hierarchy in action:\n- Parent of this page: Getting Started\n- Sibling pages (also children of Getting Started): none currently — this is the only child\n- Examples section (independent tree root): Examples → children: Simple Page, Another Page\nThe tree sidebar should show this page indented under Getting Started. The backlinks panel at the bottom of this page lists pages that link here.\n---\nEdge Cases\nLong Unbroken String\nThis tests word-wrap for long tokens: — should wrap or scroll, not break the layout.\nA URL without a link wrapper: https://www.example.com/very/long/path/that/goes/on/and/on/and/on?query=value&another=value2&third=value3\nEmpty Table Cells\n| A | B | C |\n|---|---|---|\n| | filled | |\n| filled | | filled |\n| | | |\nEscaped Characters\nLiteral asterisks: \\not italic\\ and \\\\not bold\\\\*. Literal backtick: \\`. Literal backslash: \\\\. Literal brackets: \\[not a link\\].\nUnicode\nGreek: αβγδεζηθικλμνξοπρστυφχψω — Cyrillic: АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ — CJK: 日本語テスト中文简体한국어 — Emoji: 🎮 🗺️ ⚔️ 🏰 📜",
+    "parent": "pages/getting-started.md",
+    "children": [],
+    "backlinks": []
+  },
+  {
+    "id": "pages/scroll-test.md",
+    "slug": "scroll-test",
+    "title": "Scroll Test — Long Page",
+    "sort_order": 100,
+    "tags": [
+      "test",
+      "scroll",
+      "sidebar"
+    ],
+    "status": "draft",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774883728.8393588,
+    "headings": [
+      "Introduction",
+      "Chapter One — The Beginning",
+      "The First Principle",
+      "The Second Principle",
+      "The Third Principle",
+      "Chapter Two — Data and State",
+      "The Nature of State",
+      "Immutability as a Design Choice",
+      "The Cost of Shared Mutable State",
+      "Caches and Their Discontents",
+      "Chapter Three — Interfaces and Contracts",
+      "What an Interface Promises",
+      "The Principle of Least Surprise",
+      "Versioning and Stability",
+      "Documentation as Part of the Contract",
+      "Chapter Four — Performance",
+      "Measure Before Optimising",
+      "The Hierarchy of Optimisations",
+      "The Memory Hierarchy",
+      "Latency Numbers Every Engineer Should Know",
+      "Chapter Five — Reliability",
+      "Failure Is the Default",
+      "The CAP Theorem and Its Limits",
+      "Retries, Idempotency, and Exactly-Once Delivery",
+      "Observability",
+      "Chapter Six — Teams and Process",
+      "Conway's Law",
+      "The Cost of Coordination",
+      "Code Review as Communication",
+      "Technical Debt as Investment",
+      "Chapter Seven — Security",
+      "Threat Modelling",
+      "The Principle of Least Privilege",
+      "Defence in Depth",
+      "Input Validation at the Boundary",
+      "Chapter Eight — The Long View",
+      "Software Decays",
+      "The Economics of Rewriting",
+      "Knowing When to Stop",
+      "Craft and Care",
+      "Appendix A — Reference Tables",
+      "Common Time Complexities",
+      "HTTP Status Codes",
+      "Appendix B — Further Reading",
+      "Books Worth Reading",
+      "Staying Current",
+      "The Best Way to Learn"
+    ],
+    "excerpt": "Introduction\nThis page exists purely to test sticky sidebar and TOC behaviour on long pages. It contains many headings and enough body content to require significant vertical scrolling. Scroll down and watch the sidebars track correctly — the tree sidebar on the left and the table of contents on the",
+    "body": "Introduction\nThis page exists purely to test sticky sidebar and TOC behaviour on long pages. It contains many headings and enough body content to require significant vertical scrolling. Scroll down and watch the sidebars track correctly — the tree sidebar on the left and the table of contents on the right should both remain anchored below the header and stop when their bottom reaches the viewport bottom.\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n---\nChapter One — The Beginning\nThe First Principle\nEvery complex system begins with a simple rule. The art is in finding which rule governs the rest. In software, this is often the invariant — the thing that must remain true regardless of what changes around it.\nConsider a tree. Its structure is defined by a single recursive relationship: every node has exactly one parent, except the root which has none. From that single constraint emerges every property of the tree — traversal order, depth, balance, height.\nThe Second Principle\nComplexity is not intrinsically bad. It becomes bad when it is accidental — when it arises not from the inherent difficulty of the problem but from choices made without care. Accidental complexity compounds. Each new layer of unnecessary abstraction adds weight without adding value.\nThe discipline of software is largely the discipline of recognising and refusing accidental complexity.\nThe Third Principle\nEvery abstraction leaks. No matter how clean the interface, the underlying implementation details eventually surface. The question is not whether your abstractions will leak, but when, and whether you will be ready for it when they do.\nGood engineers design for the leak. They know their abstractions are approximations and keep the underlying reality close enough to reason about when the surface cracks.\n---\nChapter Two — Data and State\nThe Nature of State\nState is the memory of a system. Without state, every computation is pure and repeatable — given the same inputs, you always get the same outputs. With state, the same inputs may produce different outputs depending on history.\nMost bugs live in state. The incorrect value, the stale cache, the partially committed transaction, the shared mutable reference — these are the fault lines where software cracks under pressure.\nImmutability as a Design Choice\nImmutability does not eliminate state. It transforms it. Instead of mutating existing values, you create new values. The history is preserved. Old states can be inspected, compared, restored.\nThis is why functional programming has gained ground in domains where correctness matters most: financial systems, compilers, distributed databases. The ability to reason about what was, not just what is, turns out to be invaluable.\nThe Cost of Shared Mutable State\nWhen two parts of a system can both read and write the same piece of memory without coordination, you have shared mutable state. This is the source of data races, deadlocks, and a class of bugs that only appear in production under load.\nThe solutions are well-known: locks, semaphores, channels, actors, transactional memory. Each has trade-offs. None is free. The real question is how much of your system genuinely needs to share mutable state, and whether that sharing could be eliminated by a different design.\nCaches and Their Discontents\nThere are only two hard things in computer science: cache invalidation, naming things, and off-by-one errors. The joke is old but the pain is fresh. Caches are state that is deliberately allowed to become stale. The entire correctness argument rests on the claim that staleness is acceptable — that the cost of a slightly wrong answer is lower than the cost of computing the right one.\nThat claim is often true. It is not always checked.\n---\nChapter Three — Interfaces and Contracts\nWhat an Interface Promises\nAn interface is a contract between a provider and a consumer. The provider promises to behave in a certain way. The consumer is entitled to rely on that behaviour. When the contract is violated — either by a provider that does not honour its promise, or by a consumer that depends on behaviour outside the contract — things break.\nThe hardest interfaces to maintain are those where the contract was never written down. The implementation becomes the specification by default, and every quirk becomes load-bearing.\nThe Principle of Least Surprise\nGood interfaces behave the way users expect them to. This sounds obvious. It is surprisingly hard to achieve. It requires understanding who your users are, what mental models they bring, and where those models differ from the underlying reality.\nThe standard library of any language is a masterclass in this — both as a positive example and as a collection of cautionary tales about decisions made early that could not be undone.\nVersioning and Stability\nStability is not the same as immovability. A stable interface can evolve — but it does so in ways that preserve backwards compatibility. Adding is usually safe. Removing is not. Changing the semantics of existing behaviour is the most dangerous move of all, because it may break consumers who never expected the change and whose breakage will manifest in surprising ways far from the source.\nSemantic versioning exists to communicate intent about compatibility. It is only as useful as the discipline of the team using it.\nDocumentation as Part of the Contract\nAn undocumented interface has an implicit contract: everything the implementation does is fair game for consumers to rely on. This makes refactoring expensive, testing difficult, and maintenance painful.\nDocumentation is not bureaucracy. It is the act of deciding, explicitly, what you are committing to — and what you are not. Writing the docs forces the question. The question is worth asking.\n---\nChapter Four — Performance\nMeasure Before Optimising\nThe first rule of performance work is also the most frequently violated: measure before you optimise. Intuitions about performance are wrong often enough that acting on them without data is a gamble. The code you are certain is the bottleneck frequently is not.\nProfile first. Find the actual hot path. Optimise that. Measure again to confirm the improvement. This loop is slower than just hacking at the thing that feels slow, and it produces better results.\nThe Hierarchy of Optimisations\nNot all optimisations are equal. The largest gains usually come from algorithmic improvements — changing O(n²) to O(n log n) makes the code faster for all inputs, not just the ones you tested. Smaller gains come from data structure choices, memory access patterns, branch prediction, instruction-level parallelism.\nThe temptation is to skip straight to the micro-optimisations because they are tangible and satisfying. The discipline is to look for the algorithmic win first.\nThe Memory Hierarchy\nModern CPUs are fast. Memory is slow. The gap between processing speed and memory latency is one of the defining constraints of contemporary software performance, and most of what the CPU microarchitecture does — caches, prefetchers, out-of-order execution — is an attempt to paper over that gap.\nWriting cache-friendly code means writing code that accesses memory in predictable, sequential patterns. Arrays beat linked lists for traversal. Struct-of-arrays can beat array-of-structs for processing. The difference is often surprising in magnitude.\nLatency Numbers Every Engineer Should Know\nSome numbers are worth internalising. L1 cache reference: ~1ns. L2 cache reference: ~4ns. L3 cache reference: ~10ns. Main memory reference: ~100ns. SSD random read: ~16µs. Network round trip within same datacenter: ~500µs. Cross-continental network round trip: ~150ms.\nThese numbers change with hardware generations but the ratios remain roughly stable. They give you a sense of what is cheap and what is expensive, and which optimisations are fighting the right battles.\n---\nChapter Five — Reliability\nFailure Is the Default\nDistributed systems fail. Networks partition. Disks corrupt. Services crash. Processes run out of memory. Hardware fails. The question is not whether failure will occur but how your system responds when it does.\nReliability engineering is the discipline of building systems that degrade gracefully — that lose capability without losing correctness, that recover automatically where possible, and that fail visibly when they cannot.\nThe CAP Theorem and Its Limits\nThe CAP theorem says that a distributed system can guarantee at most two of three properties: consistency, availability, and partition tolerance. Since network partitions are unavoidable, the practical trade-off is between consistency and availability.\nThis framing has been critiqued as too coarse. The real space of trade-offs is richer than a triangle. But as a mental model for thinking about what your system prioritises under duress, it remains useful.\nRetries, Idempotency, and Exactly-Once Delivery\nWhen a network call fails, should you retry? Usually yes — but only if the operation is idempotent, meaning that calling it multiple times has the same effect as calling it once. Non-idempotent operations retried on failure can cause duplicate charges, duplicate records, or double-sends.\nExactly-once delivery is famously difficult to achieve. In practice, most systems offer at-least-once delivery with idempotency as the mechanism for handling duplicates. Designing your operations to be idempotent is therefore not optional — it is the price of operating at scale.\nObservability\nYou cannot fix what you cannot see. Observability — the degree to which you can infer the internal state of a system from its external outputs — is not a luxury. It is the minimum requirement for operating a system you are accountable for.\nLogs, metrics, and traces are the three pillars. Logs tell you what happened. Metrics tell you the shape of what is happening over time. Traces tell you how a single request moved through your system. Each answers questions the others cannot.\n---\nChapter Six — Teams and Process\nConway's Law\nAny organisation that designs a system will produce a design whose structure mirrors the communication structure of that organisation. This is Conway's Law, and it is more predictive than most engineering teams would like to admit.\nThe implication is that if you want to change the architecture, you may need to change the team structure. Or, working in the other direction: when you restructure teams, expect the architecture to drift to match.\nThe Cost of Coordination\nEvery handoff between people adds latency and the possibility of misunderstanding. The more people who must agree before a decision can be made, the slower the decision. This is not an argument against coordination — coordination is how you avoid expensive mistakes — but it is an argument for minimising unnecessary coordination, and for being deliberate about which decisions require it.\nSmall, autonomous teams with clear ownership and well-defined interfaces to the rest of the organisation tend to move faster and with less friction.\nCode Review as Communication\nCode review is often treated as a quality gate. It is also — and perhaps more importantly — a communication mechanism. It is how knowledge of the codebase spreads, how standards are maintained without a style guide, and how less experienced engineers learn by example.\nThe review comment that explains not just what to change but why is more valuable than the one that merely identifies the problem. The explanation becomes part of the shared understanding of the team.\nTechnical Debt as Investment\nTechnical debt is not inherently bad. Sometimes it is the right trade-off — shipping something imperfect now to learn from real usage before spending more on the right solution. The problem is when debt is taken without accounting for it, when interest payments accumulate silently, when the weight of past decisions makes every new change slow and expensive.\nThe discipline is in making debt visible, intentional, and serviced. Not zero debt — that may be impossible or undesirable — but debt that is understood and managed.\n---\nChapter Seven — Security\nThreat Modelling\nSecurity work begins with a question: what are you protecting, from whom, and under what constraints? Without answers to these questions, security measures are guesswork — you may be building moats around the wrong castle.\nThreat modelling is the practice of thinking systematically about adversaries, their capabilities, their motivations, and the attack surfaces available to them. It is not a one-time activity. It should happen when the system changes and when the threat landscape changes.\nThe Principle of Least Privilege\nEvery component of a system should have access to exactly what it needs to do its job, and no more. This limits the blast radius of a compromise — if an attacker gains control of a component, they inherit that component's permissions, not the permissions of the entire system.\nLeast privilege is easy to state and surprisingly hard to enforce consistently. It requires ongoing attention as systems evolve and permissions drift.\nDefence in Depth\nNo single security control is sufficient. Defence in depth means layering controls so that the failure of any one layer does not lead to a complete breach. Perimeter defence and endpoint security and network segmentation and application-level controls and data encryption — each layer catches what the others miss.\nThe assumption underlying defence in depth is that some controls will fail. This is a realistic assumption.\nInput Validation at the Boundary\nEvery piece of data that enters a system from outside its trust boundary is potentially hostile. Validate it. Sanitise it. Do not pass unvalidated input to interpreters — SQL engines, shell commands, HTML renderers — that will execute it as code.\nThe OWASP Top Ten has looked roughly the same for two decades because injection vulnerabilities keep being introduced. The fix is always the same: treat untrusted input as data, never as instructions.\n---\nChapter Eight — The Long View\nSoftware Decays\nSoftware left unmaintained degrades. Not because the bits rot, but because the world around them changes. Dependencies release new versions. Operating systems change their APIs. Security vulnerabilities are discovered. Hardware evolves. The code that ran fine last year may not run fine next year without attention.\nMaintenance is not the absence of change. It is the work of keeping a system relevant and correct as everything around it moves.\nThe Economics of Rewriting\nThe temptation to rewrite is perennial. The existing code is crufty and hard to understand; a fresh start would let you do it right. This is almost always more optimistic than warranted. The existing code embeds hard-won knowledge about edge cases, failure modes, and user behaviour. The new code will rediscover all of those lessons, and pay for the rediscovery.\nRewrites sometimes make sense. They make sense less often than engineers believe.\nKnowing When to Stop\nNot every problem needs to be solved. Not every feature needs to be built. Not every optimisation needs to be pursued to its logical conclusion. Knowing when the current solution is good enough — not perfect, but adequate for the actual need — is a skill as important as any other.\nPerfectionism in engineering is expensive. The goal is not the perfect system. The goal is a system that solves the actual problem reliably, at a cost the organisation can afford, with a maintainability profile that does not make future work impossible.\nCraft and Care\nGood software requires care. Not just technical skill — though that is necessary — but genuine attention to whether the thing works, whether the people using it are served by it, whether the people maintaining it can understand it.\nCraft is not ornamentation. It is the difference between code written to work and code written to last. The former may look the same from the outside. The inside tells the story.\n---\nAppendix A — Reference Tables\nCommon Time Complexities\n| Operation | Complexity | Example |\n|---|---|---|\n| Hash table lookup | O(1) avg | Dictionary access |\n| Binary search | O(log n) | Sorted array search |\n| Linear scan | O(n) | Unsorted array search |\n| Merge sort | O(n log n) | General-purpose sort |\n| Naive string match | O(nm) | Substring search |\n| Floyd-Warshall | O(n³) | All-pairs shortest path |\nHTTP Status Codes\n| Range | Meaning | Common Examples |\n|---|---|---|\n| 2xx | Success | 200 OK, 201 Created, 204 No Content |\n| 3xx | Redirect | 301 Moved, 302 Found, 304 Not Modified |\n| 4xx | Client error | 400 Bad Request, 401 Unauthorized, 404 Not Found |\n| 5xx | Server error | 500 Internal Error, 502 Bad Gateway, 503 Unavailable |\n---\nAppendix B — Further Reading\nBooks Worth Reading\nThe literature on software engineering is vast and uneven. A short list of genuinely useful texts: The Pragmatic Programmer for breadth; Designing Data-Intensive Applications for distributed systems; Working Effectively with Legacy Code for the reality most engineers spend their time in; A Philosophy of Software Design for thinking about complexity; Site Reliability Engineering for operating systems at scale.\nStaying Current\nThe field moves fast in some directions and slowly in others. Fundamentals — algorithms, data structures, concurrency, networking — change little. Fashions in languages, frameworks, and tooling change constantly. Spending most of your learning time on fundamentals and a fraction on current practice is usually the right balance.\nThe Best Way to Learn\nWrite code. Read code written by people better than you. Have your code reviewed. Review others' code. Repeat. There is no substitute for the feedback loop of building things, seeing where they break, and understanding why.",
     "parent": null,
     "children": [],
     "backlinks": []

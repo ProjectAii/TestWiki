@@ -93,6 +93,16 @@ function docUrl(id) {
   return `${base}page.html?doc=${encodeURIComponent(id)}`;
 }
 
+function adminEditUrl(slug) {
+  const base = WIKI_CONFIG.baseUrl ? WIKI_CONFIG.baseUrl + "/" : "";
+  return `${base}admin/#/collections/pages/entries/${encodeURIComponent(slug)}`;
+}
+
+function adminNewUrl() {
+  const base = WIKI_CONFIG.baseUrl ? WIKI_CONFIG.baseUrl + "/" : "";
+  return `${base}admin/#/collections/pages/new`;
+}
+
 // ---------------------------------------------------------------------------
 // Index page: render doc list
 // ---------------------------------------------------------------------------
@@ -104,9 +114,13 @@ function renderDocList(data, container) {
     return;
   }
 
-  // Sort by last_updated (most recent first), then show only top 5
+  // Sort by last_updated (most recent first), tiebreak by file_mtime, then show only top 5
   const sorted = [...data]
-    .sort((a, b) => (b.last_updated || "").localeCompare(a.last_updated || ""))
+    .sort((a, b) => {
+      const dateCmp = (b.last_updated || "").localeCompare(a.last_updated || "");
+      if (dateCmp !== 0) return dateCmp;
+      return (b.file_mtime || 0) - (a.file_mtime || 0);
+    })
     .slice(0, 5);
 
   const html = sorted
@@ -120,7 +134,7 @@ function renderDocList(data, container) {
         <div class="doc-card-meta">
           ${makeBadge(doc.status)}
           ${makeTags(doc.tags)}
-          ${doc.last_updated ? `<span>${escapeHtml(doc.last_updated)}</span>` : ""}
+          ${doc.last_updated ? `<span class="doc-card-date">${escapeHtml(doc.last_updated)}</span>` : ""}
         </div>
         <p class="doc-card-excerpt">${excerptHtml}</p>
       </article>`;
@@ -236,13 +250,24 @@ function renderMarkdown(md) {
   });
   // Post-process to add id attributes to headings for hash-link navigation.
   // marked v12 does not add them by default; this avoids touching the renderer API.
-  const html = marked.parse(md).replace(
-    /<h([1-6])>(.*?)<\/h\1>/g,
-    (_, level, content) => {
-      const id = slugify(content.replace(/<[^>]*>/g, ""));
-      return `<h${level} id="${id}">${content}</h${level}>`;
-    }
-  );
+  const base = WIKI_CONFIG.baseUrl ? WIKI_CONFIG.baseUrl + "/" : "";
+  const html = marked.parse(md)
+    .replace(
+      /<h([1-6])>(.*?)<\/h\1>/g,
+      (_, level, content) => {
+        const id = slugify(content.replace(/<[^>]*>/g, ""));
+        return `<h${level} id="${id}">${content}</h${level}>`;
+      }
+    )
+    .replace(
+      // Rewrite relative .md hrefs to page.html?doc=... so internal links
+      // route through the wiki renderer instead of serving the raw file.
+      /href="((?!https?:\/\/|\/\/|#)[^"]*\.md)(#[^"]*)?"/g,
+      (_, mdPath, hash) => {
+        const url = `${base}page.html?doc=${encodeURIComponent(mdPath)}`;
+        return `href="${hash ? url + hash : url}"`;
+      }
+    );
   return sanitize(html);
 }
 
@@ -296,10 +321,15 @@ function sortDocIds(ids, docMap, sortOrder) {
     const da = docMap[a];
     const db = docMap[b];
     switch (sortOrder) {
+      case "alpha-asc":  return da.title.localeCompare(db.title);
       case "alpha-desc": return db.title.localeCompare(da.title);
       case "date-asc":   return (da.last_updated || "").localeCompare(db.last_updated || "");
       case "date-desc":  return (db.last_updated || "").localeCompare(da.last_updated || "");
-      default:           return da.title.localeCompare(db.title); // alpha-asc
+      case "sort-order":
+      default: {
+        const diff = (da.sort_order || 100) - (db.sort_order || 100);
+        return diff !== 0 ? diff : da.title.localeCompare(db.title);
+      }
     }
   });
 }
@@ -367,8 +397,9 @@ function initTreeSidebar(data, container) {
     <div class="tree-controls">
       <input type="text" class="tree-filter" placeholder="Filter pages...">
       <select class="tree-sort">
-        <option value="alpha-asc">A-Z</option>
-        <option value="alpha-desc">Z-A</option>
+        <option value="sort-order" selected>Custom order</option>
+        <option value="alpha-asc">A–Z</option>
+        <option value="alpha-desc">Z–A</option>
         <option value="date-asc">Oldest first</option>
         <option value="date-desc">Newest first</option>
       </select>
@@ -412,7 +443,7 @@ function initTreeSidebar(data, container) {
 
   function updateTree() {
     const filterText = filterInput?.value || "";
-    const sortOrder = sortSelect?.value || "alpha-asc";
+    const sortOrder = sortSelect?.value || "sort-order";
 
     const sortedRoots = sortDocIds(roots, docMap, sortOrder);
     const treeItems = sortedRoots
@@ -943,5 +974,140 @@ function initThemePanel() {
       open = false;
       panel.classList.remove("visible");
     }
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Header height — sets --header-height CSS variable used by sticky sidebars
+// ---------------------------------------------------------------------------
+
+function initStickyHeader() {
+  const header = document.querySelector('.site-header');
+  if (!header) return;
+  const update = () => {
+    document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
+  };
+  update();
+  new ResizeObserver(update).observe(header);
+}
+
+// ---------------------------------------------------------------------------
+// Sidebar: toggle, responsive MQ, drag-resize, localStorage persistence
+// ---------------------------------------------------------------------------
+
+function initSidebar(wrap, side, storageKey) {
+  // side: 'right' for tree sidebar, 'left' for toc sidebar
+  const innerPanel = wrap.querySelector('.tree-sidebar, .toc-sidebar');
+  const toggleBtn  = wrap.querySelector('.tree-toggle-btn, .toc-toggle-btn');
+  if (!innerPanel || !toggleBtn) return;
+
+  // Capture the CSS-default max width BEFORE any saved state is applied,
+  // so restoring a persisted value doesn't inflate the ceiling.
+  const maxWidth = wrap.offsetWidth || 384;
+  const minWidth = 40;          // ~2.5rem — collapsed button width
+  const collapseThreshold = 150; // snap to collapsed when dragged below this
+  const mqBreakpoint = side === 'right' ? 900 : 1200;
+  const mq = window.matchMedia(`(min-width: ${mqBreakpoint}px)`);
+
+  // ── Persistence ──────────────────────────────
+  function saveWidth(px) {
+    try { localStorage.setItem(storageKey, px + 'px'); } catch (_) {}
+  }
+
+  const savedWidth = (() => {
+    try { return localStorage.getItem(storageKey); } catch (_) { return null; }
+  })();
+  if (savedWidth) wrap.style.setProperty('--user-sidebar-width', savedWidth);
+
+  // ── Open / close helpers ─────────────────────
+  function openSidebar() {
+    innerPanel.classList.add('visible');
+    wrap.classList.remove('collapsed');
+  }
+
+  function closeSidebar() {
+    innerPanel.classList.remove('visible');
+    wrap.classList.add('collapsed');
+  }
+
+  function expandToMax() {
+    wrap.style.setProperty('--user-sidebar-width', maxWidth + 'px');
+    saveWidth(maxWidth);
+    openSidebar();
+  }
+
+  // ── MQ auto-collapse ─────────────────────────
+  // Always collapse when the viewport becomes too narrow (even if user-toggled).
+  // Only auto-open on expand if the user hasn't explicitly closed the sidebar.
+  function applyMQ(e) {
+    if (e.matches) {
+      if (!wrap.classList.contains('user-toggled')) openSidebar();
+    } else {
+      closeSidebar();
+      wrap.classList.remove('user-toggled'); // clear so future expand can re-open
+    }
+  }
+  mq.addEventListener('change', applyMQ);
+  applyMQ(mq);
+
+  // ── Toggle button — opens to full max width ──
+  toggleBtn.addEventListener('click', () => {
+    if (innerPanel.classList.contains('visible')) {
+      wrap.classList.add('user-toggled'); // keep closed against MQ re-open
+      closeSidebar();
+    } else {
+      wrap.classList.remove('user-toggled'); // let MQ collapse again on narrow viewport
+      expandToMax();
+    }
+  });
+
+  // ── Drag-to-resize handle ────────────────────
+  const handle = document.createElement('div');
+  handle.className = 'resize-handle resize-handle--' + side;
+  wrap.appendChild(handle);
+
+  let startX, startWidth;
+
+  handle.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    startX = e.clientX;
+    startWidth = wrap.getBoundingClientRect().width;
+    handle.classList.add('dragging');
+    document.documentElement.style.cursor = 'col-resize';
+    document.documentElement.style.userSelect = 'none';
+
+    function onMove(e) {
+      const delta = side === 'right' ? e.clientX - startX : startX - e.clientX;
+      const newWidth = Math.max(minWidth, Math.min(maxWidth, startWidth + delta));
+      wrap.style.setProperty('--user-sidebar-width', newWidth + 'px');
+      if (newWidth < collapseThreshold) {
+        wrap.classList.add('collapsed');
+        innerPanel.classList.remove('visible');
+      } else {
+        wrap.classList.remove('collapsed');
+        innerPanel.classList.add('visible');
+      }
+    }
+
+    function onUp() {
+      handle.classList.remove('dragging');
+      document.documentElement.style.cursor = '';
+      document.documentElement.style.userSelect = '';
+      const finalWidth = parseFloat(wrap.style.getPropertyValue('--user-sidebar-width'));
+      if (finalWidth !== undefined) {
+        if (finalWidth < collapseThreshold) {
+          // Snap fully collapsed; mark user-toggled so MQ doesn't reopen it
+          wrap.style.setProperty('--user-sidebar-width', minWidth + 'px');
+          wrap.classList.add('user-toggled');
+        } else {
+          saveWidth(finalWidth);
+        }
+      }
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    }
+
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
   });
 }

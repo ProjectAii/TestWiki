@@ -5,7 +5,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Belleza&display=swap');
 
 :root {
-  --accent: {{ACCENT_COLOR}};
+  /* --accent is intentionally NOT set here — it is injected per-page via an
+     inline <style> tag in each HTML file so it is never subject to CSS caching. */
   --accent-hover: color-mix(in srgb, var(--accent) 80%, black);
 
   /* Light mode (default) */
@@ -119,6 +120,21 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   text-decoration: none;
 }
 
+.btn-admin {
+  padding: 3px 10px;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  color: var(--accent);
+  font-size: 0.82rem;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.btn-admin:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
 .main-content {
   flex: 1;
   min-width: 0;
@@ -130,6 +146,7 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 
 .page-layout {
   display: flex;
+  align-items: flex-start;
   gap: var(--space-xl);
   max-width: 100%;
   padding: var(--space-xl);
@@ -141,7 +158,12 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 }
 
 .toc-sidebar-wrap {
-  width: var(--sidebar-width);
+  position: sticky;
+  top: var(--header-height, 0px);
+  max-height: calc(100vh - var(--header-height, 0px));
+  display: flex;
+  flex-direction: column;
+  width: var(--user-sidebar-width, var(--sidebar-width));
   flex-shrink: 0;
   transition: width 0.2s ease;
 }
@@ -177,10 +199,16 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   background: var(--bg);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   display: none;
   padding: var(--space-md);
+  flex: 1;
+  min-height: 0;
+  scrollbar-width: none;
 }
+.toc-sidebar::-webkit-scrollbar { display: none; }
 
 .toc-sidebar.visible {
   display: block;
@@ -206,7 +234,7 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   }
 }
 
-/* Mobile: stack vertically */
+/* Mobile: stack vertically, disable sticky */
 @media (max-width: 639px) {
   .page-layout {
     flex-direction: column;
@@ -215,10 +243,19 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   .toc-sidebar-wrap,
   .toc-sidebar-wrap:not(.user-toggled) {
     width: 100%;
+    position: static;
+    max-height: none;
   }
   .tree-sidebar-wrap,
   .tree-sidebar-wrap:not(.user-toggled) {
     width: 100%;
+    position: static;
+    max-height: none;
+  }
+  .toc-sidebar,
+  .tree-sidebar {
+    overflow-y: hidden;
+    overscroll-behavior: auto;
   }
   .site-header { padding: var(--space-md); flex-wrap: wrap; }
 }
@@ -259,8 +296,10 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   margin-bottom: var(--space-xs);
 }
 
-.doc-card-title a { color: var(--text); }
+.doc-card-title a { display: block; color: var(--text); }
 .doc-card-title a:hover { color: var(--accent); }
+
+.doc-card-date { margin-left: auto; }
 
 .doc-card-meta {
   display: flex;
@@ -273,6 +312,7 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 }
 
 .doc-card-excerpt {
+  flex: 1;
   font-size: 0.875rem;
   color: var(--text-secondary);
   line-height: 1.6;
@@ -544,7 +584,12 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 /* ── Tree Sidebar ──────────────────────────── */
 
 .tree-sidebar-wrap {
-  width: var(--sidebar-width);
+  position: sticky;
+  top: var(--header-height, 0px);
+  max-height: calc(100vh - var(--header-height, 0px));
+  display: flex;
+  flex-direction: column;
+  width: var(--user-sidebar-width, var(--sidebar-width));
   flex-shrink: 0;
   transition: width 0.2s ease;
 }
@@ -581,12 +626,56 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   background: var(--bg);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   display: none;
+  flex: 1;
+  min-height: 0;
+  scrollbar-width: none;
 }
+.tree-sidebar::-webkit-scrollbar { display: none; }
 
 .tree-sidebar.visible {
   display: block;
+}
+
+/* ── Sidebar resize handles ─────────────────── */
+
+.resize-handle {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 8px;
+  cursor: col-resize;
+  z-index: 20;
+}
+
+.resize-handle--right { right: -4px; }
+.resize-handle--left  { left: -4px; }
+
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background: transparent;
+  transition: background 0.2s;
+  border-radius: 1px;
+}
+
+.resize-handle:hover::after,
+.resize-handle.dragging::after {
+  background: color-mix(in srgb, var(--border) 55%, transparent);
+}
+
+/* Disable transition during active drag for snappy feel */
+.tree-sidebar-wrap:has(.resize-handle.dragging),
+.toc-sidebar-wrap:has(.resize-handle.dragging) {
+  transition: none;
 }
 
 .tree-controls {
