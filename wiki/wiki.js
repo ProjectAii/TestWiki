@@ -783,14 +783,28 @@ function applyTheme(mode, accent) {
   }
 }
 
+const FONT_SIZES = [
+  { label: "Small",  value: "14px" },
+  { label: "Medium", value: "16px" },
+  { label: "Large",  value: "18px" },
+  { label: "XL",     value: "20px" },
+];
+
+function applyFontSize(size) {
+  if (!size) return;
+  document.documentElement.style.fontSize = size;
+}
+
 function initThemePanel() {
   const btn = document.querySelector(".theme-toggle");
   if (!btn) return;
 
   // Restore persisted preferences
-  const storedMode   = localStorage.getItem("lorengine-theme");
-  const storedAccent = localStorage.getItem("lorengine-accent");
+  const storedMode     = localStorage.getItem("lorengine-theme");
+  const storedAccent   = localStorage.getItem("lorengine-accent");
+  const storedFontSize = localStorage.getItem("lorengine-font-size");
   applyTheme(storedMode, storedAccent);
+  applyFontSize(storedFontSize);
 
   // Build popover element (once, appended to body)
   const panel = document.createElement("div");
@@ -825,6 +839,12 @@ function initThemePanel() {
         </label>
         <span class="theme-mode-label">Dark</span>
       </div>
+      <div class="theme-panel-section theme-panel-label">Font size</div>
+      <select class="theme-font-size-select">
+        ${FONT_SIZES.map(f => `
+          <option value="${escapeHtml(f.value)}" ${(localStorage.getItem("lorengine-font-size") || "16px") === f.value ? "selected" : ""}>${escapeHtml(f.label)}</option>
+        `).join("")}
+      </select>
     `);
 
     // Swatch clicks
@@ -844,6 +864,13 @@ function initThemePanel() {
       const mode = checkbox.checked ? "dark" : "light";
       localStorage.setItem("lorengine-theme", mode);
       applyTheme(mode, null);
+    });
+
+    // Font size select
+    const fontSizeSelect = panel.querySelector(".theme-font-size-select");
+    fontSizeSelect.addEventListener("change", () => {
+      localStorage.setItem("lorengine-font-size", fontSizeSelect.value);
+      applyFontSize(fontSizeSelect.value);
     });
   }
 
