@@ -17,16 +17,14 @@ A reusable, self-hosted wiki system for game design documentation (or any markdo
 
 ### Enabling the visual editor (`/admin/`)
 
-The wiki includes a visual markdown editor powered by [Sveltia CMS](https://github.com/sveltia/sveltia-cms) (a Decap CMS-compatible replacement with native GitHub PKCE support). It requires a one-time GitHub OAuth App setup:
+The wiki includes a visual markdown editor powered by [Sveltia CMS](https://github.com/sveltia/sveltia-cms). It authenticates via a **GitHub Personal Access Token (PAT)** — no OAuth app or server required.
 
-1. Go to **GitHub → Settings → Developer settings → OAuth Apps → New OAuth App**
-2. Set **Authorization callback URL** to `https://YOUR_USERNAME.github.io/YOUR_REPO/admin/`
-3. Disable Webhook and save
-4. Copy the **Client ID** from the app's settings page
-5. Paste it into `config.yml` under `github.oauth_app_id`
-6. Commit — the next build wires it in automatically
+1. Go to **GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token**
+2. Give it a name, set expiry, and tick the **`repo`** scope
+3. Copy the token
+4. Open `https://YOUR_SITE/admin/`, click **Sign in with Token**, paste it in
 
-The Client ID is not a secret and is safe to commit. No client secret is needed (the editor uses PKCE auth, which works entirely client-side).
+The token is stored in your browser's localStorage and never sent anywhere except `api.github.com`.
 
 ## Writing Documents
 

@@ -192,21 +192,19 @@ and commits directly to the GitHub repo.
 
 ### Authentication
 
-Decap CMS uses **PKCE OAuth** (client-side only, no backend required). Setup:
+Sveltia CMS authenticates via a **GitHub Personal Access Token (PAT)**. No OAuth
+app, proxy server, or Netlify account required.
 
-1. Create a GitHub OAuth App (Settings → Developer Settings → OAuth Apps)
-2. Set the callback URL to `https://<your-site>/admin/`
-3. Copy the **Client ID** into `config.yml` → `github.oauth_app_id`
-4. Commit — the next build wires it in automatically
-
-The Client ID is not a secret and is safe to commit. No client secret is needed.
+On first visit to `/admin/`, click **Sign in with Token** and paste a GitHub PAT
+with `repo` scope. The token is stored in `localStorage` and sent only to
+`api.github.com`.
 
 ### decap.yml
 
 `decap.yml` in the repo root is the collection config template. It defines the
 `pages` collection with all frontmatter fields as widgets. `build_wiki.py` injects
-`{{GITHUB_REPO}}` and `{{GITHUB_OAUTH_APP_ID}}` from `config.yml` at build time,
-outputting the resolved config to `_site/admin/config.yml`.
+`{{GITHUB_REPO}}` from `config.yml` at build time, outputting the resolved config
+to `_site/admin/config.yml`.
 
 ### Tree manager (`/admin/tree.html`)
 
@@ -363,7 +361,7 @@ never create a file with that name — it is a reserved extension point.
 
 **To enable the visual editor:**
 
-8. Create a GitHub OAuth App and set `github.oauth_app_id` in `config.yml` (see *Visual editor* section above)
+8. Visit `<your-site>/admin/`, click **Sign in with Token**, and enter a GitHub PAT with `repo` scope
 
 **To pre-load the AI API key for all visitors (optional):**
 
