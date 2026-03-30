@@ -2,7 +2,8 @@ name: Build and Deploy Wiki
 
 on:
   push:
-    paths: ['docs/**', 'build_wiki.py', 'config.yml']
+    paths: ['docs/**', 'pages/**', 'wiki/**', 'build_wiki.py', 'config.yml']
+    tags: ['v*']
   schedule:
     - cron: '0 6 * * *'
   workflow_dispatch:
