@@ -657,29 +657,31 @@ function initAIModal(currentDocContent, searchIndex) {
   }
 
   // Modal controls
-  floatBtn.addEventListener("click", showModal);
-  closeBtn.addEventListener("click", closeModal);
-  overlay.addEventListener("click", closeModal);
+  if (floatBtn) floatBtn.addEventListener("click", showModal);
+  if (closeBtn) closeBtn.addEventListener("click", closeModal);
+  if (overlay) overlay.addEventListener("click", closeModal);
 
   // API key button in locked overlay
-  setKeyBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    showAPIKeyModal(
-      (key, remember) => {
-        apiKey = key;
-        keySource = "user";
-        if (remember) {
-          localStorage.setItem("lorengine-api-key", key);
+  if (setKeyBtn) {
+    setKeyBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      showAPIKeyModal(
+        (key, remember) => {
+          apiKey = key;
+          keySource = "user";
+          if (remember) {
+            localStorage.setItem("lorengine-api-key", key);
+          }
+          WIKI_CONFIG.apiKey = key;
+          updateLockedState();
+          if (input) input.focus();
+        },
+        () => {
+          // Cancel button clicked
         }
-        WIKI_CONFIG.apiKey = key;
-        updateLockedState();
-        input.focus();
-      },
-      () => {
-        // Cancel button clicked
-      }
-    );
-  });
+      );
+    });
+  }
 
   async function sendMessage() {
     const text = input.value.trim();
@@ -721,13 +723,15 @@ function initAIModal(currentDocContent, searchIndex) {
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
 
-  sendBtn.addEventListener("click", sendMessage);
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !e.shiftKey && !input.disabled) {
-      e.preventDefault();
-      sendMessage();
-    }
-  });
+  if (sendBtn) sendBtn.addEventListener("click", sendMessage);
+  if (input) {
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey && !input.disabled) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  }
 
   // Initial locked state
   updateLockedState();

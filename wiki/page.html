@@ -143,9 +143,10 @@
           safeSetInnerHTML(backlinksEl, renderBacklinks(meta.backlinks, searchIndex));
         }
 
-        // Init tree sidebar and TOC sidebar
+        // Init tree sidebar, TOC sidebar, and AI modal
         initTreeSidebar(searchIndex, document.getElementById("tree-sidebar"));
         initTOCSidebar();
+        initAIModal(body, searchIndex);
 
         // Scroll to heading anchor now that content is rendered
         if (window.location.hash) {
@@ -180,9 +181,6 @@
           tocWrap.classList.toggle("collapsed");
         });
       }
-
-      // AI modal initialization
-      initAIModal(body, searchIndex);
     })();
   </script>
 </body>
