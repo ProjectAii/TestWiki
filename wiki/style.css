@@ -1113,6 +1113,29 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   font-size: 0.875rem;
 }
 
+/* ── Brief Notification Bar ────────────────── */
+
+.brief-notification {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  border-radius: 4px;
+  margin: 0.5rem 0.75rem 0;
+  flex-shrink: 0;
+}
+
+.brief-notification--missing {
+  background: color-mix(in srgb, #f59e0b 15%, transparent);
+  color: var(--text);
+  border: 1px solid color-mix(in srgb, #f59e0b 50%, transparent);
+}
+
+.brief-notification--long {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--text-secondary);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
 .ai-set-key-btn {
   padding: var(--space-sm) var(--space-lg);
   background: var(--accent);

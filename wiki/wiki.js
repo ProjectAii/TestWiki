@@ -11,7 +11,6 @@ const WIKI_CONFIG = {
   ai: {
     model: "{{AI_MODEL}}",
     maxTokens: parseInt("{{AI_MAX_TOKENS}}", 10) || 1024,
-    systemPromptFile: "{{AI_SYSTEM_PROMPT_FILE}}",
     enablePromptCaching: "{{AI_ENABLE_PROMPT_CACHING}}" === "true",
   },
   search: {
@@ -671,7 +670,7 @@ function showAPIKeyModal(callback, onCancel) {
 // AI Modal (Floating)
 // ---------------------------------------------------------------------------
 
-function initAIModal(currentDocContent, searchIndex) {
+function initAIModal(currentDocContent, searchIndex, currentPageId = "") {
   const floatBtn = document.getElementById("ai-float-btn");
   const modal = document.getElementById("ai-modal");
   const overlay = document.getElementById("ai-modal-overlay");
@@ -730,7 +729,19 @@ function initAIModal(currentDocContent, searchIndex) {
   }
 
   // Modal controls
-  if (floatBtn) floatBtn.addEventListener("click", showModal);
+  let briefFetched = false;
+  if (floatBtn) floatBtn.addEventListener("click", async () => {
+    if (!briefFetched) {
+      briefFetched = true;
+      const brief = await getBrief();
+      if (!brief.found) {
+        showBriefNotification("missing");
+      } else if (brief.totalTokens > 1500) {
+        showBriefNotification("long");
+      }
+    }
+    showModal();
+  });
   if (closeBtn) closeBtn.addEventListener("click", closeModal);
   if (overlay) overlay.addEventListener("click", closeModal);
 
@@ -772,7 +783,7 @@ function initAIModal(currentDocContent, searchIndex) {
     input.disabled = true;
 
     try {
-      const response = await makeAPICall(conversation, currentDocContent, searchIndex);
+      const response = await makeAPICall(conversation, currentDocContent, searchIndex, currentPageId);
       conversation.push({ role: "assistant", content: response });
       appendMessage("assistant", response);
     } catch (err) {
@@ -810,35 +821,128 @@ function initAIModal(currentDocContent, searchIndex) {
   updateLockedState();
 }
 
-async function makeAPICall(conversation, currentDocContent, searchIndex) {
+// ---------------------------------------------------------------------------
+// Brief context (pages/brief.md)
+// ---------------------------------------------------------------------------
+
+let _briefCache = null;
+
+async function getBrief() {
+  if (_briefCache !== null) return _briefCache;
+  _briefCache = await fetchBrief();
+  return _briefCache;
+}
+
+function parseBriefSections(markdown) {
+  const sections = {};
+  const parts = markdown.split(/^## /m);
+  for (const part of parts) {
+    if (!part.trim()) continue;
+    const newline = part.indexOf("\n");
+    if (newline === -1) continue;
+    const heading = part.slice(0, newline).trim().toLowerCase();
+    const body = part.slice(newline + 1).trim();
+    sections[heading] = body;
+  }
+  return sections;
+}
+
+function stripForAI(text) {
+  text = text.replace(/<!--[\s\S]*?-->/g, "");
+  text = text.replace(/!\[[^\]]*\]\([^)]+\)/g, "");
+  text = text.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+  text = text.replace(/```[\s\S]*?```/g, "");
+  text = text.replace(/`[^`]+`/g, "");
+  text = text.replace(/\n{3,}/g, "\n\n");
+  return text.trim();
+}
+
+function estimateTokens(text) {
+  return Math.ceil(text.length / 4);
+}
+
+async function fetchBrief() {
+  const base = WIKI_CONFIG.baseUrl ? WIKI_CONFIG.baseUrl + "/" : "";
+  try {
+    const resp = await fetch(`${base}pages/brief.md`);
+    if (!resp.ok) return { found: false };
+    const raw = await resp.text();
+    const sections = parseBriefSections(raw);
+    const systemPromptRaw = sections["system prompt"] || "";
+    const systemPrompt = stripForAI(systemPromptRaw);
+    const SKIP = new Set(["system prompt"]);
+    const contextParts = Object.entries(sections)
+      .filter(([k]) => !SKIP.has(k))
+      .map(([k, v]) => `## ${k}\n${v}`)
+      .join("\n\n");
+    const contextText = stripForAI(contextParts);
+    const totalTokens = estimateTokens(systemPrompt + contextText);
+    return { found: true, systemPrompt, contextText, totalTokens };
+  } catch {
+    return { found: false };
+  }
+}
+
+function showBriefNotification(type) {
+  const modalBody = document.querySelector(".ai-modal-body");
+  if (!modalBody) return;
+  const existing = modalBody.querySelector(".brief-notification");
+  if (existing) existing.remove();
+  if (!type) return;
+  const bar = document.createElement("div");
+  bar.className = `brief-notification brief-notification--${type}`;
+  if (type === "missing") {
+    bar.textContent = "Set up pages/brief.md to give the AI context for this wiki.";
+  } else if (type === "long") {
+    bar.textContent = "Project brief is quite long — aim for under 1,000 tokens for best AI performance.";
+  }
+  const messages = modalBody.querySelector(".ai-messages");
+  if (messages) {
+    modalBody.insertBefore(bar, messages);
+  } else {
+    modalBody.prepend(bar);
+  }
+}
+
+async function makeAPICall(conversation, currentDocContent, searchIndex, currentPageId = "") {
   const docSummary = searchIndex
     .map((d) => `- ${d.title} [${(d.tags || []).join(", ")}]: ${d.excerpt.slice(0, 80)}`)
     .join("\n");
 
-  let systemPrompt = "";
-  try {
-    const base = WIKI_CONFIG.baseUrl ? WIKI_CONFIG.baseUrl + "/" : "";
-    const resp = await fetch(`${base}${WIKI_CONFIG.ai.systemPromptFile}`);
-    if (resp.ok) systemPrompt = await resp.text();
-  } catch {
-    // System prompt file not available
-  }
+  const brief = await getBrief();
+
+  const defaultSystemPrompt =
+    "You are an AI assistant embedded in a documentation wiki. " +
+    "Be helpful, concise, and reference the current document when relevant.";
 
   const systemContent = [
     {
       type: "text",
-      text: systemPrompt || "You are an AI assistant embedded in a documentation wiki. Be helpful, concise, and reference the current document when relevant.",
+      text: brief.found && brief.systemPrompt ? brief.systemPrompt : defaultSystemPrompt,
       ...(WIKI_CONFIG.ai.enablePromptCaching ? { cache_control: { type: "ephemeral" } } : {}),
     },
+    ...(brief.found && brief.contextText
+      ? [
+          {
+            type: "text",
+            text: `## Project context\n${brief.contextText}`,
+            ...(WIKI_CONFIG.ai.enablePromptCaching ? { cache_control: { type: "ephemeral" } } : {}),
+          },
+        ]
+      : []),
     {
       type: "text",
-      text: `## Document Index\n${docSummary}`,
+      text: `## Document index\n${docSummary}`,
       ...(WIKI_CONFIG.ai.enablePromptCaching ? { cache_control: { type: "ephemeral" } } : {}),
     },
   ];
 
+  // Skip current page block when viewing brief.md — its content is already
+  // present in the system prompt and project context blocks above.
   const messages = [
-    { role: "user", content: `[Current page content]\n${currentDocContent}\n\n---` },
+    ...(currentPageId !== "pages/brief.md"
+      ? [{ role: "user", content: `[Current page content]\n${currentDocContent}\n\n---` }]
+      : []),
     ...conversation,
   ];
 
