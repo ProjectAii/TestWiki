@@ -3,7 +3,7 @@ title: "Quickstart"
 tags: ["docs", "guide", "setup"]
 status: final
 last-updated: 2026-03-30
-sort_order: 1
+sort_order: 10
 parent: getting-started
 ---
 
