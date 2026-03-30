@@ -3,7 +3,7 @@ title: "Frontmatter Reference"
 tags: ["docs", "reference", "frontmatter"]
 status: final
 last-updated: 2026-03-30
-sort_order: 2
+sort_order: 40
 parent: getting-started
 ---
 
