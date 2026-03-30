@@ -12,7 +12,7 @@
     ],
     "status": "review",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774890283.9753146,
+    "file_mtime": 1774913053.4038486,
     "headings": [
       "Visual Style Philosophy",
       "Color Palettes by Faction",
@@ -54,7 +54,7 @@
     ],
     "status": "review",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774890304.8262937,
+    "file_mtime": 1774913053.404464,
     "headings": [
       "Audio Philosophy",
       "Music & Composition",
@@ -92,7 +92,7 @@
     ],
     "status": "draft",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774897379.4988332,
+    "file_mtime": 1774913053.404464,
     "headings": [
       "Project identity",
       "Audience and purpose",
@@ -110,298 +110,7 @@
     "backlinks": []
   },
   {
-    "id": "pages/design/economy-progression.md",
-    "slug": "economy-progression",
-    "title": "Economy & Progression",
-    "sort_order": 2,
-    "tags": [
-      "design",
-      "economy",
-      "balance",
-      "progression"
-    ],
-    "status": "review",
-    "last_updated": "2026-03-30",
-    "file_mtime": 1774890240.3766057,
-    "headings": [
-      "Resource Economy",
-      "Territory Control",
-      "Tech Tree & Progression",
-      "Tech Costs",
-      "Unlocks by Type",
-      "Tech Tree Structure",
-      "Unit Progression",
-      "Unit Experience & Leveling",
-      "Level-Up Benefits",
-      "Difficulty Scaling"
-    ],
-    "excerpt": "Resource Economy\nEvery faction manages three core resources:\n| Resource | Generation | Max Storage | Purpose |\n|----------|------------|------------|---------|\n| Production | Per turn from territory; boosted by buildings | Unlimited | Build units, structures, upgrades |\n| Influence | Per turn from c",
-    "body": "Resource Economy\nEvery faction manages three core resources:\n| Resource | Generation | Max Storage | Purpose |\n|----------|------------|------------|---------|\n| Production | Per turn from territory; boosted by buildings | Unlimited | Build units, structures, upgrades |\n| Influence | Per turn from cities and diplomacy | 100 | Unlock tech, diplomacy, special actions |\n| Morale | Per turn from victory; lost from defeat | 100 | Army effectiveness; morale breaks cause retreat |\nTerritory Control\nUnits gain production income from friendly territory. Territory types:\n- City (4 prod/turn) — core resource hub; can be fortified\n- Farm (1 prod/turn) — rural, easily captured\n- Mine (2 prod/turn) — defensible, rare; multiple exist on map\n- Ruin (0 prod/turn) — neutral; grants vision and XP to units stationed there\nTerritory is held as long as a unit occupies it. Losing all units in a territory reverts it to neutral.\n> Economy Design: Early game rewards map control; late game is about tech advantage. A player who hoards resources without expanding falls behind in tech.\nTech Tree & Progression\nTech Costs\nAll techs cost Influence, measured in \"tech points\" (TP):\n- Tier 1 (early): 5–10 TP each\n- Tier 2 (mid): 15–25 TP each\n- Tier 3 (late): 30–50 TP each\n- Tier 4 (endgame): 60+ TP each\nUnlocks by Type\nUnit Unlocks (new unit type becomes available):\nAbility Unlocks (existing units gain new abilities):\nFaction Unlocks (faction-specific bonuses):\nTech Tree Structure\nEach faction has 3 independent trees (balanced in total cost):\n1. Military — units, combat abilities, weapons\n2. Economic — resource production, storage, trade\n3. Civic — morale, diplomacy, special abilities\nTrees are not branching — every tech in a tier can be accessed independently once the tier is unlocked.\nUnit Progression\nUnit Experience & Leveling\nUnits earn XP from:\n- Defeating enemies (+XP = enemy level × 1.5)\n- Surviving battle (+1 XP per turn in combat)\n- Capturing territory (+5 XP per capture)\nEvery 20 XP, a unit gains 1 level (max level 10).\nLevel-Up Benefits\nAt each level-up, units improve:\n| Stat | Gain per Level |\n|------|----------------|\n| Health | +5% |\n| Damage | +3% |\n| Armor | +2% |\n| Accuracy | +1.5% |\nAdditionally, units unlock 1 ability point per 3 levels. Spend on:\n- Increase existing ability effectiveness (+1 damage, -1 cooldown turn, etc.)\n- Unlock new tier 1/2 abilities (if tech tree allows)\n> Example: A level 3 Scout with 1 ability point spends it to unlock \"Evasion Stance\" (tier 1 passive: +2 evasion when moving).\nDifficulty Scaling\nCampaign difficulty affects:\n1. Enemy unit quality: Higher levels, better abilities unlocked\n2. Resource generation: Enemies gain resource multipliers\n - Easy: ×0.5 (enemies gain half normal production)\n - Normal: ×1.0\n - Hard: ×1.5 (enemies gain 50% bonus)\n - Legendary: ×2.0\n3. AI behavior: Different decision-making and aggressiveness\n - Easy: AI makes tactical mistakes\n - Normal: AI plays well but not optimally\n - Hard: AI optimizes, focuses on player weakness\n - Legendary: AI behaves like experienced player\n4. Mission modifier: Some battles have difficulty-locked modifiers\n - Hard: \"All enemy units have +1 armor\"\n - Legendary: \"All enemy units regenerate 2 HP per turn\"\n---\n> Design Note: Resources should feel scarce but not punishing. A player making suboptimal choices should still progress, just slower. Save resource generation for Legendary difficulty.",
-    "parent": "pages/design.md",
-    "children": [],
-    "backlinks": []
-  },
-  {
-    "id": "pages/design/gameplay-systems.md",
-    "slug": "gameplay-systems",
-    "title": "Gameplay Systems",
-    "sort_order": 1,
-    "tags": [
-      "design",
-      "systems",
-      "mechanics"
-    ],
-    "status": "review",
-    "last_updated": "2026-03-30",
-    "file_mtime": 1774890222.6915734,
-    "headings": [
-      "Turn Structure",
-      "Action Economy",
-      "Movement System",
-      "Pathing & Terrain",
-      "Elevation",
-      "Visibility & Fog of War",
-      "Combat Resolution",
-      "Attack Roll",
-      "Damage Calculation",
-      "Special Outcomes",
-      "Ability System",
-      "Ability Tiers",
-      "Cooldowns"
-    ],
-    "excerpt": "Turn Structure\nEach turn follows this sequence:\n1. Start Phase (automatic)\n - Passive abilities trigger (e.g., regeneration)\n - Buffs/debuffs decrement by 1 turn\n - Resource production calculates\n2. Action Phase (player)\n - Move units, execute actions, use abilities\n - Any number of actions in any o",
-    "body": "Turn Structure\nEach turn follows this sequence:\n1. Start Phase (automatic)\n - Passive abilities trigger (e.g., regeneration)\n - Buffs/debuffs decrement by 1 turn\n - Resource production calculates\n2. Action Phase (player)\n - Move units, execute actions, use abilities\n - Any number of actions in any order\n - Cannot repeat an action on the same unit in one turn\n3. End Phase (player triggers)\n - Confirm all changes\n - Pass turn to opponent (in multiplayer) or AI\n - Automatic save checkpoint\nAction Economy\nUnits have 2 action points (AP) per turn. Actions cost:\n| Action | Cost | Notes |\n|--------|------|-------|\n| Move (1 square) | 0.5 AP | Diagonal = same cost; movement range varies by unit |\n| Standard Attack | 1 AP | Can move + attack in one turn |\n| Ability (tier 1) | 0.5–1 AP | Faction and unit-specific |\n| Ability (tier 2) | 1–1.5 AP | More powerful, longer cooldown |\n| Interact (object) | 1 AP | Capture, defend, interact with environment |\n> Design Intent: 2 AP allows flexible play. Move + attack + something else creates interesting tradeoffs.\nMovement System\nPathing & Terrain\n- Units pathfind around obstacles automatically\n- Terrain Costs:\n - Grass, stone: 1 movement cost per square\n - Forest, rubble: 1.5 movement cost\n - Water, cliffs: impassable (unless unit has special trait)\nElevation\nHeights are crucial:\nUnits can move down any height freely. Moving up requires spending extra movement (0.5 per height level).\nVisibility & Fog of War\n- Each unit has a line of sight (LOS) radius (typically 5–7 squares)\n- Terrain blocks LOS (forest, hills, buildings)\n- Attacking reveals position even in fog\n- Stealthed units have reduced LOS radius\nCombat Resolution\nAttack Roll\n> Modifier Examples:\n> - Flanked unit: -15% accuracy (defender bonus)\n> - High ground: +10% accuracy (attacker bonus)\n> - In heavy cover: -20% accuracy (defender evasion)\nDamage Calculation\nSpecial Outcomes\nCritical Hit (10% chance on any hit):\n- Doubles damage\n- Bypasses cover bonuses\n- Some units have abilities that increase crit chance\nGlancing Blow (15% of misses):\n- 30% of normal damage dealt\n- Still triggers on-hit effects\nAbility System\nAbility Tiers\nTier 1 (Passive):\n- Always active, no AP cost\n- Examples: \"Infantry +10% armor\", \"Mage: gain 1 mana per kill\"\nTier 2 (Active, Low Cost):\n- 0.5 AP cost, 1–3 turn cooldown\n- Examples: \"Sprint\" (move again), \"Heal nearby ally\"\nTier 3 (Active, High Impact):\n- 1 AP cost, 3–5 turn cooldown\n- Examples: \"Fireball\" (area damage), \"Rally\" (buff entire army)\nTier 4 (Ultimate):\n- 1.5 AP cost, 5+ turn cooldown\n- Examples: \"Summon creature\", \"Mass teleport\"\nCooldowns\n- Cooldowns trigger on use, not on the unit\n- Can have multiple copies of the same unit to use the same ability\n- Some abilities have \"charges\" instead of cooldowns (e.g., \"use 3 times per battle\")\n---\n> Playtester Note: Combat feels slow if players overthink every move. Consider adding an \"auto-resolve\" option for low-difficulty battles.",
-    "parent": "pages/design.md",
-    "children": [],
-    "backlinks": []
-  },
-  {
-    "id": "pages/design.md",
-    "slug": "design",
-    "title": "Game Design",
-    "sort_order": 20,
-    "tags": [
-      "design",
-      "systems",
-      "mechanics"
-    ],
-    "status": "review",
-    "last_updated": "2026-03-30",
-    "file_mtime": 1774890203.2146163,
-    "headings": [
-      "Design Overview",
-      "Design Philosophy",
-      "System Categories",
-      "Gameplay Systems",
-      "Economy & Progression",
-      "Faction Design"
-    ],
-    "excerpt": "Design Overview\nThis section documents all gameplay systems, balance decisions, and design philosophy.\nStart here if you're new to the design; refer to subsections for detailed specifications.\nDesign Philosophy\nSimplicity in Rules, Depth in Interactions: Core mechanics are easy to learn (move → act ",
-    "body": "Design Overview\nThis section documents all gameplay systems, balance decisions, and design philosophy.\nStart here if you're new to the design; refer to subsections for detailed specifications.\nDesign Philosophy\nSimplicity in Rules, Depth in Interactions: Core mechanics are easy to learn (move → act → end turn) but create complex scenarios through unit abilities, terrain, and resource constraints.\nAsymmetric Factions: Each faction plays fundamentally differently. A single \"correct\" strategy should not exist.\nNarrative-First Design: Missions tell a story. Win conditions support the narrative, not vice versa.\nSystem Categories\nGameplay Systems\nSee Gameplay Systems for:\n- Turn structure and timing\n- Movement and pathfinding\n- Combat resolution and damage\n- Special abilities and unit abilities\nEconomy & Progression\nSee Economy & Progression for:\n- Resource generation and costs\n- Tech trees and unlocks\n- Difficulty scaling\n- Reward structures\nFaction Design\nSee Faction Design for detailed faction rules:\n- Harmonists — collaborative abilities, shared resources\n- Isolationists — individual unit strength, self-sufficiency\n- Adaptors — morphing units, tactical flexibility\n- Archivists — knowledge-based asymmetric advantages\n---\n> For Balance Designers: Record every playtest result and balance change with a date and rationale. Future designers need to understand why numbers are set as they are.",
-    "parent": null,
-    "children": [
-      "pages/design/economy-progression.md",
-      "pages/design/gameplay-systems.md"
-    ],
-    "backlinks": []
-  },
-  {
-    "id": "pages/game-overview.md",
-    "slug": "game-overview",
-    "title": "Game Overview",
-    "sort_order": 10,
-    "tags": [
-      "design",
-      "core",
-      "vision"
-    ],
-    "status": "final",
-    "last_updated": "2026-03-30",
-    "file_mtime": 1774890195.449805,
-    "headings": [
-      "Project Title",
-      "Pitch",
-      "Core Pillars",
-      "Target Audience",
-      "Key Features",
-      "Success Criteria",
-      "Production Timeline"
-    ],
-    "excerpt": "Project Title\nNexus: Echoes of Empire — A turn-based tactical strategy game set in a fractured post-colonial world.\nPitch\nNexus: Echoes of Empire is a mid-scale, single-player campaign strategy game where players lead one of four factions competing for control of a shattered continent. Combat combin",
-    "body": "Project Title\nNexus: Echoes of Empire — A turn-based tactical strategy game set in a fractured post-colonial world.\nPitch\nNexus: Echoes of Empire is a mid-scale, single-player campaign strategy game where players lead one of four factions competing for control of a shattered continent. Combat combines traditional tactical grid-based movement with a dynamic resource economy that rewards long-term planning over moment-to-moment optimization.\nCore Pillars\n| Pillar | Description | Why It Matters |\n|--------|-------------|----------------|\n| Tactical Depth | Turn-based grid combat with unit positioning, elevation, and ability synergies | Casual to hardcore players both enjoy mastery through practice |\n| Emergent Strategy | Resource scarcity forces hard choices; no \"optimal\" build path | Replayability; players discover different approaches each run |\n| Narrative Integration | Campaign missions tied to faction lore and character arcs | Story justifies gameplay challenges and world-building |\n| Aesthetic Consistency | Hand-crafted isometric art paired with orchestral soundtrack | Memorable, cohesive experience; distances from procedural/AI-generated feel |\nTarget Audience\n- Primary: Strategy game enthusiasts (Civilization, XCOM, Fire Emblem)\n- Age: 16+\n- Platforms: PC (Windows, Linux, macOS)\n- Playtime: 30–50 hours per campaign\nKey Features\n1. Four Playable Factions — each with unique units, abilities, and campaign narratives\n2. Campaign Mode — 15–20 mission story arc with branching choices\n3. Tactical Combat — grid-based movement, line-of-sight, destructible environments\n4. Tech Tree & Progression — unlock new units and abilities through resource investment\n5. Dynamic Economy — production queues, supply lines, and trade networks\n6. Mod Support — map editor, unit/ability creators for community content\nSuccess Criteria\n- Critical: Campaign playable soup-to-nuts without game-breaking bugs\n- Gameplay: At least 3 distinct winning strategies per mission\n- Content: 15+ unique unit types across all factions\n- Polish: All audio custom-composed; all visuals hand-created (no AI)\n- Replayability: Campaign completion achievable in 30–50 hours; 4 faction routes\nProduction Timeline\nSee Production Plan for detailed schedule.\n- Preproduction: Months 1–3\n- Core Development: Months 4–18\n- Polish & QA: Months 19–24\n---\n> Design Note: Every feature must serve the core pillars. If a mechanic doesn't reinforce tactical depth, emergent strategy, narrative, or aesthetics, it should be cut or redesigned. Avoid feature creep.",
-    "parent": null,
-    "children": [],
-    "backlinks": []
-  },
-  {
-    "id": "pages/getting-started/frontmatter-reference.md",
-    "slug": "frontmatter-reference",
-    "title": "Frontmatter Reference",
-    "sort_order": 2,
-    "tags": [
-      "docs",
-      "reference",
-      "frontmatter"
-    ],
-    "status": "final",
-    "last_updated": "2026-03-30",
-    "file_mtime": 1774890765.829309,
-    "headings": [
-      "What Is Frontmatter?",
-      "Fields Reference",
-      "`title` *(required)*",
-      "`tags` *(optional)*",
-      "`status` *(optional)*",
-      "`last-updated` *(optional, auto-managed)*",
-      "`sort_order` *(optional)*",
-      "`parent` *(optional)*",
-      "Complete Example",
-      "Frontmatter Gotchas",
-      "Strings with Special Characters",
-      "Dates Must Be Quoted or Bare ISO Format",
-      "Tags Must Be an Array"
-    ],
-    "excerpt": "What Is Frontmatter?\nEvery wiki page starts with a YAML frontmatter block — metadata enclosed in triple-dash delimiters:\nThe frontmatter is never shown as raw text in the wiki. Fields are used by the build system and the UI to organise, display, and search pages.\n---\nFields Reference\n(required)\nType",
-    "body": "What Is Frontmatter?\nEvery wiki page starts with a YAML frontmatter block — metadata enclosed in triple-dash delimiters:\nThe frontmatter is never shown as raw text in the wiki. Fields are used by the build system and the UI to organise, display, and search pages.\n---\nFields Reference\n(required)\nType: String\nThe display name of the page. Shown in the sidebar, search results, and page heading.\n> Required: The build will skip any page without a and log a warning. All other fields are optional.\n---\n(optional)\nType: Array of strings\nUsed for categorisation and filtering. Tags appear as small chips in search results and on the index page. Choose lowercase, hyphen-separated values.\nConventions:\n- Use short, reusable tags (, , , , )\n- Don't use tags that duplicate the title ( on a page titled \"Combat System\" adds no value)\n- Be consistent — and are different tags to the search engine\n---\n(optional)\nType: One of , , or \nShown as a coloured badge on index cards and search results.\nOmitting defaults to no badge shown.\n---\n(optional, auto-managed)\nType: Date string in format\nRecords when the page content was last changed. Used to sort the Recent Pages list on the home screen (newest first).\n> Auto-update: The build script () tracks a content hash of each page. When the page body changes between builds, is automatically rewritten to today's date. You rarely need to set this manually.\n---\n(optional)\nType: Integer (default: )\nControls a page's position within its section when the sidebar sort is set to Custom order. Lower numbers appear first.\nSuggested numbering:\n- Leave gaps (10, 20, 30...) so you can insert pages later without renumbering everything\n- Root/overview pages typically get or \n- Appendix or reference pages get or higher\n---\n(optional)\nType: Slug string (filename stem of the parent page)\nPlaces this page as a child of another page in the tree sidebar. The value must be the exact slug (filename without ) of the parent.\n> Important: The parent page must exist. If the slug doesn't match any page, the build logs a warning and the page is placed at the root level instead.\nSee Page Hierarchy for the full picture of how parent/child relationships work with folder structure.\n---\nComplete Example\nA fully populated frontmatter block:\nThis page would:\n- Show as \"Faction Design: Harmonists\" everywhere in the UI\n- Display a REVIEW badge (blue)\n- Appear in search results filtered by , , or \n- Sort at position 20 within its section\n- Appear nested under the \"World & Story\" page in the sidebar\n---\nFrontmatter Gotchas\nStrings with Special Characters\nWrap titles in quotes if they contain colons, brackets, or other YAML special characters:\nDates Must Be Quoted or Bare ISO Format\nTags Must Be an Array",
-    "parent": "pages/getting-started.md",
-    "children": [],
-    "backlinks": []
-  },
-  {
-    "id": "pages/getting-started/page-hierarchy.md",
-    "slug": "page-hierarchy",
-    "title": "Page Hierarchy",
-    "sort_order": 3,
-    "tags": [
-      "docs",
-      "guide",
-      "structure"
-    ],
-    "status": "final",
-    "last_updated": "2026-03-30",
-    "file_mtime": 1774890793.1601999,
-    "headings": [
-      "How the Tree Sidebar Works",
-      "Declaring a Parent",
-      "How Slugs Work",
-      "Folder Structure Convention",
-      "Recommended Pattern",
-      "Flat Pattern (No Subfolders)",
-      "Deep Nesting",
-      "Visual Result",
-      "Moving Pages",
-      "Sidebar Sort Options"
-    ],
-    "excerpt": "How the Tree Sidebar Works\nThe sidebar on the left is a navigable page tree. Pages can be:\n- Root pages — top-level entries, no parent\n- Section roots — pages that have children nested under them\n- Leaf pages — pages with a parent but no children of their own\nThe tree is built from two sources worki",
-    "body": "How the Tree Sidebar Works\nThe sidebar on the left is a navigable page tree. Pages can be:\n- Root pages — top-level entries, no parent\n- Section roots — pages that have children nested under them\n- Leaf pages — pages with a parent but no children of their own\nThe tree is built from two sources working together:\n1. The frontmatter field — explicitly declares which page is the parent\n2. File modification time — determines sort order when dates are equal\n---\nDeclaring a Parent\nTo nest a page under another, set to the parent page's slug (its filename without ):\nThis makes \"Combat System\" appear as a child of whatever page has the slug — which would be .\nHow Slugs Work\nA slug is the filename stem — everything before the . It must be unique across the entire wiki (not just within a folder):\n> Warning: Two pages with the same filename in different folders will collide. The build exits with an error: \n---\nFolder Structure Convention\nYou don't have to use subfolders — you could put all pages flat in and rely entirely on declarations. However, using matching folder names keeps things tidy and makes the structure obvious at a glance.\nRecommended Pattern\nPlace a page's children in a folder named after it:\nFlat Pattern (No Subfolders)\nWorks fine for small wikis. All declarations must still be correct slugs:\nDeep Nesting\nThe wiki supports one level of nesting in the sidebar. A page can be a child of a parent, but grandchildren (children of children) are not displayed as nested — they appear as children of the grandparent's section.\n> For deeply hierarchical content, consider flattening the structure and using in-page links to connect related pages.\n---\nVisual Result\nGiven this file layout and frontmatter:\nThe sidebar (Custom order) renders as:\n---\nMoving Pages\nTo move a page to a different section:\n1. Change its field to the new parent's slug\n2. Optionally move the file to a matching subfolder (not required but keeps things tidy)\n3. Run to rebuild\nThe tree sidebar updates immediately after rebuild. No other pages need to change unless you had inline links pointing to the page's old path.\n---\nSidebar Sort Options\nThe sidebar supports multiple sort modes, selectable from the dropdown at the top:\n| Mode | Behaviour |\n|------|-----------|\n| Custom order | Uses field ascending; ties broken by title A–Z |\n| A–Z | Alphabetical by title |\n| Z–A | Reverse alphabetical |\n| Oldest first | Ascending date |\n| Newest first | Descending date |\nThe selected sort applies to all tree nodes simultaneously. Children within a parent section sort independently from other sections.",
-    "parent": "pages/getting-started.md",
-    "children": [],
-    "backlinks": []
-  },
-  {
-    "id": "pages/getting-started/quickstart.md",
-    "slug": "quickstart",
-    "title": "Quickstart",
-    "sort_order": 1,
-    "tags": [
-      "docs",
-      "guide",
-      "setup"
-    ],
-    "status": "final",
-    "last_updated": "2026-03-30",
-    "file_mtime": 1774890737.8685558,
-    "headings": [
-      "Your First Page in 5 Minutes",
-      "Step 1: Create a Markdown File",
-      "Step 2: Add the Required Frontmatter",
-      "Step 3: Write Your Content",
-      "Overview",
-      "Attack Resolution",
-      "Step 4: Build the Wiki",
-      "Step 5: View Your Page",
-      "Troubleshooting",
-      "What's Next?"
-    ],
-    "excerpt": "Your First Page in 5 Minutes\nThis guide gets you from zero to a live wiki page as fast as possible.\n---\nStep 1: Create a Markdown File\nCreate a new file anywhere inside the directory:\nThe filename becomes the page's slug — a unique identifier used for linking and hierarchy. Use lowercase, hyphen-sep",
-    "body": "Your First Page in 5 Minutes\nThis guide gets you from zero to a live wiki page as fast as possible.\n---\nStep 1: Create a Markdown File\nCreate a new file anywhere inside the directory:\nThe filename becomes the page's slug — a unique identifier used for linking and hierarchy. Use lowercase, hyphen-separated names.\nGood slugs:\nAvoid:\n---\nStep 2: Add the Required Frontmatter\nEvery page must start with a YAML frontmatter block. The only required field is :\nA complete, well-structured frontmatter block looks like this:\nSee Frontmatter Reference for every available field.\n---\nStep 3: Write Your Content\nAfter the frontmatter closing , write your page content in Markdown.\n> Heading levels: Use for top-level sections and for subsections. Don't use (that's the page title, already shown from your frontmatter).\n---\nStep 4: Build the Wiki\nRun the build script from the project root:\nThe build:\n1. Scans all files in \n2. Parses frontmatter and body text\n3. Builds the search index ()\n4. Assembles the final site in \nOutput when successful:\nIf a file is missing its field, the build skips it with a warning:\n---\nStep 5: View Your Page\nServe the directory locally:\nThen open in your browser.\nYour new page should appear:\n- In the tree sidebar on the left\n- In Recent Pages on the home screen (if it's one of the 5 most recently modified)\n- In search results when you type any word from the page\n---\nTroubleshooting\n| Problem | Likely Cause | Fix |\n|---------|-------------|-----|\n| Page not in sidebar | Missing in frontmatter | Add and rebuild |\n| Page not in search | Build not run after edit | Run |\n| Page in wrong tree position | slug mismatch | Check slug matches parent file's stem |\n| Duplicate slug warning | Two files with same name | Rename one file; slugs must be unique |\n---\nWhat's Next?\n- Organise your pages: See Page Hierarchy for how to nest pages under sections\n- Add metadata: See Frontmatter Reference for tags, status, and ordering\n- Write richer content: See Markdown Showcase for tables, code blocks, and more",
-    "parent": "pages/getting-started.md",
-    "children": [],
-    "backlinks": []
-  },
-  {
-    "id": "pages/getting-started/search-and-navigation.md",
-    "slug": "search-and-navigation",
-    "title": "Search & Navigation",
-    "sort_order": 4,
-    "tags": [
-      "docs",
-      "guide",
-      "search",
-      "navigation"
-    ],
-    "status": "final",
-    "last_updated": "2026-03-30",
-    "file_mtime": 1774890820.8503053,
-    "headings": [
-      "The Tree Sidebar",
-      "Expanding and Collapsing Sections",
-      "Filtering the Sidebar",
-      "Sort Order",
-      "The Home Page",
-      "Full-Text Search",
-      "How Search Works",
-      "Search Query Syntax",
-      "Search Result Cards",
-      "The AI Sidebar",
-      "What It Can Do",
-      "What It Can't Do",
-      "Usage",
-      "Keyboard Shortcuts",
-      "Tips for Navigating Large Wikis"
-    ],
-    "excerpt": "The Tree Sidebar\nThe collapsible tree on the left of every page is the primary navigation tool.\nExpanding and Collapsing Sections\n- Click the ▶ arrow beside a section name to expand its children\n- Click the ▼ arrow to collapse it again\n- Use Expand all / Collapse all buttons at the top to control al",
-    "body": "The Tree Sidebar\nThe collapsible tree on the left of every page is the primary navigation tool.\nExpanding and Collapsing Sections\n- Click the ▶ arrow beside a section name to expand its children\n- Click the ▼ arrow to collapse it again\n- Use Expand all / Collapse all buttons at the top to control all sections at once\nFiltering the Sidebar\nType in the Filter pages... input to narrow the tree to matching page titles:\nThe filter is case-insensitive and matches any substring of the title.\nSort Order\nUse the dropdown below the filter input to change how pages are ordered:\n| Option | Description |\n|--------|-------------|\n| Custom order | Uses frontmatter field (recommended) |\n| A–Z | Alphabetical title sort |\n| Z–A | Reverse alphabetical |\n| Oldest first | By ascending |\n| Newest first | By descending |\nThe selected sort persists until you change it — it's remembered across page navigations.\n---\nThe Home Page\n shows Recent Pages — the 5 most recently modified pages, displayed as cards.\nEach card shows:\n- Title (links to the page)\n- Status badge (DRAFT / REVIEW / FINAL) if set\n- Tags as clickable chips\n- Last updated date right-aligned\n- Excerpt — the first ~300 characters of page body text\nPages are sorted by descending, with file modification time as a tiebreaker. The most recently changed page always appears first.\n---\nFull-Text Search\nClick Search in the top navigation bar to open the search page.\nHow Search Works\nSearch is powered by Lunr.js — a client-side full-text search library. The entire search index is loaded in the browser; no server is involved.\nEvery word in every page's body, title, and tags is indexed at build time. Searching is instant.\nSearch Query Syntax\n| Query | Finds |\n|-------|-------|\n| | Pages containing the word \"combat\" |\n| | Pages containing both words (AND logic) |\n| | Pages containing words starting with \"combat\" (wildcard) |\n| | Must contain \"combat\", must not contain \"magic\" |\n| | Pages with \"combat\" in the title only |\nSearch Result Cards\nEach result shows:\n- Title with a link to the page\n- Status badge and tags\n- Excerpt snippet showing the first ~160 characters of body text\nResults are sorted by relevance score (Lunr.js tf-idf weighting). Exact title matches rank higher than body text matches.\n---\nThe AI Sidebar\nOn individual page views (), an AI assistant panel is available via a button in the top bar.\nWhat It Can Do\n- Answer questions about the current page\n- Summarise sections or the whole page\n- Help draft new content based on the page's context\n- Reference the doc index (all page titles and excerpts) to point you toward relevant pages\nWhat It Can't Do\nThe AI assistant does not read the full content of all pages — only the current page and a one-line summary of every other page. For questions requiring deep knowledge of another page, navigate to that page first and ask from there.\nUsage\n1. Click the AI button in the top right of a page\n2. Type your question in the input box\n3. The response appears in the sidebar panel\n4. Conversation history is kept for the last 4 turns\n> Cost note: Each AI response uses the Claude API. The system prompt and doc index are cached, so repeated questions on the same page are cheaper than the first call.\n---\nKeyboard Shortcuts\n| Shortcut | Action |\n|----------|--------|\n| | Focus the sidebar filter input |\n| | Clear the filter / close a modal |\n---\nTips for Navigating Large Wikis\n1. Use the filter box — typing 2–3 characters narrows a 100-page wiki to the relevant section instantly\n2. Bookmark deep pages — browser bookmarks work; the URL includes the full doc path as a query parameter\n3. Use search for cross-cutting queries — \"show me everything tagged \" is faster in search than browsing\n4. sort_order is your friend — assign low numbers (10, 20, 30...) to the pages you visit most so they appear at the top of their section in Custom order mode",
-    "parent": "pages/getting-started.md",
-    "children": [],
-    "backlinks": []
-  },
-  {
-    "id": "pages/getting-started.md",
-    "slug": "getting-started",
-    "title": "Getting Started",
-    "sort_order": 1,
-    "tags": [
-      "docs",
-      "guide",
-      "meta"
-    ],
-    "status": "final",
-    "last_updated": "2026-03-30",
-    "file_mtime": 1774890716.0608056,
-    "headings": [
-      "Welcome to This Wiki",
-      "What You Can Do Here",
-      "Manual Sections",
-      "→ [Quickstart](getting-started/quickstart.md)",
-      "→ [Frontmatter Reference](getting-started/frontmatter-reference.md)",
-      "→ [Page Hierarchy](getting-started/page-hierarchy.md)",
-      "→ [Search & Navigation](getting-started/search-and-navigation.md)",
-      "Quick Links"
-    ],
-    "excerpt": "Welcome to This Wiki\nThis wiki is powered by Lorengine — a self-hosted, static wiki engine built for game design documentation and any markdown-based knowledge base.\nEverything you see is rendered from plain files stored in the directory. No database. No backend server. No accounts. Just text files ",
-    "body": "Welcome to This Wiki\nThis wiki is powered by Lorengine — a self-hosted, static wiki engine built for game design documentation and any markdown-based knowledge base.\nEverything you see is rendered from plain files stored in the directory. No database. No backend server. No accounts. Just text files and a build step.\nWhat You Can Do Here\n- Read docs: Navigate using the tree sidebar on the left, or use full-text search\n- Write docs: Create and edit files in the directory\n- Organise docs: Use folder structure and frontmatter fields to build a page hierarchy\n- Search docs: Full-text search is built in — every word in every page is indexed\n- Ask the AI: The sidebar panel can draft content, summarise pages, and answer questions using the wiki's content as context\nManual Sections\n→ Quickstart\nCreate your first page in under five minutes. Covers file creation, required frontmatter, and triggering a build.\n→ Frontmatter Reference\nComplete reference for every supported frontmatter field: , , , , , .\n→ Page Hierarchy\nHow folder structure and the field work together to build the tree sidebar. When to use subfolders vs flat files.\n→ Search & Navigation\nUsing the tree sidebar, filter box, sort options, and the full-text search page.\n---\nQuick Links\n| Topic | Page |\n|-------|------|\n| Markdown features reference | Markdown Showcase |\n| Text formatting guide | Text Formatting |\n| Tables and lists | Tables & Lists |\n| Code blocks | Code & Blocks |\n| Linking between pages | Links & Cross-References |\n---\n> New to Lorengine? Start with Quickstart — it takes 5 minutes and covers everything you need to get your first page live.",
-    "parent": null,
-    "children": [
-      "pages/getting-started/frontmatter-reference.md",
-      "pages/getting-started/page-hierarchy.md",
-      "pages/getting-started/quickstart.md",
-      "pages/getting-started/search-and-navigation.md"
-    ],
-    "backlinks": []
-  },
-  {
-    "id": "pages/markdown-showcase/code-and-blocks.md",
+    "id": "pages/code-and-blocks.md",
     "slug": "code-and-blocks",
     "title": "Code & Blocks",
     "sort_order": 3,
@@ -412,7 +121,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774890918.5930176,
+    "file_mtime": 1774913053.404464,
     "headings": [
       "Fenced Code Blocks",
       "Supported Languages",
@@ -439,7 +148,199 @@
     "backlinks": []
   },
   {
-    "id": "pages/markdown-showcase/links-and-cross-references.md",
+    "id": "pages/design.md",
+    "slug": "design",
+    "title": "Game Design",
+    "sort_order": 20,
+    "tags": [
+      "design",
+      "systems",
+      "mechanics"
+    ],
+    "status": "review",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774913053.404464,
+    "headings": [
+      "Design Overview",
+      "Design Philosophy",
+      "System Categories",
+      "Gameplay Systems",
+      "Economy & Progression",
+      "Faction Design"
+    ],
+    "excerpt": "Design Overview\nThis section documents all gameplay systems, balance decisions, and design philosophy.\nStart here if you're new to the design; refer to subsections for detailed specifications.\nDesign Philosophy\nSimplicity in Rules, Depth in Interactions: Core mechanics are easy to learn (move → act ",
+    "body": "Design Overview\nThis section documents all gameplay systems, balance decisions, and design philosophy.\nStart here if you're new to the design; refer to subsections for detailed specifications.\nDesign Philosophy\nSimplicity in Rules, Depth in Interactions: Core mechanics are easy to learn (move → act → end turn) but create complex scenarios through unit abilities, terrain, and resource constraints.\nAsymmetric Factions: Each faction plays fundamentally differently. A single \"correct\" strategy should not exist.\nNarrative-First Design: Missions tell a story. Win conditions support the narrative, not vice versa.\nSystem Categories\nGameplay Systems\nSee Gameplay Systems for:\n- Turn structure and timing\n- Movement and pathfinding\n- Combat resolution and damage\n- Special abilities and unit abilities\nEconomy & Progression\nSee Economy & Progression for:\n- Resource generation and costs\n- Tech trees and unlocks\n- Difficulty scaling\n- Reward structures\nFaction Design\nSee Faction Design for detailed faction rules:\n- Harmonists — collaborative abilities, shared resources\n- Isolationists — individual unit strength, self-sufficiency\n- Adaptors — morphing units, tactical flexibility\n- Archivists — knowledge-based asymmetric advantages\n---\n> For Balance Designers: Record every playtest result and balance change with a date and rationale. Future designers need to understand why numbers are set as they are.",
+    "parent": null,
+    "children": [
+      "pages/economy-progression.md",
+      "pages/gameplay-systems.md"
+    ],
+    "backlinks": []
+  },
+  {
+    "id": "pages/economy-progression.md",
+    "slug": "economy-progression",
+    "title": "Economy & Progression",
+    "sort_order": 2,
+    "tags": [
+      "design",
+      "economy",
+      "balance",
+      "progression"
+    ],
+    "status": "review",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774913053.404464,
+    "headings": [
+      "Resource Economy",
+      "Territory Control",
+      "Tech Tree & Progression",
+      "Tech Costs",
+      "Unlocks by Type",
+      "Tech Tree Structure",
+      "Unit Progression",
+      "Unit Experience & Leveling",
+      "Level-Up Benefits",
+      "Difficulty Scaling"
+    ],
+    "excerpt": "Resource Economy\nEvery faction manages three core resources:\n| Resource | Generation | Max Storage | Purpose |\n|----------|------------|------------|---------|\n| Production | Per turn from territory; boosted by buildings | Unlimited | Build units, structures, upgrades |\n| Influence | Per turn from c",
+    "body": "Resource Economy\nEvery faction manages three core resources:\n| Resource | Generation | Max Storage | Purpose |\n|----------|------------|------------|---------|\n| Production | Per turn from territory; boosted by buildings | Unlimited | Build units, structures, upgrades |\n| Influence | Per turn from cities and diplomacy | 100 | Unlock tech, diplomacy, special actions |\n| Morale | Per turn from victory; lost from defeat | 100 | Army effectiveness; morale breaks cause retreat |\nTerritory Control\nUnits gain production income from friendly territory. Territory types:\n- City (4 prod/turn) — core resource hub; can be fortified\n- Farm (1 prod/turn) — rural, easily captured\n- Mine (2 prod/turn) — defensible, rare; multiple exist on map\n- Ruin (0 prod/turn) — neutral; grants vision and XP to units stationed there\nTerritory is held as long as a unit occupies it. Losing all units in a territory reverts it to neutral.\n> Economy Design: Early game rewards map control; late game is about tech advantage. A player who hoards resources without expanding falls behind in tech.\nTech Tree & Progression\nTech Costs\nAll techs cost Influence, measured in \"tech points\" (TP):\n- Tier 1 (early): 5–10 TP each\n- Tier 2 (mid): 15–25 TP each\n- Tier 3 (late): 30–50 TP each\n- Tier 4 (endgame): 60+ TP each\nUnlocks by Type\nUnit Unlocks (new unit type becomes available):\nAbility Unlocks (existing units gain new abilities):\nFaction Unlocks (faction-specific bonuses):\nTech Tree Structure\nEach faction has 3 independent trees (balanced in total cost):\n1. Military — units, combat abilities, weapons\n2. Economic — resource production, storage, trade\n3. Civic — morale, diplomacy, special abilities\nTrees are not branching — every tech in a tier can be accessed independently once the tier is unlocked.\nUnit Progression\nUnit Experience & Leveling\nUnits earn XP from:\n- Defeating enemies (+XP = enemy level × 1.5)\n- Surviving battle (+1 XP per turn in combat)\n- Capturing territory (+5 XP per capture)\nEvery 20 XP, a unit gains 1 level (max level 10).\nLevel-Up Benefits\nAt each level-up, units improve:\n| Stat | Gain per Level |\n|------|----------------|\n| Health | +5% |\n| Damage | +3% |\n| Armor | +2% |\n| Accuracy | +1.5% |\nAdditionally, units unlock 1 ability point per 3 levels. Spend on:\n- Increase existing ability effectiveness (+1 damage, -1 cooldown turn, etc.)\n- Unlock new tier 1/2 abilities (if tech tree allows)\n> Example: A level 3 Scout with 1 ability point spends it to unlock \"Evasion Stance\" (tier 1 passive: +2 evasion when moving).\nDifficulty Scaling\nCampaign difficulty affects:\n1. Enemy unit quality: Higher levels, better abilities unlocked\n2. Resource generation: Enemies gain resource multipliers\n - Easy: ×0.5 (enemies gain half normal production)\n - Normal: ×1.0\n - Hard: ×1.5 (enemies gain 50% bonus)\n - Legendary: ×2.0\n3. AI behavior: Different decision-making and aggressiveness\n - Easy: AI makes tactical mistakes\n - Normal: AI plays well but not optimally\n - Hard: AI optimizes, focuses on player weakness\n - Legendary: AI behaves like experienced player\n4. Mission modifier: Some battles have difficulty-locked modifiers\n - Hard: \"All enemy units have +1 armor\"\n - Legendary: \"All enemy units regenerate 2 HP per turn\"\n---\n> Design Note: Resources should feel scarce but not punishing. A player making suboptimal choices should still progress, just slower. Save resource generation for Legendary difficulty.",
+    "parent": "pages/design.md",
+    "children": [],
+    "backlinks": []
+  },
+  {
+    "id": "pages/frontmatter-reference.md",
+    "slug": "frontmatter-reference",
+    "title": "Frontmatter Reference",
+    "sort_order": 2,
+    "tags": [
+      "docs",
+      "reference",
+      "frontmatter"
+    ],
+    "status": "final",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774913053.404464,
+    "headings": [
+      "What Is Frontmatter?",
+      "Fields Reference",
+      "`title` *(required)*",
+      "`tags` *(optional)*",
+      "`status` *(optional)*",
+      "`last-updated` *(optional, auto-managed)*",
+      "`sort_order` *(optional)*",
+      "`parent` *(optional)*",
+      "Complete Example",
+      "Frontmatter Gotchas",
+      "Strings with Special Characters",
+      "Dates Must Be Quoted or Bare ISO Format",
+      "Tags Must Be an Array"
+    ],
+    "excerpt": "What Is Frontmatter?\nEvery wiki page starts with a YAML frontmatter block — metadata enclosed in triple-dash delimiters:\nThe frontmatter is never shown as raw text in the wiki. Fields are used by the build system and the UI to organise, display, and search pages.\n---\nFields Reference\n(required)\nType",
+    "body": "What Is Frontmatter?\nEvery wiki page starts with a YAML frontmatter block — metadata enclosed in triple-dash delimiters:\nThe frontmatter is never shown as raw text in the wiki. Fields are used by the build system and the UI to organise, display, and search pages.\n---\nFields Reference\n(required)\nType: String\nThe display name of the page. Shown in the sidebar, search results, and page heading.\n> Required: The build will skip any page without a and log a warning. All other fields are optional.\n---\n(optional)\nType: Array of strings\nUsed for categorisation and filtering. Tags appear as small chips in search results and on the index page. Choose lowercase, hyphen-separated values.\nConventions:\n- Use short, reusable tags (, , , , )\n- Don't use tags that duplicate the title ( on a page titled \"Combat System\" adds no value)\n- Be consistent — and are different tags to the search engine\n---\n(optional)\nType: One of , , or \nShown as a coloured badge on index cards and search results.\nOmitting defaults to no badge shown.\n---\n(optional, auto-managed)\nType: Date string in format\nRecords when the page content was last changed. Used to sort the Recent Pages list on the home screen (newest first).\n> Auto-update: The build script () tracks a content hash of each page. When the page body changes between builds, is automatically rewritten to today's date. You rarely need to set this manually.\n---\n(optional)\nType: Integer (default: )\nControls a page's position within its section when the sidebar sort is set to Custom order. Lower numbers appear first.\nSuggested numbering:\n- Leave gaps (10, 20, 30...) so you can insert pages later without renumbering everything\n- Root/overview pages typically get or \n- Appendix or reference pages get or higher\n---\n(optional)\nType: Slug string (filename stem of the parent page)\nPlaces this page as a child of another page in the tree sidebar. The value must be the exact slug (filename without ) of the parent.\n> Important: The parent page must exist. If the slug doesn't match any page, the build logs a warning and the page is placed at the root level instead.\nSee Page Hierarchy for the full picture of how parent/child relationships work with folder structure.\n---\nComplete Example\nA fully populated frontmatter block:\nThis page would:\n- Show as \"Faction Design: Harmonists\" everywhere in the UI\n- Display a REVIEW badge (blue)\n- Appear in search results filtered by , , or \n- Sort at position 20 within its section\n- Appear nested under the \"World & Story\" page in the sidebar\n---\nFrontmatter Gotchas\nStrings with Special Characters\nWrap titles in quotes if they contain colons, brackets, or other YAML special characters:\nDates Must Be Quoted or Bare ISO Format\nTags Must Be an Array",
+    "parent": "pages/getting-started.md",
+    "children": [],
+    "backlinks": []
+  },
+  {
+    "id": "pages/game-overview.md",
+    "slug": "game-overview",
+    "title": "Game Overview",
+    "sort_order": 10,
+    "tags": [
+      "design",
+      "core",
+      "vision"
+    ],
+    "status": "final",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774913053.404464,
+    "headings": [
+      "Project Title",
+      "Pitch",
+      "Core Pillars",
+      "Target Audience",
+      "Key Features",
+      "Success Criteria",
+      "Production Timeline"
+    ],
+    "excerpt": "Project Title\nNexus: Echoes of Empire — A turn-based tactical strategy game set in a fractured post-colonial world.\nPitch\nNexus: Echoes of Empire is a mid-scale, single-player campaign strategy game where players lead one of four factions competing for control of a shattered continent. Combat combin",
+    "body": "Project Title\nNexus: Echoes of Empire — A turn-based tactical strategy game set in a fractured post-colonial world.\nPitch\nNexus: Echoes of Empire is a mid-scale, single-player campaign strategy game where players lead one of four factions competing for control of a shattered continent. Combat combines traditional tactical grid-based movement with a dynamic resource economy that rewards long-term planning over moment-to-moment optimization.\nCore Pillars\n| Pillar | Description | Why It Matters |\n|--------|-------------|----------------|\n| Tactical Depth | Turn-based grid combat with unit positioning, elevation, and ability synergies | Casual to hardcore players both enjoy mastery through practice |\n| Emergent Strategy | Resource scarcity forces hard choices; no \"optimal\" build path | Replayability; players discover different approaches each run |\n| Narrative Integration | Campaign missions tied to faction lore and character arcs | Story justifies gameplay challenges and world-building |\n| Aesthetic Consistency | Hand-crafted isometric art paired with orchestral soundtrack | Memorable, cohesive experience; distances from procedural/AI-generated feel |\nTarget Audience\n- Primary: Strategy game enthusiasts (Civilization, XCOM, Fire Emblem)\n- Age: 16+\n- Platforms: PC (Windows, Linux, macOS)\n- Playtime: 30–50 hours per campaign\nKey Features\n1. Four Playable Factions — each with unique units, abilities, and campaign narratives\n2. Campaign Mode — 15–20 mission story arc with branching choices\n3. Tactical Combat — grid-based movement, line-of-sight, destructible environments\n4. Tech Tree & Progression — unlock new units and abilities through resource investment\n5. Dynamic Economy — production queues, supply lines, and trade networks\n6. Mod Support — map editor, unit/ability creators for community content\nSuccess Criteria\n- Critical: Campaign playable soup-to-nuts without game-breaking bugs\n- Gameplay: At least 3 distinct winning strategies per mission\n- Content: 15+ unique unit types across all factions\n- Polish: All audio custom-composed; all visuals hand-created (no AI)\n- Replayability: Campaign completion achievable in 30–50 hours; 4 faction routes\nProduction Timeline\nSee Production Plan for detailed schedule.\n- Preproduction: Months 1–3\n- Core Development: Months 4–18\n- Polish & QA: Months 19–24\n---\n> Design Note: Every feature must serve the core pillars. If a mechanic doesn't reinforce tactical depth, emergent strategy, narrative, or aesthetics, it should be cut or redesigned. Avoid feature creep.",
+    "parent": null,
+    "children": [],
+    "backlinks": []
+  },
+  {
+    "id": "pages/gameplay-systems.md",
+    "slug": "gameplay-systems",
+    "title": "Gameplay Systems",
+    "sort_order": 1,
+    "tags": [
+      "design",
+      "systems",
+      "mechanics"
+    ],
+    "status": "review",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774913053.404464,
+    "headings": [
+      "Turn Structure",
+      "Action Economy",
+      "Movement System",
+      "Pathing & Terrain",
+      "Elevation",
+      "Visibility & Fog of War",
+      "Combat Resolution",
+      "Attack Roll",
+      "Damage Calculation",
+      "Special Outcomes",
+      "Ability System",
+      "Ability Tiers",
+      "Cooldowns"
+    ],
+    "excerpt": "Turn Structure\nEach turn follows this sequence:\n1. Start Phase (automatic)\n - Passive abilities trigger (e.g., regeneration)\n - Buffs/debuffs decrement by 1 turn\n - Resource production calculates\n2. Action Phase (player)\n - Move units, execute actions, use abilities\n - Any number of actions in any o",
+    "body": "Turn Structure\nEach turn follows this sequence:\n1. Start Phase (automatic)\n - Passive abilities trigger (e.g., regeneration)\n - Buffs/debuffs decrement by 1 turn\n - Resource production calculates\n2. Action Phase (player)\n - Move units, execute actions, use abilities\n - Any number of actions in any order\n - Cannot repeat an action on the same unit in one turn\n3. End Phase (player triggers)\n - Confirm all changes\n - Pass turn to opponent (in multiplayer) or AI\n - Automatic save checkpoint\nAction Economy\nUnits have 2 action points (AP) per turn. Actions cost:\n| Action | Cost | Notes |\n|--------|------|-------|\n| Move (1 square) | 0.5 AP | Diagonal = same cost; movement range varies by unit |\n| Standard Attack | 1 AP | Can move + attack in one turn |\n| Ability (tier 1) | 0.5–1 AP | Faction and unit-specific |\n| Ability (tier 2) | 1–1.5 AP | More powerful, longer cooldown |\n| Interact (object) | 1 AP | Capture, defend, interact with environment |\n> Design Intent: 2 AP allows flexible play. Move + attack + something else creates interesting tradeoffs.\nMovement System\nPathing & Terrain\n- Units pathfind around obstacles automatically\n- Terrain Costs:\n - Grass, stone: 1 movement cost per square\n - Forest, rubble: 1.5 movement cost\n - Water, cliffs: impassable (unless unit has special trait)\nElevation\nHeights are crucial:\nUnits can move down any height freely. Moving up requires spending extra movement (0.5 per height level).\nVisibility & Fog of War\n- Each unit has a line of sight (LOS) radius (typically 5–7 squares)\n- Terrain blocks LOS (forest, hills, buildings)\n- Attacking reveals position even in fog\n- Stealthed units have reduced LOS radius\nCombat Resolution\nAttack Roll\n> Modifier Examples:\n> - Flanked unit: -15% accuracy (defender bonus)\n> - High ground: +10% accuracy (attacker bonus)\n> - In heavy cover: -20% accuracy (defender evasion)\nDamage Calculation\nSpecial Outcomes\nCritical Hit (10% chance on any hit):\n- Doubles damage\n- Bypasses cover bonuses\n- Some units have abilities that increase crit chance\nGlancing Blow (15% of misses):\n- 30% of normal damage dealt\n- Still triggers on-hit effects\nAbility System\nAbility Tiers\nTier 1 (Passive):\n- Always active, no AP cost\n- Examples: \"Infantry +10% armor\", \"Mage: gain 1 mana per kill\"\nTier 2 (Active, Low Cost):\n- 0.5 AP cost, 1–3 turn cooldown\n- Examples: \"Sprint\" (move again), \"Heal nearby ally\"\nTier 3 (Active, High Impact):\n- 1 AP cost, 3–5 turn cooldown\n- Examples: \"Fireball\" (area damage), \"Rally\" (buff entire army)\nTier 4 (Ultimate):\n- 1.5 AP cost, 5+ turn cooldown\n- Examples: \"Summon creature\", \"Mass teleport\"\nCooldowns\n- Cooldowns trigger on use, not on the unit\n- Can have multiple copies of the same unit to use the same ability\n- Some abilities have \"charges\" instead of cooldowns (e.g., \"use 3 times per battle\")\n---\n> Playtester Note: Combat feels slow if players overthink every move. Consider adding an \"auto-resolve\" option for low-difficulty battles.",
+    "parent": "pages/design.md",
+    "children": [],
+    "backlinks": []
+  },
+  {
+    "id": "pages/getting-started.md",
+    "slug": "getting-started",
+    "title": "Getting Started",
+    "sort_order": 1,
+    "tags": [
+      "docs",
+      "guide",
+      "meta"
+    ],
+    "status": "final",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774913053.404464,
+    "headings": [
+      "Welcome to This Wiki",
+      "What You Can Do Here",
+      "Manual Sections",
+      "→ [Quickstart](getting-started/quickstart.md)",
+      "→ [Frontmatter Reference](getting-started/frontmatter-reference.md)",
+      "→ [Page Hierarchy](getting-started/page-hierarchy.md)",
+      "→ [Search & Navigation](getting-started/search-and-navigation.md)",
+      "Quick Links"
+    ],
+    "excerpt": "Welcome to This Wiki\nThis wiki is powered by Lorengine — a self-hosted, static wiki engine built for game design documentation and any markdown-based knowledge base.\nEverything you see is rendered from plain files stored in the directory. No database. No backend server. No accounts. Just text files ",
+    "body": "Welcome to This Wiki\nThis wiki is powered by Lorengine — a self-hosted, static wiki engine built for game design documentation and any markdown-based knowledge base.\nEverything you see is rendered from plain files stored in the directory. No database. No backend server. No accounts. Just text files and a build step.\nWhat You Can Do Here\n- Read docs: Navigate using the tree sidebar on the left, or use full-text search\n- Write docs: Create and edit files in the directory\n- Organise docs: Use folder structure and frontmatter fields to build a page hierarchy\n- Search docs: Full-text search is built in — every word in every page is indexed\n- Ask the AI: The sidebar panel can draft content, summarise pages, and answer questions using the wiki's content as context\nManual Sections\n→ Quickstart\nCreate your first page in under five minutes. Covers file creation, required frontmatter, and triggering a build.\n→ Frontmatter Reference\nComplete reference for every supported frontmatter field: , , , , , .\n→ Page Hierarchy\nHow folder structure and the field work together to build the tree sidebar. When to use subfolders vs flat files.\n→ Search & Navigation\nUsing the tree sidebar, filter box, sort options, and the full-text search page.\n---\nQuick Links\n| Topic | Page |\n|-------|------|\n| Markdown features reference | Markdown Showcase |\n| Text formatting guide | Text Formatting |\n| Tables and lists | Tables & Lists |\n| Code blocks | Code & Blocks |\n| Linking between pages | Links & Cross-References |\n---\n> New to Lorengine? Start with Quickstart — it takes 5 minutes and covers everything you need to get your first page live.",
+    "parent": null,
+    "children": [
+      "pages/frontmatter-reference.md",
+      "pages/page-hierarchy.md",
+      "pages/quickstart.md",
+      "pages/search-and-navigation.md"
+    ],
+    "backlinks": []
+  },
+  {
+    "id": "pages/links-and-cross-references.md",
     "slug": "links-and-cross-references",
     "title": "Links & Cross-References",
     "sort_order": 4,
@@ -451,7 +352,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774892640.2815557,
+    "file_mtime": 1774913053.404464,
     "headings": [
       "Internal Wiki Links",
       "Linking From a Root Page",
@@ -482,70 +383,6 @@
     "backlinks": []
   },
   {
-    "id": "pages/markdown-showcase/tables-and-lists.md",
-    "slug": "tables-and-lists",
-    "title": "Tables & Lists",
-    "sort_order": 2,
-    "tags": [
-      "docs",
-      "reference",
-      "markdown"
-    ],
-    "status": "final",
-    "last_updated": "2026-03-30",
-    "file_mtime": 1774890885.3837922,
-    "headings": [
-      "Unordered Lists",
-      "Ordered Lists",
-      "Nested Lists",
-      "Mixed Ordered/Unordered Nesting",
-      "Lists with Multiple Paragraphs",
-      "Basic Table",
-      "Column Alignment",
-      "Tables with Inline Formatting",
-      "Tables with Multiple Lines of Data",
-      "Large Reference Tables",
-      "When Tables vs Lists"
-    ],
-    "excerpt": "Unordered Lists\nUse , , or for bullet points. The character doesn't matter — be consistent within a file.\n- First item\n- Second item\n- Third item\n---\nOrdered Lists\nUse numbers followed by a period. The actual numbers don't matter — they auto-increment.\n1. First step\n2. Second step\n3. Third step\n> Ti",
-    "body": "Unordered Lists\nUse , , or for bullet points. The character doesn't matter — be consistent within a file.\n- First item\n- Second item\n- Third item\n---\nOrdered Lists\nUse numbers followed by a period. The actual numbers don't matter — they auto-increment.\n1. First step\n2. Second step\n3. Third step\n> Tip: Some authors write for every item. This makes reordering easier since you never need to renumber.\n---\nNested Lists\nIndent by 2–4 spaces to create sub-items. Mix ordered and unordered freely.\n- Factions\n - Harmonists\n - Philosophy: cooperation\n - Strength: group buffs\n - Isolationists\n - Philosophy: self-sufficiency\n - Strength: individual power\n- Systems\n - Combat\n - Economy\n---\nMixed Ordered/Unordered Nesting\n1. Preproduction\n - Write design document\n - Create art style guide\n - Build prototype\n2. Production\n - Implement core systems\n - Create all unit sprites\n - Compose soundtrack\n3. Polish\n - Bug fixing\n - Balance tuning\n - Playtesting\n---\nLists with Multiple Paragraphs\nAdd a blank line between items and indent continuation content by 4 spaces:\n- Combat System\n The core interaction loop. Handles turn order, attack resolution,\n damage calculation, and special abilities.\n- Economy System\n Manages resource production, spending, and storage across all\n faction types.\n---\nBasic Table\nTables use pipe separators with a header separator row of dashes.\n| Unit | HP | Damage | Range |\n|------|-----|--------|-------|\n| Scout | 30 | 8 | 5 |\n| Warrior | 60 | 15 | 1 |\n| Mage | 25 | 25 | 4 |\n| Archer | 35 | 12 | 6 |\n---\nColumn Alignment\nAdd to the separator row to align columns.\n| Left-aligned | Centered | Right-aligned |\n|:-------------|:--------:|--------------:|\n| Text | Text | Text |\n| 1234 | 5678 | 9012 |\n| Short | A much longer value | 1 |\nDefault (no colon) is left-aligned.\n---\nTables with Inline Formatting\nCell content can include any inline markdown:\n| System | Status | Owner |\n|--------|--------|-------|\n| Combat | ✓ Complete | |\n| Economy | ⚠ In progress | |\n| Pathfinding | ✗ Not started | — |\n| ~~Old AI~~ | Deprecated | — |\n---\nTables with Multiple Lines of Data\nFor readability, align your pipe characters:\n| Faction | Production | Influence | Morale |\n|---------------|:----------:|:---------:|:------:|\n| Harmonists | 4/turn | 3/turn | 5/turn |\n| Isolationists | 3/turn | 2/turn | 3/turn |\n| Adaptors | 2/turn | 4/turn | 4/turn |\n| Archivists | 2/turn | 6/turn | 2/turn |\n---\nLarge Reference Tables\nTables work well for spec sheets and reference data. Example from a unit roster:\n| Unit | Faction | HP | Dmg | Armor | AP | Range | Special |\n|------|---------|:--:|:---:|:-----:|:--:|:-----:|---------|\n| Spearman | Harmonists | 50 | 12 | 4 | 2 | 1 | Formation bonus |\n| Shield Wall | Harmonists | 80 | 8 | 8 | 1.5 | 1 | Blocks for adjacent |\n| Loner | Isolationists | 70 | 18 | 5 | 2 | 1 | Solo strength bonus |\n| Sniper | Isolationists | 30 | 22 | 1 | 1.5 | 8 | No movement penalty |\n| Morph Scout | Adaptors | 40 | 10 | 3 | 2 | 5 | Can morph into 3 forms |\n| Archivist | Archivists | 35 | 14 | 2 | 2 | 4 | Copies enemy abilities |\n---\nWhen Tables vs Lists\nUse a table when:\n- You have 2+ attributes per item\n- You want to compare values across items side by side\n- Data is structured and consistent\nUse a list when:\n- Each item is a standalone point with no parallel attributes\n- Items have very different lengths (cells would need wrapping)\n- You're describing a sequence of steps",
-    "parent": "pages/markdown-showcase.md",
-    "children": [],
-    "backlinks": []
-  },
-  {
-    "id": "pages/markdown-showcase/text-formatting.md",
-    "slug": "text-formatting",
-    "title": "Text Formatting",
-    "sort_order": 1,
-    "tags": [
-      "docs",
-      "reference",
-      "markdown"
-    ],
-    "status": "final",
-    "last_updated": "2026-03-30",
-    "file_mtime": 1774890856.5303652,
-    "headings": [
-      "Bold",
-      "Italic",
-      "Bold and Italic Combined",
-      "Strikethrough",
-      "Inline Code",
-      "Emphasis Within Sentences",
-      "Horizontal Rule",
-      "Line Breaks",
-      "Escaping Special Characters",
-      "Special Typography",
-      "Combining Formats"
-    ],
-    "excerpt": "Bold\nWrap text in double asterisks or double underscores.\nThis text is bold\nThis is also bold\n---\nItalic\nWrap text in single asterisks or single underscores.\nThis text is italic\nThis is also italic\n---\nBold and Italic Combined\nUse triple asterisks for bold-italic.\nThis is bold and italic\n---\nStriket",
-    "body": "Bold\nWrap text in double asterisks or double underscores.\nThis text is bold\nThis is also bold\n---\nItalic\nWrap text in single asterisks or single underscores.\nThis text is italic\nThis is also italic\n---\nBold and Italic Combined\nUse triple asterisks for bold-italic.\nThis is bold and italic\n---\nStrikethrough\nWrap text in double tildes.\n~~This text has a strikethrough~~\nThe old price was ~~$49.99~~ — now $29.99.\n---\nInline Code\nWrap code in single backticks. Use for file names, function names, commands, and short code snippets.\nRun to rebuild the site.\nThe function processes parent/child links.\nEdit to update the content.\n---\nEmphasis Within Sentences\nYou can apply formatting to part of a word or within flowing sentences:\nThe unit has unbelievable range.\nUse only one attack per turn.\nThe field accepts , , or .\n---\nHorizontal Rule\nThree or more dashes (or asterisks or underscores) on their own line create a horizontal divider.\nThis is useful for separating major conceptual areas within a long page without using a new heading.\n---\nLine Breaks\nIn standard markdown, a single newline in the source does not create a visible break in the output — the two lines are joined.\nTo create a hard line break within a paragraph, end a line with two or more spaces, or use a blank line to start a new paragraph.\nThis line ends here.\nThis continues on the same line in the output.\nThis line ends here.\nThis starts a new paragraph.\n---\nEscaping Special Characters\nPrefix any special markdown character with a backslash to output it literally:\n\\Not italic\\\n\\\n---\nSpecial Typography\nStandard characters that render nicely in the browser:\nEm dash: —\nEn dash: –\nEllipsis: …\n> Tip: For game design docs, em dashes (—) are common for ranges (\"3–5 damage\"), explanations (\"Combat — the core of the game\"), and asides. Type them directly rather than using (which creates a horizontal rule).\n---\nCombining Formats\nFormats can be combined freely:\n* is the only file you should edit in a fork.\nThe ~~deprecated~~ has been replaced by .\n> Critical:*** Always back up your directory before a major restructure.",
-    "parent": "pages/markdown-showcase.md",
-    "children": [],
-    "backlinks": []
-  },
-  {
     "id": "pages/markdown-showcase.md",
     "slug": "markdown-showcase",
     "title": "Markdown Showcase",
@@ -557,7 +394,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774890834.996287,
+    "file_mtime": 1774913053.404464,
     "headings": [
       "About This Section",
       "Subsections",
@@ -571,11 +408,42 @@
     "body": "About This Section\nThis section is a live reference for every markdown feature supported in this wiki. Each page demonstrates real syntax with rendered output — use it to look up how to write something, or copy blocks directly into your own pages.\nThe wiki renders markdown using marked.js with syntax highlighting via highlight.js.\nSubsections\n→ Text Formatting\nBold, italic, strikethrough, inline code, superscript, subscript, horizontal rules, and escape sequences.\n→ Tables & Lists\nAll list variants (ordered, unordered, nested, task lists) and tables with column alignment.\n→ Code & Blocks\nFenced code blocks with syntax highlighting, inline code, blockquotes (single and nested), and preformatted text.\n→ Links & Cross-References\nInternal wiki page links, external links, anchor links within a page, and reference-style links.\n---\nMarkdown Quick-Reference\n| Element | Syntax | Notes |\n|---------|--------|-------|\n| Bold | | |\n| Italic | or | |\n| ~~Strikethrough~~ | | |\n| | `code> text## Heading### Heading1. item- item+\\| col \\| col \\| `` | Language name enables syntax highlight |\n| Horizontal rule | | Three or more dashes |\n| Internal link | | Relative path from current page |\n| External link | | Full URL |\n> H1 is reserved:** The wiki automatically displays your frontmatter field as the page's H1. Don't use in your page body — start at .",
     "parent": null,
     "children": [
-      "pages/markdown-showcase/code-and-blocks.md",
-      "pages/markdown-showcase/links-and-cross-references.md",
-      "pages/markdown-showcase/tables-and-lists.md",
-      "pages/markdown-showcase/text-formatting.md"
+      "pages/code-and-blocks.md",
+      "pages/links-and-cross-references.md",
+      "pages/tables-and-lists.md",
+      "pages/text-formatting.md"
     ],
+    "backlinks": []
+  },
+  {
+    "id": "pages/page-hierarchy.md",
+    "slug": "page-hierarchy",
+    "title": "Page Hierarchy",
+    "sort_order": 3,
+    "tags": [
+      "docs",
+      "guide",
+      "structure"
+    ],
+    "status": "final",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774913053.404464,
+    "headings": [
+      "How the Tree Sidebar Works",
+      "Declaring a Parent",
+      "How Slugs Work",
+      "Folder Structure Convention",
+      "Recommended Pattern",
+      "Flat Pattern (No Subfolders)",
+      "Deep Nesting",
+      "Visual Result",
+      "Moving Pages",
+      "Sidebar Sort Options"
+    ],
+    "excerpt": "How the Tree Sidebar Works\nThe sidebar on the left is a navigable page tree. Pages can be:\n- Root pages — top-level entries, no parent\n- Section roots — pages that have children nested under them\n- Leaf pages — pages with a parent but no children of their own\nThe tree is built from two sources worki",
+    "body": "How the Tree Sidebar Works\nThe sidebar on the left is a navigable page tree. Pages can be:\n- Root pages — top-level entries, no parent\n- Section roots — pages that have children nested under them\n- Leaf pages — pages with a parent but no children of their own\nThe tree is built from two sources working together:\n1. The frontmatter field — explicitly declares which page is the parent\n2. File modification time — determines sort order when dates are equal\n---\nDeclaring a Parent\nTo nest a page under another, set to the parent page's slug (its filename without ):\nThis makes \"Combat System\" appear as a child of whatever page has the slug — which would be .\nHow Slugs Work\nA slug is the filename stem — everything before the . It must be unique across the entire wiki (not just within a folder):\n> Warning: Two pages with the same filename in different folders will collide. The build exits with an error: \n---\nFolder Structure Convention\nYou don't have to use subfolders — you could put all pages flat in and rely entirely on declarations. However, using matching folder names keeps things tidy and makes the structure obvious at a glance.\nRecommended Pattern\nPlace a page's children in a folder named after it:\nFlat Pattern (No Subfolders)\nWorks fine for small wikis. All declarations must still be correct slugs:\nDeep Nesting\nThe wiki supports one level of nesting in the sidebar. A page can be a child of a parent, but grandchildren (children of children) are not displayed as nested — they appear as children of the grandparent's section.\n> For deeply hierarchical content, consider flattening the structure and using in-page links to connect related pages.\n---\nVisual Result\nGiven this file layout and frontmatter:\nThe sidebar (Custom order) renders as:\n---\nMoving Pages\nTo move a page to a different section:\n1. Change its field to the new parent's slug\n2. Optionally move the file to a matching subfolder (not required but keeps things tidy)\n3. Run to rebuild\nThe tree sidebar updates immediately after rebuild. No other pages need to change unless you had inline links pointing to the page's old path.\n---\nSidebar Sort Options\nThe sidebar supports multiple sort modes, selectable from the dropdown at the top:\n| Mode | Behaviour |\n|------|-----------|\n| Custom order | Uses field ascending; ties broken by title A–Z |\n| A–Z | Alphabetical by title |\n| Z–A | Reverse alphabetical |\n| Oldest first | Ascending date |\n| Newest first | Descending date |\nThe selected sort applies to all tree nodes simultaneously. Children within a parent section sort independently from other sections.",
+    "parent": "pages/getting-started.md",
+    "children": [],
     "backlinks": []
   },
   {
@@ -591,7 +459,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774890327.251142,
+    "file_mtime": 1774913053.404464,
     "headings": [
       "Team Structure",
       "Core Team (6–8 people)",
@@ -618,6 +486,138 @@
     "backlinks": []
   },
   {
+    "id": "pages/quickstart.md",
+    "slug": "quickstart",
+    "title": "Quickstart",
+    "sort_order": 1,
+    "tags": [
+      "docs",
+      "guide",
+      "setup"
+    ],
+    "status": "final",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774913053.404464,
+    "headings": [
+      "Your First Page in 5 Minutes",
+      "Step 1: Create a Markdown File",
+      "Step 2: Add the Required Frontmatter",
+      "Step 3: Write Your Content",
+      "Overview",
+      "Attack Resolution",
+      "Step 4: Build the Wiki",
+      "Step 5: View Your Page",
+      "Troubleshooting",
+      "What's Next?"
+    ],
+    "excerpt": "Your First Page in 5 Minutes\nThis guide gets you from zero to a live wiki page as fast as possible.\n---\nStep 1: Create a Markdown File\nCreate a new file anywhere inside the directory:\nThe filename becomes the page's slug — a unique identifier used for linking and hierarchy. Use lowercase, hyphen-sep",
+    "body": "Your First Page in 5 Minutes\nThis guide gets you from zero to a live wiki page as fast as possible.\n---\nStep 1: Create a Markdown File\nCreate a new file anywhere inside the directory:\nThe filename becomes the page's slug — a unique identifier used for linking and hierarchy. Use lowercase, hyphen-separated names.\nGood slugs:\nAvoid:\n---\nStep 2: Add the Required Frontmatter\nEvery page must start with a YAML frontmatter block. The only required field is :\nA complete, well-structured frontmatter block looks like this:\nSee Frontmatter Reference for every available field.\n---\nStep 3: Write Your Content\nAfter the frontmatter closing , write your page content in Markdown.\n> Heading levels: Use for top-level sections and for subsections. Don't use (that's the page title, already shown from your frontmatter).\n---\nStep 4: Build the Wiki\nRun the build script from the project root:\nThe build:\n1. Scans all files in \n2. Parses frontmatter and body text\n3. Builds the search index ()\n4. Assembles the final site in \nOutput when successful:\nIf a file is missing its field, the build skips it with a warning:\n---\nStep 5: View Your Page\nServe the directory locally:\nThen open in your browser.\nYour new page should appear:\n- In the tree sidebar on the left\n- In Recent Pages on the home screen (if it's one of the 5 most recently modified)\n- In search results when you type any word from the page\n---\nTroubleshooting\n| Problem | Likely Cause | Fix |\n|---------|-------------|-----|\n| Page not in sidebar | Missing in frontmatter | Add and rebuild |\n| Page not in search | Build not run after edit | Run |\n| Page in wrong tree position | slug mismatch | Check slug matches parent file's stem |\n| Duplicate slug warning | Two files with same name | Rename one file; slugs must be unique |\n---\nWhat's Next?\n- Organise your pages: See Page Hierarchy for how to nest pages under sections\n- Add metadata: See Frontmatter Reference for tags, status, and ordering\n- Write richer content: See Markdown Showcase for tables, code blocks, and more",
+    "parent": "pages/getting-started.md",
+    "children": [],
+    "backlinks": []
+  },
+  {
+    "id": "pages/search-and-navigation.md",
+    "slug": "search-and-navigation",
+    "title": "Search & Navigation",
+    "sort_order": 4,
+    "tags": [
+      "docs",
+      "guide",
+      "search",
+      "navigation"
+    ],
+    "status": "final",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774913053.404464,
+    "headings": [
+      "The Tree Sidebar",
+      "Expanding and Collapsing Sections",
+      "Filtering the Sidebar",
+      "Sort Order",
+      "The Home Page",
+      "Full-Text Search",
+      "How Search Works",
+      "Search Query Syntax",
+      "Search Result Cards",
+      "The AI Sidebar",
+      "What It Can Do",
+      "What It Can't Do",
+      "Usage",
+      "Keyboard Shortcuts",
+      "Tips for Navigating Large Wikis"
+    ],
+    "excerpt": "The Tree Sidebar\nThe collapsible tree on the left of every page is the primary navigation tool.\nExpanding and Collapsing Sections\n- Click the ▶ arrow beside a section name to expand its children\n- Click the ▼ arrow to collapse it again\n- Use Expand all / Collapse all buttons at the top to control al",
+    "body": "The Tree Sidebar\nThe collapsible tree on the left of every page is the primary navigation tool.\nExpanding and Collapsing Sections\n- Click the ▶ arrow beside a section name to expand its children\n- Click the ▼ arrow to collapse it again\n- Use Expand all / Collapse all buttons at the top to control all sections at once\nFiltering the Sidebar\nType in the Filter pages... input to narrow the tree to matching page titles:\nThe filter is case-insensitive and matches any substring of the title.\nSort Order\nUse the dropdown below the filter input to change how pages are ordered:\n| Option | Description |\n|--------|-------------|\n| Custom order | Uses frontmatter field (recommended) |\n| A–Z | Alphabetical title sort |\n| Z–A | Reverse alphabetical |\n| Oldest first | By ascending |\n| Newest first | By descending |\nThe selected sort persists until you change it — it's remembered across page navigations.\n---\nThe Home Page\n shows Recent Pages — the 5 most recently modified pages, displayed as cards.\nEach card shows:\n- Title (links to the page)\n- Status badge (DRAFT / REVIEW / FINAL) if set\n- Tags as clickable chips\n- Last updated date right-aligned\n- Excerpt — the first ~300 characters of page body text\nPages are sorted by descending, with file modification time as a tiebreaker. The most recently changed page always appears first.\n---\nFull-Text Search\nClick Search in the top navigation bar to open the search page.\nHow Search Works\nSearch is powered by Lunr.js — a client-side full-text search library. The entire search index is loaded in the browser; no server is involved.\nEvery word in every page's body, title, and tags is indexed at build time. Searching is instant.\nSearch Query Syntax\n| Query | Finds |\n|-------|-------|\n| | Pages containing the word \"combat\" |\n| | Pages containing both words (AND logic) |\n| | Pages containing words starting with \"combat\" (wildcard) |\n| | Must contain \"combat\", must not contain \"magic\" |\n| | Pages with \"combat\" in the title only |\nSearch Result Cards\nEach result shows:\n- Title with a link to the page\n- Status badge and tags\n- Excerpt snippet showing the first ~160 characters of body text\nResults are sorted by relevance score (Lunr.js tf-idf weighting). Exact title matches rank higher than body text matches.\n---\nThe AI Sidebar\nOn individual page views (), an AI assistant panel is available via a button in the top bar.\nWhat It Can Do\n- Answer questions about the current page\n- Summarise sections or the whole page\n- Help draft new content based on the page's context\n- Reference the doc index (all page titles and excerpts) to point you toward relevant pages\nWhat It Can't Do\nThe AI assistant does not read the full content of all pages — only the current page and a one-line summary of every other page. For questions requiring deep knowledge of another page, navigate to that page first and ask from there.\nUsage\n1. Click the AI button in the top right of a page\n2. Type your question in the input box\n3. The response appears in the sidebar panel\n4. Conversation history is kept for the last 4 turns\n> Cost note: Each AI response uses the Claude API. The system prompt and doc index are cached, so repeated questions on the same page are cheaper than the first call.\n---\nKeyboard Shortcuts\n| Shortcut | Action |\n|----------|--------|\n| | Focus the sidebar filter input |\n| | Clear the filter / close a modal |\n---\nTips for Navigating Large Wikis\n1. Use the filter box — typing 2–3 characters narrows a 100-page wiki to the relevant section instantly\n2. Bookmark deep pages — browser bookmarks work; the URL includes the full doc path as a query parameter\n3. Use search for cross-cutting queries — \"show me everything tagged \" is faster in search than browsing\n4. sort_order is your friend — assign low numbers (10, 20, 30...) to the pages you visit most so they appear at the top of their section in Custom order mode",
+    "parent": "pages/getting-started.md",
+    "children": [],
+    "backlinks": []
+  },
+  {
+    "id": "pages/tables-and-lists.md",
+    "slug": "tables-and-lists",
+    "title": "Tables & Lists",
+    "sort_order": 2,
+    "tags": [
+      "docs",
+      "reference",
+      "markdown"
+    ],
+    "status": "final",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774913053.404464,
+    "headings": [
+      "Unordered Lists",
+      "Ordered Lists",
+      "Nested Lists",
+      "Mixed Ordered/Unordered Nesting",
+      "Lists with Multiple Paragraphs",
+      "Basic Table",
+      "Column Alignment",
+      "Tables with Inline Formatting",
+      "Tables with Multiple Lines of Data",
+      "Large Reference Tables",
+      "When Tables vs Lists"
+    ],
+    "excerpt": "Unordered Lists\nUse , , or for bullet points. The character doesn't matter — be consistent within a file.\n- First item\n- Second item\n- Third item\n---\nOrdered Lists\nUse numbers followed by a period. The actual numbers don't matter — they auto-increment.\n1. First step\n2. Second step\n3. Third step\n> Ti",
+    "body": "Unordered Lists\nUse , , or for bullet points. The character doesn't matter — be consistent within a file.\n- First item\n- Second item\n- Third item\n---\nOrdered Lists\nUse numbers followed by a period. The actual numbers don't matter — they auto-increment.\n1. First step\n2. Second step\n3. Third step\n> Tip: Some authors write for every item. This makes reordering easier since you never need to renumber.\n---\nNested Lists\nIndent by 2–4 spaces to create sub-items. Mix ordered and unordered freely.\n- Factions\n - Harmonists\n - Philosophy: cooperation\n - Strength: group buffs\n - Isolationists\n - Philosophy: self-sufficiency\n - Strength: individual power\n- Systems\n - Combat\n - Economy\n---\nMixed Ordered/Unordered Nesting\n1. Preproduction\n - Write design document\n - Create art style guide\n - Build prototype\n2. Production\n - Implement core systems\n - Create all unit sprites\n - Compose soundtrack\n3. Polish\n - Bug fixing\n - Balance tuning\n - Playtesting\n---\nLists with Multiple Paragraphs\nAdd a blank line between items and indent continuation content by 4 spaces:\n- Combat System\n The core interaction loop. Handles turn order, attack resolution,\n damage calculation, and special abilities.\n- Economy System\n Manages resource production, spending, and storage across all\n faction types.\n---\nBasic Table\nTables use pipe separators with a header separator row of dashes.\n| Unit | HP | Damage | Range |\n|------|-----|--------|-------|\n| Scout | 30 | 8 | 5 |\n| Warrior | 60 | 15 | 1 |\n| Mage | 25 | 25 | 4 |\n| Archer | 35 | 12 | 6 |\n---\nColumn Alignment\nAdd to the separator row to align columns.\n| Left-aligned | Centered | Right-aligned |\n|:-------------|:--------:|--------------:|\n| Text | Text | Text |\n| 1234 | 5678 | 9012 |\n| Short | A much longer value | 1 |\nDefault (no colon) is left-aligned.\n---\nTables with Inline Formatting\nCell content can include any inline markdown:\n| System | Status | Owner |\n|--------|--------|-------|\n| Combat | ✓ Complete | |\n| Economy | ⚠ In progress | |\n| Pathfinding | ✗ Not started | — |\n| ~~Old AI~~ | Deprecated | — |\n---\nTables with Multiple Lines of Data\nFor readability, align your pipe characters:\n| Faction | Production | Influence | Morale |\n|---------------|:----------:|:---------:|:------:|\n| Harmonists | 4/turn | 3/turn | 5/turn |\n| Isolationists | 3/turn | 2/turn | 3/turn |\n| Adaptors | 2/turn | 4/turn | 4/turn |\n| Archivists | 2/turn | 6/turn | 2/turn |\n---\nLarge Reference Tables\nTables work well for spec sheets and reference data. Example from a unit roster:\n| Unit | Faction | HP | Dmg | Armor | AP | Range | Special |\n|------|---------|:--:|:---:|:-----:|:--:|:-----:|---------|\n| Spearman | Harmonists | 50 | 12 | 4 | 2 | 1 | Formation bonus |\n| Shield Wall | Harmonists | 80 | 8 | 8 | 1.5 | 1 | Blocks for adjacent |\n| Loner | Isolationists | 70 | 18 | 5 | 2 | 1 | Solo strength bonus |\n| Sniper | Isolationists | 30 | 22 | 1 | 1.5 | 8 | No movement penalty |\n| Morph Scout | Adaptors | 40 | 10 | 3 | 2 | 5 | Can morph into 3 forms |\n| Archivist | Archivists | 35 | 14 | 2 | 2 | 4 | Copies enemy abilities |\n---\nWhen Tables vs Lists\nUse a table when:\n- You have 2+ attributes per item\n- You want to compare values across items side by side\n- Data is structured and consistent\nUse a list when:\n- Each item is a standalone point with no parallel attributes\n- Items have very different lengths (cells would need wrapping)\n- You're describing a sequence of steps",
+    "parent": "pages/markdown-showcase.md",
+    "children": [],
+    "backlinks": []
+  },
+  {
+    "id": "pages/text-formatting.md",
+    "slug": "text-formatting",
+    "title": "Text Formatting",
+    "sort_order": 1,
+    "tags": [
+      "docs",
+      "reference",
+      "markdown"
+    ],
+    "status": "final",
+    "last_updated": "2026-03-30",
+    "file_mtime": 1774913053.404464,
+    "headings": [
+      "Bold",
+      "Italic",
+      "Bold and Italic Combined",
+      "Strikethrough",
+      "Inline Code",
+      "Emphasis Within Sentences",
+      "Horizontal Rule",
+      "Line Breaks",
+      "Escaping Special Characters",
+      "Special Typography",
+      "Combining Formats"
+    ],
+    "excerpt": "Bold\nWrap text in double asterisks or double underscores.\nThis text is bold\nThis is also bold\n---\nItalic\nWrap text in single asterisks or single underscores.\nThis text is italic\nThis is also italic\n---\nBold and Italic Combined\nUse triple asterisks for bold-italic.\nThis is bold and italic\n---\nStriket",
+    "body": "Bold\nWrap text in double asterisks or double underscores.\nThis text is bold\nThis is also bold\n---\nItalic\nWrap text in single asterisks or single underscores.\nThis text is italic\nThis is also italic\n---\nBold and Italic Combined\nUse triple asterisks for bold-italic.\nThis is bold and italic\n---\nStrikethrough\nWrap text in double tildes.\n~~This text has a strikethrough~~\nThe old price was ~~$49.99~~ — now $29.99.\n---\nInline Code\nWrap code in single backticks. Use for file names, function names, commands, and short code snippets.\nRun to rebuild the site.\nThe function processes parent/child links.\nEdit to update the content.\n---\nEmphasis Within Sentences\nYou can apply formatting to part of a word or within flowing sentences:\nThe unit has unbelievable range.\nUse only one attack per turn.\nThe field accepts , , or .\n---\nHorizontal Rule\nThree or more dashes (or asterisks or underscores) on their own line create a horizontal divider.\nThis is useful for separating major conceptual areas within a long page without using a new heading.\n---\nLine Breaks\nIn standard markdown, a single newline in the source does not create a visible break in the output — the two lines are joined.\nTo create a hard line break within a paragraph, end a line with two or more spaces, or use a blank line to start a new paragraph.\nThis line ends here.\nThis continues on the same line in the output.\nThis line ends here.\nThis starts a new paragraph.\n---\nEscaping Special Characters\nPrefix any special markdown character with a backslash to output it literally:\n\\Not italic\\\n\\\n---\nSpecial Typography\nStandard characters that render nicely in the browser:\nEm dash: —\nEn dash: –\nEllipsis: …\n> Tip: For game design docs, em dashes (—) are common for ranges (\"3–5 damage\"), explanations (\"Combat — the core of the game\"), and asides. Type them directly rather than using (which creates a horizontal rule).\n---\nCombining Formats\nFormats can be combined freely:\n* is the only file you should edit in a fork.\nThe ~~deprecated~~ has been replaced by .\n> Critical:*** Always back up your directory before a major restructure.",
+    "parent": "pages/markdown-showcase.md",
+    "children": [],
+    "backlinks": []
+  },
+  {
     "id": "pages/world-story.md",
     "slug": "world-story",
     "title": "World & Story",
@@ -630,7 +630,7 @@
     ],
     "status": "review",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774890262.163655,
+    "file_mtime": 1774913053.404464,
     "headings": [
       "Setting: The Shattered Meridian",
       "Timeline Context",
