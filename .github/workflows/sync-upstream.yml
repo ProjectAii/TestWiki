@@ -33,7 +33,7 @@ jobs:
           #   2. Delete this workflow — stay on whatever version you forked at
           #   3. Change the repo below — track your own engine fork
           upstream_sync_repo: reckhou/lorengine
-          upstream_sync_branch: main
+          upstream_sync_branch: master
           target_sync_branch: upstream-sync
           target_repo_token: ${{ secrets.GITHUB_TOKEN }}
           test_mode: false
