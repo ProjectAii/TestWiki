@@ -1,4 +1,5 @@
 name: Build and Deploy Wiki
+# re-register workflow on private mirror
 
 on:
   push:
