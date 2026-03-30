@@ -62,7 +62,26 @@ See `CLAUDE.md` for the full configuration reference.
 
 ## Upstream Sync
 
-Forks receive upstream engine updates via the `sync-upstream.yml` workflow, which opens a PR every Monday. Edit `sync-upstream.yml` to point to the correct upstream repo.
+Forks receive upstream engine updates via the `sync-upstream.yml` workflow, which opens a PR every Monday when the upstream repo has new commits.
+
+### Setup (required after forking)
+
+1. Open `.github/workflows/sync-upstream.yml`
+2. Replace `YOUR_GITHUB_USERNAME/lorengine` with the actual upstream repo path:
+   ```yaml
+   upstream_sync_repo: reckhou/lorengine   # or your own Lorengine fork
+   ```
+3. Commit the change — the workflow will now run automatically every Monday
+
+The workflow includes a guard (`if: github.repository != 'reckhou/lorengine'`) so it silently skips if run in the upstream repo itself.
+
+### If you forked Lorengine to maintain your own engine variant
+
+Update the guard condition to match your repo so it skips there too:
+```yaml
+if: github.repository != 'your-org/your-lorengine-fork'
+```
+Then update `upstream_sync_repo` in any downstream wikis to point at your fork instead of `reckhou/lorengine`.
 
 ## Versioning and Releases
 

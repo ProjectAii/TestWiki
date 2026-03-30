@@ -11,6 +11,8 @@ permissions:
 
 jobs:
   sync:
+    # Skip in the upstream repo itself — this workflow is only meaningful in forks
+    if: github.repository != 'reckhou/lorengine'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
