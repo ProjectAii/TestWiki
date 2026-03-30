@@ -1,14 +1,14 @@
 # config.yml — edit this in your fork, not in upstream
 
 github:
-  repo: "YOUR_USERNAME/YOUR_REPO"
+  repo: "ProjectAii/TestWiki"
 
 # Folder scanned for wiki pages (relative to repo root). Defaults to "pages".
 # Set to "docs" if you prefer the old layout.
 pages_dir: "pages"
 
 wiki:
-  title: "My Wiki"
+  title: "Test Wiki"
   description: "A LorEngine-powered wiki"
   accent_color: "#00D9FF"
 
