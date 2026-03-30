@@ -1,4 +1,5 @@
 name: Release
+# re-register workflow on private mirror
 
 on:
   push:
