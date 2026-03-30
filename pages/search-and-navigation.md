@@ -3,7 +3,7 @@ title: "Search & Navigation"
 tags: ["docs", "guide", "search", "navigation"]
 status: final
 last-updated: 2026-03-30
-sort_order: 4
+sort_order: 30
 parent: getting-started
 ---
 
