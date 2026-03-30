@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tree Manager — {{WIKI_TITLE}}</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #1a1a1a; color: #e0e0e0; padding: 24px; }
+    h1 { font-size: 1.3rem; margin-bottom: 16px; }
+    #lorengine-nav { margin-bottom: 20px; font-size: 13px; }
+    #lorengine-nav a { color: #888; text-decoration: none; margin-right: 12px; }
+    #lorengine-nav a:hover { color: #fff; }
+    #status { margin: 10px 0; min-height: 22px; font-size: 13px; color: #aaa; }
+    #status.error { color: #f66; }
+    #status.success { color: #6c6; }
+    #save-btn {
+      padding: 7px 18px; background: #3b6ff0; border: none; border-radius: 6px;
+      color: #fff; font-size: 14px; cursor: pointer; margin-bottom: 16px;
+    }
+    #save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    #save-btn:hover:not(:disabled) { background: #2a5cd0; }
+    .tree-root, .tree-children { list-style: none; padding: 0; }
+    .tree-children { padding-left: 24px; }
+    .tree-node { position: relative; margin: 2px 0; }
+    .node-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 8px; border-radius: 6px; background: #2a2a2a;
+      user-select: none; position: relative;
+    }
+    .node-row.over-before::before {
+      content: ''; position: absolute; top: -1px; inset-inline: 0;
+      height: 2px; background: #3b6ff0; border-radius: 2px;
+    }
+    .node-row.over-after::after {
+      content: ''; position: absolute; bottom: -1px; inset-inline: 0;
+      height: 2px; background: #3b6ff0; border-radius: 2px;
+    }
+    .node-row.over-child { outline: 2px solid #3b6ff0; background: #1e3a5f; }
+    .drag-handle { cursor: grab; color: #555; font-size: 14px; flex-shrink: 0; line-height: 1; }
+    .drag-handle:active { cursor: grabbing; }
+    .node-title { flex: 1; font-size: 14px; }
+    .node-title.changed { color: #f0a500; }
+    .node-slug { font-size: 11px; color: #666; }
+    .node-order { font-size: 11px; color: #555; width: 28px; text-align: right; flex-shrink: 0; }
+    #drop-root {
+      margin-top: 10px; padding: 10px; border: 1px dashed #444; border-radius: 6px;
+      text-align: center; font-size: 12px; color: #555;
+    }
+    #drop-root.active { border-color: #3b6ff0; color: #3b6ff0; }
+  </style>
+</head>
+<body>
+  <div id="lorengine-nav">
+    <a href="../">&#8592; Wiki</a>
+    <a href="./">CMS Admin</a>
+  </div>
+  <h1>Tree Manager</h1>
+  <div id="status">Loading...</div>
+  <button id="save-btn" disabled>Save Changes</button>
+  <div id="tree-container"></div>
+  <div id="drop-root">&#x2913; Drop here to make root-level</div>
+
+  <script>
+  // ── Helpers ────────────────────────────────────────────────────────────────
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = String(str);
+    return div.innerHTML;
+  }
+
+  // ── State ──────────────────────────────────────────────────────────────────
+  let docMap = {};       // id -> doc entry from search_index
+  let slugToId = {};     // slug -> id
+  let idToSlug = {};     // id -> slug
+  // treeState: id -> { parent: id|null, sort_order: number }
+  let treeState = {};
+  let changes = new Set();
+  let draggedId = null;
+  let githubToken = null;
+  let githubRepo = null;
+
+  // ── Auth ───────────────────────────────────────────────────────────────────
+  function loadGithubAuth() {
+    try {
+      const raw = localStorage.getItem('netlify-cms-user');
+      if (raw) {
+        const u = JSON.parse(raw);
+        if (u && u.token) return u.token;
+      }
+    } catch {}
+    return null;
+  }
+
+  // ── Data loading ───────────────────────────────────────────────────────────
+  async function loadData() {
+    const base = window.location.pathname.replace(/\/admin\/?.*$/, '');
+
+    // Load search index
+    const indexResp = await fetch(`${base}/search_index.json`);
+    if (!indexResp.ok) throw new Error('Could not load search_index.json');
+    const index = await indexResp.json();
+
+    for (const doc of index) {
+      docMap[doc.id] = doc;
+      slugToId[doc.slug] = doc.id;
+      idToSlug[doc.id] = doc.slug;
+      treeState[doc.id] = {
+        parent: doc.parent || null,
+        sort_order: doc.sort_order || 100
+      };
+    }
+
+    // Load github repo from admin config
+    try {
+      const cfgResp = await fetch(`${base}/admin/config.yml`);
+      if (cfgResp.ok) {
+        const txt = await cfgResp.text();
+        const m = txt.match(/repo:\s*["']?([^\s"'\n#]+)["']?/);
+        if (m) githubRepo = m[1].trim();
+      }
+    } catch {}
+  }
+
+  // ── Tree helpers ───────────────────────────────────────────────────────────
+  function getSortedChildren(parentId) {
+    return Object.entries(treeState)
+      .filter(([, s]) => s.parent === parentId)
+      .sort(([aid, a], [bid, b]) => {
+        const diff = a.sort_order - b.sort_order;
+        return diff !== 0 ? diff : (docMap[aid]?.title || '').localeCompare(docMap[bid]?.title || '');
+      })
+      .map(([id]) => id);
+  }
+
+  // ── Frontmatter patch (pure string, no innerHTML) ──────────────────────────
+  function patchFrontmatterField(text, field, value) {
+    if (!text.startsWith('---')) return text;
+    const end = text.indexOf('---', 3);
+    if (end === -1) return text;
+    const fm = text.slice(3, end);
+    const body = text.slice(end);
+    const pattern = new RegExp(`^(${field.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*:).*$`, 'm');
+    if (pattern.test(fm)) {
+      return '---' + fm.replace(pattern, `$1 ${value}`) + body;
+    }
+    // Field not present — append before closing ---
+    return '---' + fm.trimEnd() + `\n${field}: ${value}\n` + body;
+  }
+
+  // ── GitHub API ─────────────────────────────────────────────────────────────
+  async function patchPageOnGitHub(id, newParent, newSortOrder) {
+    const path = id; // e.g. "pages/slug.md"
+    const url = `https://api.github.com/repos/${githubRepo}/contents/${encodeURIComponent(path)}`;
+    const headers = {
+      Authorization: `token ${githubToken}`,
+      Accept: 'application/vnd.github.v3+json',
+    };
+
+    // GET current file (need SHA for PUT)
+    const getResp = await fetch(url, { headers });
+    if (!getResp.ok) throw new Error(`GET ${path} failed: ${getResp.status}`);
+    const fileData = await getResp.json();
+    const sha = fileData.sha;
+    // Decode base64 content (GitHub returns it with newlines every 60 chars)
+    let content = decodeURIComponent(
+      Array.from(atob(fileData.content.replace(/\n/g, '')))
+        .map(c => '%' + c.charCodeAt(0).toString(16).padStart(2, '0'))
+        .join('')
+    );
+
+    // Apply patches
+    const parentSlug = newParent ? (idToSlug[newParent] || '') : '';
+    if (parentSlug) {
+      content = patchFrontmatterField(content, 'parent', parentSlug);
+    } else {
+      // Remove the parent field when making root-level
+      content = content.replace(/\nparent:[^\n]*/, '');
+    }
+    content = patchFrontmatterField(content, 'sort_order', String(newSortOrder));
+
+    // Encode back to base64
+    const encoded = btoa(
+      encodeURIComponent(content).replace(/%([0-9A-F]{2})/g, (_, hex) =>
+        String.fromCharCode(parseInt(hex, 16))
+      )
+    );
+
+    const slug = idToSlug[id] || id;
+    const putResp = await fetch(url, {
+      method: 'PUT',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `chore: update tree structure for ${slug}`,
+        content: encoded,
+        sha,
+      }),
+    });
+    if (!putResp.ok) {
+      const err = await putResp.json().catch(() => ({}));
+      throw new Error(`PUT ${path} failed: ${err.message || putResp.status}`);
+    }
+  }
+
+  // ── Drag-and-drop logic ────────────────────────────────────────────────────
+  function getDropPosition(e, el) {
+    const rect = el.getBoundingClientRect();
+    const pct = (e.clientY - rect.top) / rect.height;
+    if (pct < 0.25) return 'before';
+    if (pct > 0.75) return 'after';
+    return 'child';
+  }
+
+  function applyDrop(dragId, targetId, position) {
+    if (dragId === targetId) return;
+
+    if (position === 'child') {
+      treeState[dragId].parent = targetId;
+      const childrenOfTarget = getSortedChildren(targetId);
+      const maxOrder = childrenOfTarget.reduce((m, id) => Math.max(m, treeState[id].sort_order), 0);
+      treeState[dragId].sort_order = maxOrder + 10;
+      changes.add(dragId);
+    } else {
+      // Reorder within same parent
+      const newParent = treeState[targetId].parent;
+      treeState[dragId].parent = newParent;
+
+      // Get siblings excluding dragged, insert at new position
+      const sibs = getSortedChildren(newParent).filter(id => id !== dragId);
+      const targetIdx = sibs.indexOf(targetId);
+      const insertAt = position === 'after' ? targetIdx + 1 : targetIdx;
+      sibs.splice(insertAt, 0, dragId);
+
+      // Assign contiguous sort_orders: 10, 20, 30...
+      sibs.forEach((id, i) => {
+        treeState[id].sort_order = (i + 1) * 10;
+        changes.add(id);
+      });
+    }
+  }
+
+  function applyDropToRoot(dragId) {
+    treeState[dragId].parent = null;
+    const roots = getSortedChildren(null);
+    const maxOrder = roots.filter(id => id !== dragId)
+      .reduce((m, id) => Math.max(m, treeState[id].sort_order), 0);
+    treeState[dragId].sort_order = maxOrder + 10;
+    changes.add(dragId);
+  }
+
+  // ── Rendering — builds DOM nodes (no innerHTML with untrusted data) ─────────
+  function buildNodeEl(id) {
+    const doc = docMap[id];
+    if (!doc) return null;
+
+    const li = document.createElement('li');
+    li.className = 'tree-node';
+    li.dataset.id = id;
+
+    const row = document.createElement('div');
+    row.className = 'node-row';
+    row.draggable = true;
+    row.dataset.id = id;
+
+    // Drag handle
+    const handle = document.createElement('span');
+    handle.className = 'drag-handle';
+    handle.textContent = '\u2807';
+    handle.setAttribute('aria-hidden', 'true');
+
+    // Title
+    const titleEl = document.createElement('span');
+    titleEl.className = 'node-title' + (changes.has(id) ? ' changed' : '');
+    titleEl.textContent = doc.title;
+
+    // Slug
+    const slugEl = document.createElement('span');
+    slugEl.className = 'node-slug';
+    slugEl.textContent = doc.slug;
+
+    // Sort order
+    const orderEl = document.createElement('span');
+    orderEl.className = 'node-order';
+    orderEl.textContent = treeState[id].sort_order;
+
+    row.appendChild(handle);
+    row.appendChild(titleEl);
+    row.appendChild(slugEl);
+    row.appendChild(orderEl);
+
+    // Drag events on the row
+    row.addEventListener('dragstart', e => {
+      draggedId = id;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', id);
+    });
+    row.addEventListener('dragend', () => {
+      row.classList.remove('over-before', 'over-after', 'over-child');
+    });
+    row.addEventListener('dragover', e => {
+      if (!draggedId || draggedId === id) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      const pos = getDropPosition(e, row);
+      row.classList.remove('over-before', 'over-after', 'over-child');
+      row.classList.add(pos === 'before' ? 'over-before' : pos === 'after' ? 'over-after' : 'over-child');
+    });
+    row.addEventListener('dragleave', () => {
+      row.classList.remove('over-before', 'over-after', 'over-child');
+    });
+    row.addEventListener('drop', e => {
+      e.preventDefault();
+      row.classList.remove('over-before', 'over-after', 'over-child');
+      if (!draggedId) return;
+      const pos = getDropPosition(e, row);
+      applyDrop(draggedId, id, pos);
+      draggedId = null;
+      renderTree();
+      document.getElementById('save-btn').disabled = changes.size === 0;
+    });
+
+    li.appendChild(row);
+
+    // Children
+    const children = getSortedChildren(id);
+    if (children.length) {
+      const ul = document.createElement('ul');
+      ul.className = 'tree-children';
+      for (const childId of children) {
+        const childEl = buildNodeEl(childId);
+        if (childEl) ul.appendChild(childEl);
+      }
+      li.appendChild(ul);
+    }
+
+    return li;
+  }
+
+  function renderTree() {
+    const container = document.getElementById('tree-container');
+    const roots = getSortedChildren(null);
+    const ul = document.createElement('ul');
+    ul.className = 'tree-root';
+    for (const id of roots) {
+      const el = buildNodeEl(id);
+      if (el) ul.appendChild(el);
+    }
+    container.textContent = ''; // clear without innerHTML
+    container.appendChild(ul);
+  }
+
+  // ── Save ───────────────────────────────────────────────────────────────────
+  async function saveChanges() {
+    const statusEl = document.getElementById('status');
+    const saveBtn = document.getElementById('save-btn');
+    saveBtn.disabled = true;
+    statusEl.textContent = `Saving ${changes.size} page(s) to GitHub...`;
+    statusEl.className = 'status';
+
+    const failed = [];
+    for (const id of [...changes]) {
+      try {
+        const s = treeState[id];
+        await patchPageOnGitHub(id, s.parent, s.sort_order);
+      } catch (e) {
+        console.error('Failed to save', id, e);
+        failed.push(docMap[id]?.slug || id);
+      }
+    }
+
+    if (failed.length) {
+      statusEl.textContent = `Errors saving: ${failed.join(', ')}. See console for details.`;
+      statusEl.className = 'status error';
+      saveBtn.disabled = false;
+    } else {
+      changes.clear();
+      statusEl.textContent = 'Saved. GitHub Actions will rebuild the wiki shortly.';
+      statusEl.className = 'status success';
+    }
+  }
+
+  // ── Init ───────────────────────────────────────────────────────────────────
+  (async function init() {
+    const statusEl = document.getElementById('status');
+    const saveBtn = document.getElementById('save-btn');
+
+    githubToken = loadGithubAuth();
+    if (!githubToken) {
+      statusEl.textContent = 'Not authenticated. Log in via CMS Admin first, then return here.';
+      statusEl.className = 'status error';
+      return;
+    }
+
+    try {
+      await loadData();
+    } catch (e) {
+      statusEl.textContent = `Load error: ${e.message}`;
+      statusEl.className = 'status error';
+      return;
+    }
+
+    if (!githubRepo) {
+      statusEl.textContent = 'GitHub repo not configured. Set github.repo in config.yml.';
+      statusEl.className = 'status error';
+      return;
+    }
+
+    const pageCount = Object.keys(docMap).length;
+    statusEl.textContent = `${pageCount} pages loaded. Drag to reorder or reparent. Changed items appear in orange.`;
+
+    renderTree();
+    saveBtn.disabled = true;
+    saveBtn.addEventListener('click', saveChanges);
+
+    // Root drop zone
+    const dropRoot = document.getElementById('drop-root');
+    dropRoot.addEventListener('dragover', e => {
+      e.preventDefault();
+      dropRoot.classList.add('active');
+    });
+    dropRoot.addEventListener('dragleave', () => dropRoot.classList.remove('active'));
+    dropRoot.addEventListener('drop', e => {
+      e.preventDefault();
+      dropRoot.classList.remove('active');
+      if (!draggedId) return;
+      applyDropToRoot(draggedId);
+      draggedId = null;
+      renderTree();
+      saveBtn.disabled = false;
+    });
+  })();
+  </script>
+</body>
+</html>

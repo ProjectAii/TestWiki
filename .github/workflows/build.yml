@@ -2,14 +2,14 @@ name: Build and Deploy Wiki
 
 on:
   push:
-    paths: ['docs/**', 'pages/**', 'wiki/**', 'build_wiki.py', 'config.yml']
+    paths: ['docs/**', 'pages/**', 'wiki/**', 'build_wiki.py', 'config.yml', 'decap.yml', 'content_hashes.json']
     tags: ['v*']
   schedule:
     - cron: '0 6 * * *'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -32,6 +32,12 @@ jobs:
         run: python build_wiki.py
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      - name: Commit auto-updated timestamps
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pages/ content_hashes.json
+          git diff --staged --quiet || (git commit -m "chore: auto-update last-updated timestamps [skip ci]" && git push)
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -10,9 +10,9 @@
 
 ## Progress
 
-- [ ] Task 1: Create `pages/brief.md` (template) and `pages/brief-example.md` (Duty Calls reference)
-- [ ] Task 2: Rework `wiki.js` — brief fetch, parse, strip, inject, notification bar + CSS
-- [ ] Task 3: Remove `CLAUDE.local.md` / `system_prompt_file` traces from `build_wiki.py`, `config.yml`, `CLAUDE.md`
+- [x] Task 1: Create `pages/brief.md` (template) and `pages/brief-example.md` (Duty Calls reference)
+- [x] Task 2: Rework `wiki.js` — brief fetch, parse, strip, inject, notification bar + CSS
+- [x] Task 3: Remove `CLAUDE.local.md` / `system_prompt_file` traces from `build_wiki.py`, `config.yml`, `CLAUDE.md`
 
 ---
 

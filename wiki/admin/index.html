@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — {{WIKI_TITLE}}</title>
+  <style>
+    #lorengine-nav {
+      position: fixed; top: 0; right: 0; z-index: 9999;
+      padding: 6px 14px; background: rgba(0,0,0,0.75);
+      border-radius: 0 0 0 8px; display: flex; gap: 12px;
+    }
+    #lorengine-nav a { color: #ccc; text-decoration: none; font-size: 13px; }
+    #lorengine-nav a:hover { color: #fff; }
+  </style>
+</head>
+<body>
+  <div id="lorengine-nav">
+    <a href="../">&#8592; Wiki</a>
+    <a href="tree.html">Tree Manager</a>
+  </div>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+  (async function initAdminPreChecks() {
+    if (typeof CMS === 'undefined') return;
+
+    const existingTitles = new Set();
+    const existingSlugs = new Set();
+
+    // Load current index for validation — done once at startup
+    try {
+      const base = window.location.pathname.replace(/\/admin\/?.*$/, '');
+      const resp = await fetch(`${base}/search_index.json`);
+      if (resp.ok) {
+        const index = await resp.json();
+        for (const doc of index) {
+          existingTitles.add(doc.title.toLowerCase());
+          existingSlugs.add(doc.slug);
+        }
+      }
+    } catch (e) {
+      console.warn('[Lorengine] Could not load search_index for pre-checks:', e);
+    }
+
+    CMS.registerEventListener({
+      name: 'preSave',
+      handler: ({ entry }) => {
+        const data = entry.get('data');
+        const title = (data.get('title') || '').trim();
+        // entry.get('path') is empty/null for new entries
+        const isNew = !entry.get('path');
+
+        // Determine the slug that will be used for this entry
+        const rawSlug = (data.get('slug') || title)
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+
+        // Soft warn: duplicate title (allowed if slugs differ, but discouraged)
+        if (isNew && existingTitles.has(title.toLowerCase())) {
+          console.info(`[Lorengine] Title "${title}" already exists on another page. Consider a more specific title.`);
+          const banner = document.createElement('div');
+          const safeTitle = title.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+          banner.textContent = `Note: Another page is already named "${safeTitle}". Consider a more specific title.`;
+          Object.assign(banner.style, {
+            position: 'fixed', top: '40px', left: '50%', transform: 'translateX(-50%)',
+            background: '#f0a500', color: '#000', padding: '8px 20px',
+            borderRadius: '6px', zIndex: '99999', fontSize: '14px'
+          });
+          document.body.appendChild(banner);
+          setTimeout(() => banner.remove(), 5000);
+        }
+
+        // Hard block: slug collision — suggest a free slug
+        if (isNew && existingSlugs.has(rawSlug)) {
+          let counter = 2;
+          let candidate = `${rawSlug}-${counter}`;
+          while (existingSlugs.has(candidate)) { counter++; candidate = `${rawSlug}-${counter}`; }
+          window.alert(
+            `The slug "${rawSlug}" is already taken by another page.\n\n` +
+            `Suggested free slug: "${candidate}"\n\n` +
+            `Please update the Slug field before saving.`
+          );
+          return false; // block save
+        }
+
+        return true; // allow save
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

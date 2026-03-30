@@ -187,7 +187,7 @@
         // Init tree sidebar, TOC sidebar, and AI modal
         initTreeSidebar(searchIndex, document.getElementById("tree-sidebar"));
         initTOCSidebar();
-        initAIModal(body, searchIndex);
+        initAIModal(body, searchIndex, docId);
 
         // Sidebars: toggle, MQ, resize, persistence
         initSidebar(document.querySelector(".tree-sidebar-wrap"), "right", "lorengine-tree-width");

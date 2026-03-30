@@ -7,6 +7,15 @@
   <meta name="description" content="{{WIKI_DESCRIPTION}}">
   <link rel="stylesheet" href="style.css">
   <style>:root { --accent: {{ACCENT_COLOR}}; }</style>
+  <script>
+    // Apply stored theme/accent synchronously before first paint to prevent flash.
+    (function () {
+      var a = localStorage.getItem("lorengine-accent");
+      if (a) document.documentElement.style.setProperty("--accent", a);
+      var m = localStorage.getItem("lorengine-theme");
+      if (m) document.documentElement.setAttribute("data-theme", m);
+    })();
+  </script>
 </head>
 <body>
   <header class="site-header">
@@ -16,13 +25,23 @@
     </div>
     <nav class="header-nav">
       <a href="search.html">Search</a>
+      <a href="admin/" id="new-page-btn" class="btn-admin" hidden><svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" style="vertical-align:-1px;margin-right:3px"><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>New Page</a>
       <button class="theme-toggle" aria-label="Toggle theme">Theme</button>
     </nav>
   </header>
 
   <div class="page-layout">
     <aside class="tree-sidebar-wrap">
-      <button class="tree-toggle-btn" aria-label="Toggle page tree"></button>
+      <button class="tree-toggle-btn" aria-label="Toggle page tree">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M0 2.5A.5.5 0 0 1 .5 2H4a.5.5 0 0 1 .416.223L5 3h4.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-3z"/>
+          <line x1="1.5" y1="6" x2="1.5" y2="14" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="1.5" y1="9" x2="3.5" y2="9" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="1.5" y1="13" x2="3.5" y2="13" stroke="currentColor" stroke-width="1.2"/>
+          <rect fill="currentColor" x="3.5" y="7.5" width="8" height="3" rx="0.5"/>
+          <rect fill="currentColor" x="3.5" y="11.5" width="8" height="3" rx="0.5"/>
+        </svg>
+      </button>
       <div id="tree-sidebar" class="tree-sidebar visible"></div>
     </aside>
     <main class="main-content">
@@ -45,17 +64,14 @@
         document.getElementById("doc-list").textContent = "Failed to load documents: " + err.message;
       }
       initThemePanel();
+      initStickyHeader();
 
-      // Tree sidebar toggle
-      const toggleBtn = document.querySelector(".tree-toggle-btn");
-      const treeSidebar = document.querySelector(".tree-sidebar");
-      const treeWrap = document.querySelector(".tree-sidebar-wrap");
-      if (toggleBtn) {
-        toggleBtn.addEventListener("click", () => {
-          treeSidebar.classList.toggle("visible");
-          treeWrap.classList.toggle("collapsed");
-        });
-      }
+      // New Page button — always show it (admin always accessible)
+      const newBtn = document.getElementById('new-page-btn');
+      if (newBtn) { newBtn.removeAttribute('hidden'); newBtn.href = adminNewUrl(); }
+
+      // Sidebar: toggle, MQ, resize, persistence
+      initSidebar(document.querySelector(".tree-sidebar-wrap"), "right", "lorengine-tree-width");
     })();
   </script>
 </body>
