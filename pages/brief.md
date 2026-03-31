@@ -3,7 +3,7 @@ title: "Project Brief"
 tags: ["setup"]
 status: draft
 last-updated: 2026-03-30
-sort_order: 0
+sort_order: 30
 ---
 
 This file configures the AI sidebar for your LorEngine wiki. Fill in each
