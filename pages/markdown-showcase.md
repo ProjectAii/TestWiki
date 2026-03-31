@@ -3,7 +3,7 @@ title: "Markdown Showcase"
 tags: ["docs", "reference", "markdown"]
 status: final
 last-updated: 2026-03-30
-sort_order: 2
+sort_order: 20
 ---
 
 ## About This Section
