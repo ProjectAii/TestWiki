@@ -2,7 +2,7 @@
 title: Campaign Progression
 slug: ''
 parent: design
-sort_order: 100
+sort_order: 30
 tags:
   - Campaign
 status: draft
