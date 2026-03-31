@@ -1,23 +1,13 @@
 ---
 title: Campaign Progression
 slug: ''
-parent: ''
+parent: design
 sort_order: 100
 tags:
   - Campaign
 status: draft
 last-updated: 2026-03-31
 ---
-
-***
-
-title: "Campaign Progression"
-tags: ["design", "systems", "progression", "campaign"]
-status: draft
-last-updated: 2026-03-30
-sort_order: 4
-
-***
 
 ## Overview
 
