@@ -3,7 +3,7 @@ title: "World & Story"
 tags: ["narrative", "lore", "setting", "worldbuilding"]
 status: review
 last-updated: 2026-03-30
-sort_order: 30
+sort_order: 90
 ---
 
 ## Setting: The Shattered Meridian
