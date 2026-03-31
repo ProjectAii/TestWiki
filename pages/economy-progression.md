@@ -3,7 +3,7 @@ title: "Economy & Progression"
 tags: ["design", "economy", "balance", "progression"]
 status: review
 last-updated: 2026-03-30
-sort_order: 2
+sort_order: 20
 parent: design
 ---
 
