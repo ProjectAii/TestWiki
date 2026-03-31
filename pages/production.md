@@ -3,7 +3,7 @@ title: "Production"
 tags: ["production", "timeline", "team", "tools"]
 status: final
 last-updated: 2026-03-30
-sort_order: 60
+sort_order: 50
 ---
 
 ## Team Structure
