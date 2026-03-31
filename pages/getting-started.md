@@ -3,7 +3,7 @@ title: "Getting Started"
 tags: ["docs", "guide", "meta"]
 status: final
 last-updated: 2026-03-30
-sort_order: 1
+sort_order: 10
 ---
 
 ## Welcome to This Wiki
