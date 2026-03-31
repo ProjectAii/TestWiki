@@ -3,7 +3,7 @@ title: "Art Direction"
 tags: ["art", "visual", "aesthetics", "ui"]
 status: review
 last-updated: 2026-03-30
-sort_order: 40
+sort_order: 70
 ---
 
 ## Visual Style Philosophy
