@@ -3,7 +3,7 @@ title: "Audio Design"
 tags: ["audio", "music", "sound", "sfx"]
 status: review
 last-updated: 2026-03-30
-sort_order: 50
+sort_order: 80
 ---
 
 ## Audio Philosophy
