@@ -3,7 +3,7 @@ title: "Game Design"
 tags: ["design", "systems", "mechanics"]
 status: review
 last-updated: 2026-03-30
-sort_order: 20
+sort_order: 60
 ---
 
 ## Design Overview
