@@ -455,7 +455,7 @@ function initTreeSidebar(data, container) {
 
   const treeHtml = `
     <ul class="tree-list">
-      ${roots
+      ${sortDocIds(roots, docMap, "sort-order")
         .map((id) => renderTreeNode(id, { docMap, roots }, docMap, "", "sort-order"))
         .join("")}
     </ul>
