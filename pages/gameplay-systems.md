@@ -3,7 +3,7 @@ title: "Gameplay Systems"
 tags: ["design", "systems", "mechanics"]
 status: review
 last-updated: 2026-03-30
-sort_order: 1
+sort_order: 10
 parent: design
 ---
 
