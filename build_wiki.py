@@ -538,15 +538,7 @@ def main():
     search_index = compute_backlinks(search_index, pages_dir)
     print(f"  Computed hierarchy and backlinks")
 
-    # 4. Write search_index.json to repo root (committed artifact)
-    index_path = root / "search_index.json"
-    index_path.write_text(
-        json.dumps(search_index, indent=2, ensure_ascii=False),
-        encoding="utf-8",
-    )
-    print(f"  Wrote {index_path}")
-
-    # 5. Assemble _site/
+    # 4. Assemble _site/
     site_dir = assemble_site(root, config, search_index)
     print(f"  Assembled site in {site_dir}")
 
