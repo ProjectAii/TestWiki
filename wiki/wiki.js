@@ -105,6 +105,11 @@ function adminNewUrl() {
   return `${base}admin/#/collections/pages/new`;
 }
 
+function adminTreeUrl() {
+  const base = WIKI_CONFIG.baseUrl ? WIKI_CONFIG.baseUrl + "/" : "";
+  return `${base}admin/tree.html`;
+}
+
 // ---------------------------------------------------------------------------
 // Index page: render doc list
 // ---------------------------------------------------------------------------
@@ -116,18 +121,14 @@ function renderDocList(data, container) {
     return;
   }
 
-  // Sort by last_updated (most recent first), tiebreak by file_mtime, then show only top 5
+  // Sort by file_mtime (precise numeric timestamp) for reliable recency ordering
   const sorted = [...data]
-    .sort((a, b) => {
-      const dateCmp = (b.last_updated || "").localeCompare(a.last_updated || "");
-      if (dateCmp !== 0) return dateCmp;
-      return (b.file_mtime || 0) - (a.file_mtime || 0);
-    })
+    .sort((a, b) => (b.file_mtime || 0) - (a.file_mtime || 0))
     .slice(0, 5);
 
   const html = sorted
     .map((doc) => {
-      const excerpt = (doc.excerpt || "").slice(0, WIKI_CONFIG.search.excerptLength);
+      const excerpt = (doc.body || doc.excerpt || "").slice(0, WIKI_CONFIG.search.excerptLength * 3);
       const excerptHtml = escapeHtml(excerpt).replace(/\n/g, " ");
       return `
       <article class="doc-card">
@@ -443,20 +444,19 @@ function initTreeSidebar(data, container) {
         <option value="sort-order" selected>Custom order</option>
         <option value="alpha-asc">A–Z</option>
         <option value="alpha-desc">Z–A</option>
-        <option value="date-asc">Oldest first</option>
-        <option value="date-desc">Newest first</option>
       </select>
     </div>
     <div class="tree-expand-controls">
       <button class="tree-expand-all">Expand all</button>
       <button class="tree-collapse-all">Collapse all</button>
+      <a class="tree-editor-link" href="${adminTreeUrl()}">Tree editor</a>
     </div>
   `;
 
   const treeHtml = `
     <ul class="tree-list">
-      ${roots
-        .map((id) => renderTreeNode(id, { docMap, roots }, docMap, "", "alpha-asc"))
+      ${sortDocIds(roots, docMap, "sort-order")
+        .map((id) => renderTreeNode(id, { docMap, roots }, docMap, "", "sort-order"))
         .join("")}
     </ul>
   `;
