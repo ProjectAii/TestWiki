@@ -3,7 +3,7 @@ title: "Game Overview"
 tags: ["design", "core", "vision"]
 status: final
 last-updated: 2026-03-30
-sort_order: 10
+sort_order: 40
 ---
 
 ## Project Title
