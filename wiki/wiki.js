@@ -105,6 +105,11 @@ function adminNewUrl() {
   return `${base}admin/#/collections/pages/new`;
 }
 
+function adminTreeUrl() {
+  const base = WIKI_CONFIG.baseUrl ? WIKI_CONFIG.baseUrl + "/" : "";
+  return `${base}admin/tree.html`;
+}
+
 // ---------------------------------------------------------------------------
 // Index page: render doc list
 // ---------------------------------------------------------------------------
@@ -439,20 +444,19 @@ function initTreeSidebar(data, container) {
         <option value="sort-order" selected>Custom order</option>
         <option value="alpha-asc">A–Z</option>
         <option value="alpha-desc">Z–A</option>
-        <option value="date-asc">Oldest first</option>
-        <option value="date-desc">Newest first</option>
       </select>
     </div>
     <div class="tree-expand-controls">
       <button class="tree-expand-all">Expand all</button>
       <button class="tree-collapse-all">Collapse all</button>
+      <a class="tree-editor-link" href="${adminTreeUrl()}">Tree editor</a>
     </div>
   `;
 
   const treeHtml = `
     <ul class="tree-list">
       ${roots
-        .map((id) => renderTreeNode(id, { docMap, roots }, docMap, "", "alpha-asc"))
+        .map((id) => renderTreeNode(id, { docMap, roots }, docMap, "", "sort-order"))
         .join("")}
     </ul>
   `;

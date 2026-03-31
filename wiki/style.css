@@ -193,6 +193,7 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 
 .toc-toggle-btn::before {
   content: "☰";
+  line-height: 1;
 }
 
 .toc-sidebar {
@@ -694,7 +695,8 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   background: var(--bg-secondary);
 }
 
-.tree-expand-controls button {
+.tree-expand-controls button,
+.tree-expand-controls .tree-editor-link {
   flex: 1;
   padding: 2px var(--space-xs);
   font-size: 0.75rem;
@@ -703,9 +705,15 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   background: transparent;
   color: var(--text-secondary);
   cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.tree-expand-controls button:hover {
+.tree-expand-controls button:hover,
+.tree-expand-controls .tree-editor-link:hover {
   color: var(--accent);
   border-color: var(--accent);
 }
