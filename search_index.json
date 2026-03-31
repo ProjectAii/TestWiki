@@ -12,7 +12,7 @@
     ],
     "status": "review",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5710652,
+    "file_mtime": 1774915318.4904532,
     "headings": [
       "Visual Style Philosophy",
       "Color Palettes by Faction",
@@ -54,7 +54,7 @@
     ],
     "status": "review",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.491061,
     "headings": [
       "Audio Philosophy",
       "Music & Composition",
@@ -92,7 +92,7 @@
     ],
     "status": "draft",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.491061,
     "headings": [
       "Project identity",
       "Audience and purpose",
@@ -121,7 +121,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.491061,
     "headings": [
       "Fenced Code Blocks",
       "Supported Languages",
@@ -159,7 +159,7 @@
     ],
     "status": "review",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.491061,
     "headings": [
       "Design Overview",
       "Design Philosophy",
@@ -190,7 +190,7 @@
     ],
     "status": "review",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.491061,
     "headings": [
       "Resource Economy",
       "Territory Control",
@@ -213,7 +213,7 @@
     "id": "pages/frontmatter-reference.md",
     "slug": "frontmatter-reference",
     "title": "Frontmatter Reference",
-    "sort_order": 2,
+    "sort_order": 40,
     "tags": [
       "docs",
       "reference",
@@ -221,7 +221,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.491061,
     "headings": [
       "What Is Frontmatter?",
       "Fields Reference",
@@ -255,7 +255,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.4914315,
     "headings": [
       "Project Title",
       "Pitch",
@@ -283,7 +283,7 @@
     ],
     "status": "review",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.4914315,
     "headings": [
       "Turn Structure",
       "Action Economy",
@@ -317,7 +317,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.4914315,
     "headings": [
       "Welcome to This Wiki",
       "What You Can Do Here",
@@ -352,7 +352,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.4914315,
     "headings": [
       "Internal Wiki Links",
       "Linking From a Root Page",
@@ -394,7 +394,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.4914315,
     "headings": [
       "About This Section",
       "Subsections",
@@ -419,7 +419,7 @@
     "id": "pages/page-hierarchy.md",
     "slug": "page-hierarchy",
     "title": "Page Hierarchy",
-    "sort_order": 3,
+    "sort_order": 20,
     "tags": [
       "docs",
       "guide",
@@ -427,7 +427,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.4914315,
     "headings": [
       "How the Tree Sidebar Works",
       "Declaring a Parent",
@@ -459,7 +459,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.4914315,
     "headings": [
       "Team Structure",
       "Core Team (6–8 people)",
@@ -497,7 +497,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.4914315,
     "headings": [
       "Your First Page in 5 Minutes",
       "Step 1: Create a Markdown File",
@@ -520,7 +520,7 @@
     "id": "pages/search-and-navigation.md",
     "slug": "search-and-navigation",
     "title": "Search & Navigation",
-    "sort_order": 4,
+    "sort_order": 30,
     "tags": [
       "docs",
       "guide",
@@ -529,7 +529,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.4914315,
     "headings": [
       "The Tree Sidebar",
       "Expanding and Collapsing Sections",
@@ -565,7 +565,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.4914315,
     "headings": [
       "Unordered Lists",
       "Ordered Lists",
@@ -597,7 +597,7 @@
     ],
     "status": "final",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.4914315,
     "headings": [
       "Bold",
       "Italic",
@@ -630,7 +630,7 @@
     ],
     "status": "review",
     "last_updated": "2026-03-30",
-    "file_mtime": 1774915206.5716934,
+    "file_mtime": 1774915318.4914315,
     "headings": [
       "Setting: The Shattered Meridian",
       "Timeline Context",
